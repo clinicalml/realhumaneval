@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- https://www.geeksforgeeks.org/build-a-survey-form-using-html-and-css/ -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="index.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <title>
+    Code Study
+  </title>
+
+</head>
+
+<body style=" max-width: 100%; overflow-x: hidden;  height: auto;">
+  <div style="  background-color: #ffffff;   display: table; margin-right: 1%; margin-left: 1%;">
+  <label for="authen_token"> Please enter the code:</label> 
+</br></br>
+  <input type="password" id="authen_token" name="authen_token" required />
+  </br>
+  <p style="color:red" id="message_highlighted"> </p>
+
+
+  <button type="submit" id="submit_token">Next</button>
+</div>
+
+
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-functions.js"></script>
+
+  <script src="./script_auth.js"></script>
+
+</body>
+
+</html>

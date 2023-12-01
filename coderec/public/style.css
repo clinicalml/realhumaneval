@@ -1,0 +1,43 @@
+.errorHighlight{
+    position:absolute;
+    z-index:20;
+    background-color:grey;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 20px;
+}
+
+#editor {
+    resize: both;
+    overflow: auto;
+    max-width: 95vw;
+    max-height: 150vh;
+  }
+
+#taskDescription {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+#output {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 15px;
+    margin-top: 10px;
+    background-color: #007BFF;
+    color: #FFF;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

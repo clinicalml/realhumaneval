@@ -1,13 +1,12 @@
-keys.json
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-coderec/app
-coderec/.next
-coderec/.firebase
-coderec/functions_python
-coderec/functions/node_modules
+/app
+/.next
+/.firebase
+/functions_python
+functions/node_modules
 # dependencies
-coderec/node_modules
-coderec/.pnp
+/node_modules
+/.pnp
 node_modules
 app
 next
