@@ -13,6 +13,9 @@ firebase.analytics();
 
 const runcode = firebase.functions().httpsCallable("runcode");
 const getcompletion = firebase.functions().httpsCallable("getcompletion");
+const get_together_completion = firebase
+  .functions()
+  .httpsCallable("get_together_completion");
 var editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");
@@ -47,9 +50,9 @@ let mediaStream;
 /////////////////////////////////////////
 // CLOUD FUNCTIONS CALLS
 /////////////////////////////////////////
-function get_openai_response(prefix, suffix) {
+function get_openai_response(prefix, suffix, max_tokens) {
   return new Promise((resolve, reject) => {
-    getcompletion({ prefix: prefix, suffix: suffix })
+    getcompletion({ prefix: prefix, suffix: suffix, max_tokens: max_tokens })
       .then((result) => {
         const text_response = result.data.data.choices[0].text;
         console.log(text_response);
@@ -86,6 +89,40 @@ function get_constant_response(prefix, suffix) {
   });
 }
 
+function get_completion_together(model, prompt, max_tokens) {
+  return new Promise((resolve, reject) => {
+    get_together_completion({
+      model: model,
+      prompt: prompt,
+      max_tokens: max_tokens,
+    })
+      .then((result) => {
+        const text_response = result.data.data.output.choices[0].text;
+        resolve(text_response);
+      })
+      .catch((error) => {
+        console.error("Error calling the getcompletion function:", error);
+      });
+  });
+}
+
+function calltogether() {
+  var editor_value = editor.getValue();
+  var editor_value_string = editor_value.toString();
+  const model = document.getElementById("modelSelector").value;
+  var max_tokens = parseInt(document.getElementById("maxTokens").value);
+  // max tokens should be an int
+  console.log(max_tokens);
+  console.log(model);
+  get_completion_together(model, editor_value_string, max_tokens)
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => {
+      console.error("Error calling the getcompletion function:", error);
+    });
+}
+
 /////////////////////////////////////////
 // END CLOUD FUNCTIONS CALLS
 /////////////////////////////////////////
@@ -107,8 +144,8 @@ function handleChange() {
         isAppending = true;
         appendCustomString().then((response) => {
           if (isAppending == true) {
-          suggestions_shown_count += 1;
-          console.log(suggestions_shown_count);
+            suggestions_shown_count += 1;
+            console.log(suggestions_shown_count);
           }
         });
       }
@@ -154,47 +191,81 @@ function appendCustomString() {
       if (suffix_code.length > maxSuffixLength) {
         suffix_code = suffix_code.substring(0, maxSuffixLength);
       }
-      get_openai_response(prefix_code, suffix_code)
-        .then((response_string) => {
-          console.log("getting new suggestion");
-          customString = response_string;
-          lastSuggestion = response_string;
-          if (isAppending == true) {
-            // how much the custom string will add to the row and column
-            let string_added_column = customString.length;
-            let string_added_row = customString.split("\n").length - 1;
-            var cursor = editor.getCursorPosition();
-            let row = cursor.row;
-            let column = cursor.column;
-            // get the all the text from the editor
-            // Append the custom string to the editor at cursor location
-            editor.session.insert({ row: row, column: column }, customString);
-            cursorString = cursor;
-            // keep cursor at location before the string was appended
-            editor.gotoLine(row + 1, column);
-            // Highlight the appended string
-            customStringMarkerId = editor.session.addMarker(
-              new Range(
-                row,
-                column,
-                row + string_added_row,
-                column + string_added_column
-              ),
-              "errorHighlight",
-              "text"
-            );
-            isAppending = false;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // get maxtokens from input maxTokens in html
+      var max_tokens = parseInt(document.getElementById("maxTokens").value);
+
+      // get model from modelSelector
+      var model = document.getElementById("modelSelector").value;
+      var response_string = "";
+      // get suggestion according to model
+      if (model == "gpt35") {
+        get_openai_response(prefix_code, suffix_code, max_tokens)
+          .then((response_string) => {
+            addSuggestion(response_string);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        var prompt = "";
+        if (suffix_code.length > 0) {
+          // <PRE> {prefix} <SUF>{suffix} <MID>
+          prompt = "<PRE> " + prefix_code + " <SUF> " + suffix_code + " <MID>";
+        } else {
+          prompt = prefix_code;
+        }
+        if (prompt.length == 0) {
+          prompt =" ";
+        }
+        get_completion_together(model, prompt, max_tokens)
+          .then((response_string) => {
+            addSuggestion(response_string);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      console.log("getting new suggestion");
+    
       resolve(); // Resolve the Promise when it's done
     } else {
       resolve();
     }
   });
 }
+
+function addSuggestion(response_string) {
+  customString = response_string;
+      lastSuggestion = response_string;
+      if (isAppending == true) {
+        // how much the custom string will add to the row and column
+        let string_added_column = customString.length;
+        let string_added_row = customString.split("\n").length - 1;
+        var cursor = editor.getCursorPosition();
+        let row = cursor.row;
+        let column = cursor.column;
+        // get the all the text from the editor
+        // Append the custom string to the editor at cursor location
+        editor.session.insert({ row: row, column: column }, customString);
+        cursorString = cursor;
+        // keep cursor at location before the string was appended
+        editor.gotoLine(row + 1, column);
+        // Highlight the appended string
+        customStringMarkerId = editor.session.addMarker(
+          new Range(
+            row,
+            column,
+            row + string_added_row,
+            column + string_added_column
+          ),
+          "errorHighlight",
+          "text"
+        );
+        console.log(customStringMarkerId);
+        isAppending = false;
+      }
+  }
 
 // If CNTRL+ENTER is pressed, show the next suggestion
 editor.commands.addCommand({
@@ -223,9 +294,9 @@ editor.commands.addCommand({
 editor.commands.on("exec", function (e) {
   if (customString != "") {
     if (e.command.name != "indent" && e.command.name != "insertstring") {
-       rejectSuggestion();
+      rejectSuggestion();
     } else if (e.command.name == "insertstring" && e.command.name != "indent") {
-       rejectSuggestion();
+      rejectSuggestion();
       // add the key that was pressed
       e.command.exec(e.editor, e.args);
       // prevent the default action of the key
@@ -339,53 +410,3 @@ function rejectSuggestion() {
 /////////////////////////////////////////
 // End of Accept and Reject of Suggestions
 /////////////////////////////////////////
-
-/////////////////////////////////////////
-// RECORDING: works perfectly
-/////////////////////////////////////////
-
-async function startRecording() {
-  try {
-    mediaStream = await navigator.mediaDevices.getDisplayMedia({
-      video: {
-        cursor: "always",
-      },
-      audio: true,
-      preferCurrentTab: true,
-    });
-
-    mediaRecorder = new MediaRecorder(mediaStream, { mimeType: "video/webm" });
-
-    mediaRecorder.ondataavailable = (event) => {
-      if (event.data.size > 0) {
-        recordedChunks.push(event.data);
-      }
-    };
-
-    mediaRecorder.onstop = () => {
-      const blob = new Blob(recordedChunks, {
-        type: "video/webm",
-      });
-
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      document.body.appendChild(a);
-      a.style.display = "none";
-      a.href = url;
-      a.download = "recorded-tab.webm";
-      a.click();
-      window.URL.revokeObjectURL(url);
-    };
-
-    mediaRecorder.start();
-  } catch (err) {
-    console.error("Error:", err);
-  }
-}
-
-function stopRecording() {
-  if (mediaRecorder && mediaRecorder.state !== "inactive") {
-    mediaRecorder.stop();
-    mediaStream.getTracks().forEach((track) => track.stop()); // Stopping all tracks
-  }
-}

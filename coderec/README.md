@@ -1,5 +1,9 @@
 server side:
 
+- intake and informed consent
+
+- how to do testing? append tests and interpret output
+
 - add limit to between calls from same user, 1sec
 
 client side:
@@ -7,11 +11,28 @@ client side:
 - add telemetry
 
 
+for logging the accepts
+
+- add puzzle task
+
+
 one compiler supported libraries:
 https://onecompiler.com/python/3x9knsj24
 
-to print output of matplotlib:
 
+How to add secret api key:
+
+firebase functions:secrets:set STRIPE_SECRET_KEY
+
+
+to deploy:
+
+firebase deploy
+
+
+
+to print output of matplotlib:
+```python
 import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
@@ -36,7 +57,7 @@ img.seek(0)
 
 # Convert the BytesIO object to a Base64 string
 plot_url = base64.b64encode(img.getvalue()).decode()
-
+```
 then:
 
 <img src="data:image/png;base64,{{plot_url}}" />

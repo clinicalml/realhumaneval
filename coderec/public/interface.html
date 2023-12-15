@@ -1,44 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
-    
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css" />
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Execution App</title>
 </head>
+
 <body>
 
     <button id="startRecord" onclick="startRecording()">Start Recording</button>
     <button id="stopRecord" onclick="stopRecording()">Stop Recording</button>
-    <div id="taskDescription"> 
-        <p> Keyboard shortcuts: [TAB] to accept a suggestion, [ESC] to reject suggestion, [CTRL+ENTER] (windows) and [CMD+ENTER] (mac) to request a suggestion </p>
-    <!-- <h2>Task:</h2>
-    <p>Write a function that returns the sum of two numbers.</p> -->
-</div>
+    <select id="modelSelector">
+        <option value="gpt35">GPT-3.5</option>
+        <option value="togethercomputer/CodeLlama-7b">CodeLlama-7b</option>
+        <option value="togethercomputer/CodeLlama-13b">CodeLlama-13b</option>
+        <option value="togethercomputer/CodeLlama-34b">CodeLlama-34b</option>
+    </select>
+    Max Tokens Suggestion:
+    <input type="number" id="maxTokens" min="1" max="1000" value=20>
 
-<div id="editor" style="height: 50vh; width: 60vw;"></div>
-<button onclick="submitCode()">Submit</button>
-<div id="output"></div>
+    <!-- Button to open the popup -->
+    <button onclick="showPopup()" style = "background-color:rgb(203, 202, 202); color: black;">Show Shortcuts</button>
+
+    <!-- Overlay for the popup -->
+    <div class="overlay" id="overlay" onclick="hidePopup()"></div>
+
+    <!-- Popup box -->
+    <div class="popup" id="popup">
+        <h2>Keyboard Shortcuts</h2>
+        <p>[TAB] to accept a suggestion<br />
+        [ESC] to reject suggestion<br />
+        [CTRL+ENTER] (Windows) and [CMD+ENTER] (Mac) to request a suggestion</p>
+        <button onclick="hidePopup()">Close</button>
+    </div>
+
+
+    <div id="taskDescription">
+
+    </div>
+
+    <div id="editor" style="height: 50vh; width: 60vw;"></div>
+    <button onclick="submitCode()">Submit</button>
+    <!-- <button onclick="calltogether()">call together</button> -->
+    <div id="output"></div>
 
 
 
-<!-- Ace Editor CDN -->
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-functions.js"></script>
+    <!-- Ace Editor CDN -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-functions.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
-<script  src="./index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript"
+        charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <script src="./index.js"></script>
+    <script src="./interface_things.js"></script>
 
 </body>
-</html>
- 
 
+</html>
