@@ -1,34 +1,3 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyAYiGwwAou3hH7k-MgdTVfQp4FvFSLWhUs",
-  authDomain: "codeinterface-85b5e.firebaseapp.com",
-  projectId: "codeinterface-85b5e",
-  storageBucket: "codeinterface-85b5e.appspot.com",
-  messagingSenderId: "637838418708",
-  appId: "1:637838418708:web:9b91375f4df25695885801",
-  measurementId: "G-3XHVCW8K1N",
-};
-
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
-
-const runcode = firebase.functions().httpsCallable("runcode");
-const getcompletion = firebase.functions().httpsCallable("getcompletion");
-const get_together_completion = firebase
-  .functions()
-  .httpsCallable("get_together_completion");
-var editor = ace.edit("editor");
-editor.setTheme("ace/theme/monokai");
-editor.session.setMode("ace/mode/python");
-editor.setOption("showPrintMargin", false);
-document.getElementById("editor").style.fontSize = "15px";
-ace.require("ace/ext/language_tools");
-editor.setOption("behavioursEnabled", false);
-//editor.setOptions({
-//  enableBasicAutocompletion: true,
-//  enableSnippets: true,
-//  enableLiveAutocompletion: true
-//});
-
 // PARAMETERS
 const wait_time_for_sug = 1000; // in milliseconds
 const context_length = 6000; // in characters, in theory should multiply context token length by 4 to get character limit
@@ -42,90 +11,26 @@ var lastSuggestion = "";
 var cursorString = "";
 var codeAtlastReject = editor.getValue();
 var suggestions_shown_count = 0;
-// Variables for recording
-let mediaRecorder;
-let recordedChunks = [];
-let mediaStream;
 
-/////////////////////////////////////////
-// CLOUD FUNCTIONS CALLS
-/////////////////////////////////////////
-function get_openai_response(prefix, suffix, max_tokens) {
-  return new Promise((resolve, reject) => {
-    getcompletion({ prefix: prefix, suffix: suffix, max_tokens: max_tokens })
-      .then((result) => {
-        const text_response = result.data.data.choices[0].text;
-        console.log(text_response);
-        resolve(text_response);
-      })
-      .catch((error) => {
-        console.error("Error calling the getcompletion function:", error);
-      });
-  });
+var task_description = "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. \
+\n You may assume that each input would have exactly one solution, and you may not use the same element twice. \
+\n You can return the answer in any order. \n \n  Required function signature: def twoSum(nums, target)"
+var function_signature = "def twoSum(nums, target):"
+var unit_tests = "assert twoSum([2,7,11,15], 9) == [0,1] \nassert twoSum([3,2,4], 6) == [1,2] \nassert twoSum([3,3], 6) == [0,1]"
+document.getElementById("taskDescription").innerText = task_description;
+
+
+
+// make sure editor on refresh is saved and reloaded
+window.onbeforeunload = function () {
+  localStorage.setItem("code", editor.getValue());
+};
+var code = localStorage.getItem("code");
+if (code) {
+  editor.setValue(code, -1);
 }
 
-async function submitCode() {
-  console.log("submitting code");
-  rejectSuggestion();
-  document.getElementById("output").innerText = "Running...";
-  var editor_value = editor.getValue();
-  var editor_value_string = editor_value.toString();
-  runcode({ prompt: editor_value_string })
-    .then((result) => {
-      const log =
-        "Errors:" + result.data.data.stderr + "\n" + result.data.data.stdout;
-      document.getElementById("output").innerText = log;
-    })
-    .catch((error) => {
-      console.error("Error calling the submit function:", error);
-    });
-}
 
-function get_constant_response(prefix, suffix) {
-  return new Promise((resolve, reject) => {
-    var text_response =
-      "if True:\n    x =1\n    y = 2\n    z = 3\n    if z == 3:\n        print('hello')\n    else:\n        print('world')\nelse:\n    print('hello world')\n";
-    resolve(text_response);
-  });
-}
-
-function get_completion_together(model, prompt, max_tokens) {
-  return new Promise((resolve, reject) => {
-    get_together_completion({
-      model: model,
-      prompt: prompt,
-      max_tokens: max_tokens,
-    })
-      .then((result) => {
-        const text_response = result.data.data.output.choices[0].text;
-        resolve(text_response);
-      })
-      .catch((error) => {
-        console.error("Error calling the getcompletion function:", error);
-      });
-  });
-}
-
-function calltogether() {
-  var editor_value = editor.getValue();
-  var editor_value_string = editor_value.toString();
-  const model = document.getElementById("modelSelector").value;
-  var max_tokens = parseInt(document.getElementById("maxTokens").value);
-  // max tokens should be an int
-  console.log(max_tokens);
-  console.log(model);
-  get_completion_together(model, editor_value_string, max_tokens)
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((error) => {
-      console.error("Error calling the getcompletion function:", error);
-    });
-}
-
-/////////////////////////////////////////
-// END CLOUD FUNCTIONS CALLS
-/////////////////////////////////////////
 
 /////////////////////////////////////////
 // Handle Adding Suggestion to Editor

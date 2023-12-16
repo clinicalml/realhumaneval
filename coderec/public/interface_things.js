@@ -17,6 +17,10 @@ function hidePopup() {
 /////////////////////////////////////////
 // RECORDING: works perfectly
 /////////////////////////////////////////
+// Variables for recording
+let mediaRecorder;
+let recordedChunks = [];
+let mediaStream;
 
 async function startRecording() {
     try {

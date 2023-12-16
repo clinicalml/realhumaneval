@@ -1,73 +1,116 @@
+/* Apply to all elements */
+* {
+    border-radius: 10px; /* Adjust the radius as needed */
+}
 
-.errorHighlight{
-    position:absolute;
-    z-index:20;
-    background-color:grey;
+/* for everything inside editor do not apply border radius */
+#editor * {
+    border-radius: 0px;
+}
+
+/* Style for the top panel */
+.top-panel {
+  width: 100%;
+  background-color: #c9c6c6;
+  color: rgb(11, 9, 9);
+  padding: 10px 0;
+  text-align: center;
+}
+
+/* Style for the buttons */
+.top-panel button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.top-panel button:hover {
+  background-color: #45a049;
+}
+
+.errorHighlight {
+  position: absolute;
+  z-index: 20;
+  background-color: grey;
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 20px;
+  font-family: "Arial", sans-serif;
+  margin: 10px;
 }
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
 
 #editor {
-    resize: both;
-    overflow: auto;
-    max-width: 95vw;
-    max-height: 150vh;
-  }
-
+  resize: both;
+  flex: 60%; /* 40% of the container width */
+  overflow: auto;
+  max-width: 95vw;
+  max-height: 150vh;
+}
 #taskDescription {
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 20px;
+    flex: 40%; /* 40% of the container width */
+    border: 1px solid #ccc; /* For visual representation */
+    padding: 10px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
+
+
 #output {
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-top: 20px;
 }
 
 button {
-    padding: 10px 15px;
+    margin: 10px 10px;
     margin-top: 10px;
-    background-color: #007BFF;
-    color: #FFF;
+    padding: 5px 10px;
+    background-color: #4caf50;
+    color: white;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+  transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
-
- /* Popup box style */
- .popup {
-    display: none;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    border: 1px solid #ccc;
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+/* Popup box style */
+.popup {
+  display: none;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #ccc;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
 /* Overlay style */
 .overlay {
-    display: none;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 }

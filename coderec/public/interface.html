@@ -5,53 +5,63 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-
     <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css" />
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Execution App</title>
 </head>
 
 <body>
+    <div class="top-panel">
+        <button id="startRecord" onclick="startRecording()">Start Recording</button>
+        <button id="stopRecord" onclick="stopRecording()">Stop Recording</button>
+        <select id="modelSelector">
+            <option value="gpt35">GPT-3.5</option>
+            <option value="togethercomputer/CodeLlama-7b">CodeLlama-7b</option>
+            <option value="togethercomputer/CodeLlama-13b">CodeLlama-13b</option>
+            <option value="togethercomputer/CodeLlama-34b">CodeLlama-34b</option>
+        </select>
+        Max Tokens Suggestion:
+        <input type="number" id="maxTokens" min="1" max="1000" value=20>
 
-    <button id="startRecord" onclick="startRecording()">Start Recording</button>
-    <button id="stopRecord" onclick="stopRecording()">Stop Recording</button>
-    <select id="modelSelector">
-        <option value="gpt35">GPT-3.5</option>
-        <option value="togethercomputer/CodeLlama-7b">CodeLlama-7b</option>
-        <option value="togethercomputer/CodeLlama-13b">CodeLlama-13b</option>
-        <option value="togethercomputer/CodeLlama-34b">CodeLlama-34b</option>
-    </select>
-    Max Tokens Suggestion:
-    <input type="number" id="maxTokens" min="1" max="1000" value=20>
+        <!-- Button to open the popup -->
+        <button onclick="showPopup()">Show Shortcuts and Button Info</button>
+        <!-- Overlay for the popup -->
+        <div class="overlay" id="overlay" onclick="hidePopup()"></div>
 
-    <!-- Button to open the popup -->
-    <button onclick="showPopup()" style = "background-color:rgb(203, 202, 202); color: black;">Show Shortcuts</button>
-
-    <!-- Overlay for the popup -->
-    <div class="overlay" id="overlay" onclick="hidePopup()"></div>
-
-    <!-- Popup box -->
-    <div class="popup" id="popup">
-        <h2>Keyboard Shortcuts</h2>
-        <p>[TAB] to accept a suggestion<br />
-        [ESC] to reject suggestion<br />
-        [CTRL+ENTER] (Windows) and [CMD+ENTER] (Mac) to request a suggestion</p>
-        <button onclick="hidePopup()">Close</button>
+        <!-- Popup box -->
+        <div class="popup" id="popup">
+            <h2> Button Information</h2>
+            <p> 
+                <b>Start Recording</b> - Starts recording your screen. <br />
+                <b>Stop Recording</b> - Stops recording screen <br />
+                <b>Model Selector</b> - Selects the model to use for suggestions. <br />
+                <b>Max Tokens Suggestion</b> - Sets the maximum number of tokens to use for suggestions. <br />
+                <b>Show Shortcuts and Button Info</b> - Shows this popup. <br />
+                <b> Run </b> - Runs the code in the editor and displays output in box below code. <br />
+                <b> Submit </b> - Evaluates the code in the editor with unit tests given task. <br />
+            </p>
+            <h2>Keyboard Shortcuts</h2>
+            <p>[TAB] to accept a suggestion<br />
+                [ESC] to reject suggestion<br />
+                [CTRL+ENTER] (Windows) and [CMD+ENTER] (Mac) to request a suggestion</p>
+            <button onclick="hidePopup()">Close</button>
+        </div>
     </div>
 
 
-    <div id="taskDescription">
-
+    <div class="container">
+        <div style="margin-right: 5px;" id="taskDescription">
+            <p></p>
+        </div>
+        <div id="editor" style="height: 70vh; width: 60vw;"></div>
     </div>
-
-    <div id="editor" style="height: 50vh; width: 60vw;"></div>
-    <button onclick="submitCode()">Submit</button>
+    <div class="container" style =" justify-content: center; align-items: center;">
+    <button onclick="submitCode()" style ="font-size: large;">▶️</i>Run</button>
+    <button id="runCodeTest" style="background-color: rgb(130, 14, 14); font-size: large;" onclick="runCodeTest()">📤</i>Submit</button>
+    </div>
     <!-- <button onclick="calltogether()">call together</button> -->
     <div id="output"></div>
-
-
 
     <!-- Ace Editor CDN -->
     <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -65,7 +75,22 @@
         charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
-    <script src="./index.js"></script>
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/python");
+        editor.setOption("showPrintMargin", false);
+        document.getElementById("editor").style.fontSize = "15px";
+        ace.require("ace/ext/language_tools");
+        editor.setOption("behavioursEnabled", false);
+        //editor.setOptions({
+        //  enableBasicAutocompletion: true,
+        //  enableSnippets: true,
+        //  enableLiveAutocompletion: true
+        //});
+    </script>
+    <script src="./cloud_functions_helper.js"></script>
+    <script src="./interface_logic.js"></script>
     <script src="./interface_things.js"></script>
 
 </body>
