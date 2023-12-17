@@ -71,8 +71,13 @@ async function runCodeTest() {
     }
     // Step 3: Append Unit Tests
     // Fetch the unit tests for the current task
+    if (task_index == -1)
+    {
+      var currentUnitTests = tutorial_unit_test;
+    }
+    else{
     var currentUnitTests = unit_tests[task_index];
-
+  }
     // Replace '\n' in the unit tests string with actual newlines
     var formattedUnitTests = currentUnitTests.replace(/\\n/g, "\n");
 
@@ -91,9 +96,17 @@ async function runCodeTest() {
 
 function isValidFunction(code) {
   // Check if the code contains the required function signature
+  if (task_index == -1)
+  {
+    if (!code.includes(tutorial_function_signature)) {
+      return false;
+    }
+  }
+  else{
   if (!code.includes(function_signatures[task_index])) {
     return false;
   }
+}
   // Check for only one function definition (basic check)
   let functionCount = (code.match(/def /g) || []).length;
   if (functionCount !== 1) {
@@ -107,7 +120,30 @@ function displayResult(result) {
   // check if stderr is null, if so, say code is correct
   var log = "";
   if (result.data.data.stderr == null) {
-    log = "Code is correct!";
+    log = "Code is correct! \n Next Task will now be displayed!";
+    // clear editor
+    editor.setValue("");
+    // update task index
+    if (task_index < function_signatures.length - 1)
+    {
+    task_index += 1;
+    // update the task
+    loadCurrentTask();
+    // start timer  for 30mins
+    if (task_index == 0)
+    {
+      startTimer();
+    }
+    alert(log);
+
+    }
+    else{
+      alert("You have completed all the tasks!");
+      disableBeforeUnload();
+      window.location.href = "./exit_survey.html";
+    }
+
+
   } else {
     log =
       "Code is incorrect.\n" +
@@ -115,8 +151,9 @@ function displayResult(result) {
       result.data.data.stderr +
       "\n" +
       result.data.data.stdout;
+      alert(log);
+
   }
-  alert(log);
 }
 
 function get_constant_response(prefix, suffix) {

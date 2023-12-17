@@ -12,6 +12,40 @@
 </head>
 
 <body style=" max-width: 100%; overflow-x: hidden;  height: auto;">
+
+    <!-- Tutorial popup -->
+    <div id="popup_tutorial" class="popup">
+        <!-- First Page: Task Introduction -->
+        <div class="popup-page" id="page1">
+            <h2>Study Introduction</h2>
+            <p>Welcome to the user study! You will first complete a tutorial task to make you familiar with the study.
+                <br> After the tutorial task, a timer for 30 minutes will turn on where you will try to solve as many
+                coding tasks as possible.
+            </p>
+            <br>
+            <button onclick="showPage(2)">Next</button>
+        </div>
+
+        <!-- Second Page: Image of Code Editor -->
+        <div class="popup-page" id="page2" style="display:none;">
+            <h2>Code Editor Information:</h2>
+            <img src="./interface_pic.JPG" style="width: 39vw; height: 30vh ;" alt="Code Editor">
+            <p> You will write code in the interface above: a code editor equipped with an AI assistant that provides
+                suggestion inline is applied.
+            <ul>
+                <li> You can accept a suggestion by pressing [TAB] or reject a suggestion by pressing [ESC]. </li>
+                <li> You can also request a suggestion by pressing [CTRL+ENTER] (Windows) or [CMD+ENTER] (Mac). </li>
+                <li> You can run your code by pressing the "▶️" button and submit your final code by pressing the "📤"
+                    button. </li>
+            </ul>
+            </p>
+            <br>
+            <button onclick="closePopup()">Close</button>
+        </div>
+    </div>
+
+
+
     <div class="top-panel">
         <button id="startRecord" onclick="startRecording()">Start Recording</button>
         <button id="stopRecord" onclick="stopRecording()">Stop Recording</button>
@@ -32,7 +66,7 @@
         <!-- Popup box -->
         <div class="popup" id="popup">
             <h2> Button Information</h2>
-            <p> 
+            <p>
                 <b>Start Recording</b> - Starts recording your screen. <br />
                 <b>Stop Recording</b> - Stops recording screen <br />
                 <b>Model Selector</b> - Selects the model to use for suggestions. <br />
@@ -57,9 +91,10 @@
         </div>
         <div id="editor" style="height: 70vh; width: 60vw;"></div>
     </div>
-    <div class="container" style =" justify-content: center; align-items: center;">
-    <button onclick="submitCode()" style ="font-size: large;">▶️</i>Run</button>
-    <button id="runCodeTest" style="background-color: rgb(130, 14, 14); font-size: large;" onclick="runCodeTest()">📤</i>Submit</button>
+    <div class="container" style=" justify-content: center; align-items: center;">
+        <button onclick="submitCode()" style="font-size: large;">▶️</i>Run</button>
+        <button id="runCodeTest" style="background-color: rgb(130, 14, 14); font-size: large;"
+            onclick="runCodeTest()">📤</i>Submit</button>
     </div>
     <!-- <button onclick="calltogether()">call together</button> -->
     <div id="output"></div>
@@ -90,10 +125,10 @@
         //  enableLiveAutocompletion: true
         //});
     </script>
-    <script src="./cloud_functions_helper.js"></script>
-    <script src="./interface_logic.js"></script>
-    <script src="./interface_things.js"></script>
-
+    <script src="./scripts/interface/cloud_functions_helper.js"></script>
+    <script src="./scripts/interface/interface_logic.js"></script>
+    <script src="./scripts/interface//interface_things.js"></script>
+    <script src="./scripts/interface/task_logic.js"></script>
 </body>
 
 </html>

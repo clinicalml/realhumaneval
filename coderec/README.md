@@ -8,9 +8,11 @@ server side:
 
 client side:
 
-- add information survey
-
 - add telemetry
+
+- add going through tasks
+
+- add tutorial
 
 - add exit survey
 
