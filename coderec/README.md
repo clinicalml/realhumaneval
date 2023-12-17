@@ -8,8 +8,11 @@ server side:
 
 client side:
 
+- add information survey
+
 - add telemetry
 
+- add exit survey
 
 for logging the accepts
 

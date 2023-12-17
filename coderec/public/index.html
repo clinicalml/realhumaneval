@@ -7,31 +7,94 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="style.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <title>
     Code Study
   </title>
 
 </head>
 
-<body style=" max-width: 100%; overflow-x: hidden;  height: auto;">
-  <div style="  background-color: #ffffff;   display: table; margin-right: 1%; margin-left: 1%;">
-  <label for="authen_token"> Please enter the code:</label> 
-</br></br>
-  <input type="password" id="authen_token" name="authen_token" required />
-  </br>
-  <p style="color:red" id="message_highlighted"> </p>
+<body style=" max-width: 100%; overflow-x: hidden;  height: auto; margin-right: 20%; margin-left: 20%; margin-bottom: 5%;  margin-top: 5%;">
+
+  <div>
+  STUDY MODE:
+  <label class="switch">
+    <input type="checkbox" id="checkbox_studymode">
+    <span class="slider round"></span>
+  </label>
+
+    <label for="authen_token"> Please enter the code:</label>
+    </br></br>
+    <input type="password" id="authen_token" name="authen_token" required />
+    </br>
+    <p style="color:red" id="message_highlighted"> </p>
+    <button type="submit" id="submit_token">Next</button>
+  </div>
+  <div>
+    <p>
+    This task is part of a research study conducted by Valerie Chen at Carnegie Mellon University and Hussein Mozannar at Massachusetts Institute of Technology (MIT).
+
+    <h2> Summary  </h2>
+    During the study, you will be asked to solve a few Leetcode-style coding problems of varying difficulty.<br> You may also be provided AI support in the form of code completions to help you with the coding problem. 
+    
+    <h2> Purpose  </h2>
+    The purpose of the research is to evaluate how well users can code with different AI models (i.e., whether the development of AI models improves a user’s ability to write better code).
+    
+    <h2>Procedures   </h2>
+    During the study, you will try to solve as many coding tasks as possible within a given time limit to the best of your ability. You may be given AI support in the form of code completion to assist you with each coding task.  The AI will provide code suggestions if you pause for 2 seconds or upon request. However, you need not accept each suggested piece of code from the AI. At the end
+    of the study, you will complete an exit survey where you answer questions about your
+    experience completing the study. You will complete the study asynchronously through a coding website provided by the study PI. You will work with your own computer and will need access to the Internet.
+    <br>
+    The study PI may record information about your participation, including: the code written for each task and other data about how you completed each task (such as time taken to write code, whether the AI suggestions were accepted). The data we collect from your responses may be de-identified and included in a research paper. The expected duration of the study is 30 minutes.
+    
+    <h2>Participant Requirements   </h2>
+    By participating in this study, you confirm that:
+    <ul>
+    <li> You meet the eligibility criteria: you have some experience coding in Python (we welcome all levels of expertise).</li>	
+    <li>	You are at least 18 years old. </li>	
+      <li>	You have no underlying health concerns that may be exacerbated by electronic screens. </li>	
+        <li>	You are a fluent speaker of English. </li>	
+    </ul>
+    <h2>Risks </h2>
+    The risks and discomfort associated with participation in this study are no greater than those ordinarily encountered in daily life or during other online activities. 
+    
+    <h2>Benefits </h2>
+    There may be no personal benefit from your participation in the study but the knowledge received may be of value to humanity.  
+    
+    <h2>Compensation & Costs </h2>
+    You will be compensated for your study participation with a $10 Amazon e-gift card, with a potential for up to $5 additional based on your study performance. After you complete the study, the study PI will follow-up with details about your compensation. We will try to compensate you as soon as possible but there may be a delay for up to one month until you are compensated. The e-gift card will be sent to you via e-mail and is non-transferrable.
+    
+    <h2>Future Use of Information  </h2>
+    In the future, once we have removed all identifiable information from your data (e.g., name and contact information), we may use the data for our future research studies, or we may distribute the data to other researchers for their research studies.  We would do this without getting additional informed consent from you. Sharing of data with other researchers will only be done in such a manner that you will not be identified.
+    
+    <h2> Confidentiality </h2>
+    We will capture each participant’s name and contact information only for compensation purposes and will delete this both pieces of information after participants have been compensated. 
+    <br>
+    By participating, you understand and agree that the data and information gathered during this
+    study may be used by Carnegie Mellon and published and/or disclosed by Carnegie Mellon to
+    others outside of Carnegie Mellon. However, your name and email address will not be mentioned in any such publication or dissemination of the research data and/or results by Carnegie Mellon. Note that per regulation all research data must be kept for a minimum of 3 years.
+    <br>
+    This research is being done in collaboration with the Massachusetts Institute of Technology (MIT). Your research data may be shared with them. If data is shared with these collaborators, it will not contain identifying information about you.
+    
+    <h2> Right to Ask Questions & Contact Information</h2>
+    If you have any questions about this study, you should feel free to ask them by contacting the Principal Investigator Valerie Chen now at valeriechen@cmu.edu.  If you have questions later, desire additional information, or wish to withdraw your participation please contact the Principal Investigator by mail, phone or e-mail in accordance with the contact information listed above.  
+    <br>
+    If you have questions pertaining to your rights as a research participant; or to report concerns to this study, you should contact the Office of Research integrity and Compliance at Carnegie Mellon University.  Email: irb-review@andrew.cmu.edu . Phone: 412-268-4721.
+    
+    <h2> Voluntary Participation </h2>
+    Your participation in this research is voluntary.  You may discontinue participation at any time during the research activity.  You may print a copy of this consent form for your records. 
+  </p>
+
+  </div>
 
 
-  <button type="submit" id="submit_token">Next</button>
-</div>
 
-
-<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-functions.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-functions.js"></script>
 
   <script src="./script_auth.js"></script>
 

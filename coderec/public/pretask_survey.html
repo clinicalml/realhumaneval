@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- https://www.geeksforgeeks.org/build-a-survey-form-using-html-and-css/ -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>
+        Code Study
+    </title>
+
+</head>
+
+<body
+    style=" max-width: 100%; overflow-x: hidden;  height: auto; margin-right: 20%; margin-left: 20%; margin-bottom: 3%;  margin-top: 3%; ">
+
+    <form id="form">
+        <h1>
+            Welcome to our experiment! (please read)
+        </h1>
+        <p>
+            After you fill out the information on this page please click the Start Experiment button to proceed. <br>
+            The experiment may contain multiple stages that you will be guided through. <br>
+            Please do not refresh or press back the webpage as you may lose a fraction of your progress. <br>
+            <br> <strong> There is a bonus of 1$ for each task you complete succesfully.
+            </strong>
+
+        <h2>If you have previously completed this study, you are auto-ineligible to complete it again! </h2>
+
+        Your answers to the below questions have no impact on your eligibility to perform the task. <br>
+        Your ID and name will NOT be shared with anyone or used in the study or tied to the information below, they are
+        only collected for matching with the recorded study. <br>
+        By completing this task, you consent to having your responses be made publicly available for research and
+        educational purposes.
+        </p>
+        <!-- Details -->
+
+        <div class="form-control">
+            <label for="name" id="label-name">
+                ID:
+            </label>
+            <!-- Input Type Text -->
+            <input type="text" id="workerID" name="user_name" placeholder="Enter your Prolific ID" required />
+        </div>
+        <br>
+        <div class="form-control">
+            <label for="emailAddress" id="email-address">
+                Please enter the email address where you would like the Amazon gift card to be delivered to.
+            </label>
+
+            <!-- Text input for email -->
+            <input type="email" name="emailAddress" id="emailAddress" required>
+        </div>
+        <br>
+
+
+
+        <div class="form-control">
+            <label for="age" id="label-age">
+                What is your age? Select most appropriate age range.
+            </label>
+
+            <!-- Dropdown options -->
+            <select name="age" id="age" required>
+                <option value="" disabled selected hidden>
+                <option value="age1">18-25</option>
+                <option value="age2">25-35</option>
+                <option value="age3">35-50</option>
+                <option value="age4">50+</option>
+            </select>
+        </div>
+
+        <br>
+        <div class="form-control">
+            <label for="gender" id="gender-type">
+                What is your gender?
+            </label>
+
+            <!-- Dropdown options -->
+            <select name="gender" id="gender" required>
+                <option value="" disabled selected hidden>
+                <option value="gender1">Male</option>
+                <option value="gender2">Female</option>
+                <option value="gender3">Non-binary</option>
+                <option value="gender4">Prefer not to answer</option>
+            </select>
+        </div>
+        <br>
+
+
+        <div class="form-control">
+            <label for="education" id="education-level">
+                What is the highest degree or level of school you have completed?
+            </label>
+
+            <!-- Dropdown options -->
+            <select name="education" id="education" required>
+                <option value="" disabled selected hidden></option>
+                <option value="educ1">Some high school, no diploma, and below</option>
+                <option value="educ2">High school graduate, diploma, or the equivalent</option>
+                <option value="educ3">Some college credit, no degree</option>
+                <option value="educ4">Bachelor's degree (or currently pursuing)</option>
+                <option value="educ5">Graduate degree (or pursuing)</option>
+                <option value="educ6">Prefer not to answer</option>
+            </select>
+        </div>
+        <br>
+
+
+
+        <div class="form-control">
+            <label for="programmingExperience" id="programming-experience-level">
+                Which best describes your programming experience?
+            </label>
+
+            <!-- Dropdown options -->
+            <select name="programmingExperience" id="programmingExperience" required>
+                <option value="" disabled selected hidden></option>
+                <option value="exp1">Beginner (Less than 1 year of experience)</option>
+                <option value="exp2">Intermediate (1-3 years of experience)</option>
+                <option value="exp3">Advanced (3-5 years of experience)</option>
+                <option value="exp4">Expert (More than 5 years of experience)</option>
+            </select>
+        </div>
+        <br>
+
+        <div class="form-control">
+            <label for="pythonProficiency" id="python-proficiency-level">
+                How proficient are you with Python?
+            </label>
+
+            <!-- Dropdown options -->
+            <select name="pythonProficiency" id="pythonProficiency" required>
+                <option value="" disabled selected hidden></option>
+                <option value="python1">Beginner</option>
+                <option value="python2">Intermediate</option>
+                <option value="python3">Advanced</option>
+                <option value="python4">Expert</option>
+            </select>
+        </div>
+        <br>
+        <div class="form-control">
+            <label for="aiToolFrequency" id="ai-tool-frequency">
+                How often do you use AI tools for programming (e.g., Copilot, ChatGPT)?
+            </label>
+
+            <!-- Dropdown options -->
+            <select name="aiToolFrequency" id="aiToolFrequency" required>
+                <option value="" disabled selected hidden></option>
+                <option value="freqNever">Never</option>
+                <option value="freqRarely">Rarely</option>
+                <option value="freqSometimes">Sometimes</option>
+                <option value="freqOften">Often</option>
+                <option value="freqAlways">Always</option>
+            </select>
+        </div>
+
+
+        <p style="color:red" id="message_highlighted"> </p>
+        <br>
+        <button type="submit" value="submit" id="submitButton">
+            Start Experiment
+        </button>
+
+    </form>
+
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-functions.js"></script>
+
+    <script src="./pretask_survey_script.js"></script>
+
+</body>
+
+</html>

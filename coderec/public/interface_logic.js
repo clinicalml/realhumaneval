@@ -12,17 +12,78 @@ var cursorString = "";
 var codeAtlastReject = editor.getValue();
 var suggestions_shown_count = 0;
 
-var task_description = "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. \
+/* var task_description = "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. \
 \n You may assume that each input would have exactly one solution, and you may not use the same element twice. \
 \n You can return the answer in any order. \n \n  Required function signature: def twoSum(nums, target)"
 var function_signature = "def twoSum(nums, target):"
 var unit_tests = "assert twoSum([2,7,11,15], 9) == [0,1] \nassert twoSum([3,2,4], 6) == [1,2] \nassert twoSum([3,3], 6) == [0,1]"
 document.getElementById("taskDescription").innerText = task_description;
+ */
+var task_descriptions = [];
+var function_signatures = [];
+var unit_tests = [];
 
+/////////////////////////////////////////
+// Task loading stuff
+/////////////////////////////////////////
+var db = firebase.firestore();
+var response_id;
+var task_id;
+var exp_condition;
+var task_index = 0;
+
+function loadlocalstorage() {
+  var myData = localStorage["objectToPass"];
+  myData = JSON.parse(myData);
+  response_id = myData[0];
+  task_id = myData[1];
+  exp_condition = myData[2];
+  //showlocalstorage();
+}
+
+function loadTaskData() {
+  db.collection("tasks")
+    .doc(task_id)
+    .get()
+    .then(function (query_snapshot) {
+      rand_task = query_snapshot;
+      function_signatures = query_snapshot.data().function_signatures;
+      unit_tests = query_snapshot.data().unit_tests;
+      task_descriptions = query_snapshot.data().task_descriptions;
+      exp_condition = query_snapshot.data().exp_condition;
+      loadCurrentTask();
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
+    });
+}
+
+function loadCurrentTask() {
+  document.getElementById("taskDescription").innerText = task_descriptions[task_index].replace(/\\n/g, "\n");;
+}
+
+
+function enableBeforeUnload() {
+  window.onbeforeunload = function (e) {
+    return "Discard changes?";
+  };
+}
+function disableBeforeUnload() {
+  window.onbeforeunload = null;
+}
+
+enableBeforeUnload();
+loadlocalstorage();
+loadTaskData();
+
+
+/////////////////////////////////////////
+/////////////////////////////////////////
 
 
 // make sure editor on refresh is saved and reloaded
 window.onbeforeunload = function () {
+  rejectSuggestion();
   localStorage.setItem("code", editor.getValue());
 };
 var code = localStorage.getItem("code");
@@ -171,6 +232,7 @@ function addSuggestion(response_string) {
         isAppending = false;
       }
   }
+
 
 // If CNTRL+ENTER is pressed, show the next suggestion
 editor.commands.addCommand({

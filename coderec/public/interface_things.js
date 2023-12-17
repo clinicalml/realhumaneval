@@ -68,3 +68,43 @@ async function startRecording() {
     }
   }
   
+  /////////////////////////////////////////
+  // Timer
+  /////////////////////////////////////////
+
+  function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    var countdown = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = "Time Left: " +  minutes + ":" + seconds;
+
+        if (--timer < 0) {
+            clearInterval(countdown);
+            display.textContent = "Time's up!";
+            // Additional actions when timer ends
+        }
+    }, 1000);
+}
+
+window.onload = function () {
+    var thirtyMinutes = 60 * 30,
+        display = document.querySelector('#timer');
+    startTimer(thirtyMinutes, display);
+};
+
+
+// prevent user from leaving page
+function disableBeforeUnload() {
+  window.onbeforeunload = null;
+}
+
+function enableBeforeUnload() {
+  window.onbeforeunload = function (e) {
+    return "Discard changes?";
+  };
+}

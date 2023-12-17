@@ -70,8 +70,14 @@ async function runCodeTest() {
       return;
     }
     // Step 3: Append Unit Tests
-    var testCode = editorCode + "\n\n" + unit_tests;
+    // Fetch the unit tests for the current task
+    var currentUnitTests = unit_tests[task_index];
 
+    // Replace '\n' in the unit tests string with actual newlines
+    var formattedUnitTests = currentUnitTests.replace(/\\n/g, "\n");
+
+    // Step 3: Append Unit Tests
+    var testCode = editorCode + "\n\n" + formattedUnitTests;
     // Step 4: Call the API
     var result = await runcode({ prompt: testCode });
 
@@ -85,7 +91,7 @@ async function runCodeTest() {
 
 function isValidFunction(code) {
   // Check if the code contains the required function signature
-  if (!code.includes(function_signature)) {
+  if (!code.includes(function_signatures[task_index])) {
     return false;
   }
   // Check for only one function definition (basic check)

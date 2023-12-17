@@ -11,7 +11,7 @@
     <title>Code Execution App</title>
 </head>
 
-<body>
+<body style=" max-width: 100%; overflow-x: hidden;  height: auto;">
     <div class="top-panel">
         <button id="startRecord" onclick="startRecording()">Start Recording</button>
         <button id="stopRecord" onclick="stopRecording()">Stop Recording</button>
@@ -47,6 +47,7 @@
                 [CTRL+ENTER] (Windows) and [CMD+ENTER] (Mac) to request a suggestion</p>
             <button onclick="hidePopup()">Close</button>
         </div>
+        <div id="timer">30:00</div>
     </div>
 
 
