@@ -10,11 +10,14 @@ client side:
 
 - add telemetry
 
-- add going through tasks
-
-- add tutorial
+- fix timer
 
 - add exit survey
+
+- auto delete code on submit
+
+
+
 
 for logging the accepts
 
