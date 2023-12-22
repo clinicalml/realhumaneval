@@ -81,7 +81,7 @@ function submit(event) {
 
   var name_worker = document.getElementById("workerID").value;
   var email = document.getElementById("emailAddress").value;
-  var age_worker =
+  /* var age_worker =
     document.getElementById("age").options[
       document.getElementById("age").selectedIndex
     ].text;
@@ -104,14 +104,11 @@ function submit(event) {
     document.getElementById("aiToolFrequency").options[
       document.getElementById("aiToolFrequency").selectedIndex
     ].text;
-
-  var radios_checked = true;
+ */
 
   if (
     firebase.auth().currentUser &&
-    name_worker != "" &&
-    radios_checked == true
-  ) {
+    name_worker != ""   ) {
     // create new doc
     var worker_in_responses = true;
     response_id = task_id_rand.concat("-").concat(worker_id_rand.toString());
@@ -144,14 +141,14 @@ function submit(event) {
               name: name_worker,
               email: email,
               date_performed: date_string,
-              age_worker: age_worker,
+              completed_task: 0,
+              exp_condition: exp_condition,
+/*               age_worker: age_worker,
               gender_worker: gender_worker,
               education_worker: education_worker,
               programmingExperience: programmingExperience,
               pythonProficiency: pythonProficiency,
-              aiToolFrequency: aiToolFrequency,
-              completed_task: 0,
-              exp_condition: exp_condition,
+              aiToolFrequency: aiToolFrequency, */
             })
             .then(() => {
               console.log("Document successfully written!");

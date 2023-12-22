@@ -1,5 +1,5 @@
 // PARAMETERS
-const wait_time_for_sug = 1000; // in milliseconds
+const wait_time_for_sug = 500; // in milliseconds
 const context_length = 6000; // in characters, in theory should multiply context token length by 4 to get character limit
 // VARIABLES used
 let isAppending = false; // Flag to track if appendCustomString is in progress
@@ -11,11 +11,7 @@ var lastSuggestion = "";
 var cursorString = "";
 var codeAtlastReject = editor.getValue();
 var suggestions_shown_count = 0;
-
-/////////////////////////////////////////
-// Task loading stuff
-/////////////////////////////////////////
-
+var thinkingIcon = document.getElementById('thinkingIcon');
 
 
 /////////////////////////////////////////
@@ -26,7 +22,6 @@ var suggestions_shown_count = 0;
 editor.session.on("change", handleChange);
 
 function handleChange() {
-  console.log(isAppending);
   clearTimeout(typingTimeout); // Clear previous timeout
   // Set new timeout
   typingTimeout = setTimeout(function () {
@@ -36,7 +31,6 @@ function handleChange() {
         appendCustomString().then((response) => {
           if (isAppending == true) {
             suggestions_shown_count += 1;
-            console.log(suggestions_shown_count);
           }
         });
       }
@@ -48,6 +42,11 @@ function handleChange() {
 function appendCustomString() {
   return new Promise((resolve, reject) => {
     if (customString == "") {
+      // make spinning AI logo
+      if (!thinkingIcon.classList.contains('spinning')) {
+        thinkingIcon.style.display = 'inline-block';
+        thinkingIcon.classList.add('spinning');
+    }
       var prefix_code = editor.getValue();
       var suffix_code = "";
       var cursor = editor.getCursorPosition();
@@ -83,10 +82,13 @@ function appendCustomString() {
         suffix_code = suffix_code.substring(0, maxSuffixLength);
       }
       // get maxtokens from input maxTokens in html
-      var max_tokens = parseInt(document.getElementById("maxTokens").value);
 
-      // get model from modelSelector
+
+      // TODO:  CHANGE THESE TWO LATER
+      var max_tokens = parseInt(document.getElementById("maxTokens").value);
       var model = document.getElementById("modelSelector").value;
+      // prepend to prefix code "# this code is in Python" - to tell LLM that the code is in Python
+      prefix_code = "# this code is in Python\n" + prefix_code;
       var response_string = "";
       // get suggestion according to model
       if (model == "gpt35") {
@@ -130,6 +132,9 @@ function addSuggestion(response_string) {
   customString = response_string;
       lastSuggestion = response_string;
       if (isAppending == true) {
+        // remove spinning AI
+        thinkingIcon.style.display = 'inline-block';
+        thinkingIcon.classList.remove('spinning');
         // how much the custom string will add to the row and column
         let string_added_column = customString.length;
         let string_added_row = customString.split("\n").length - 1;
@@ -153,7 +158,6 @@ function addSuggestion(response_string) {
           "errorHighlight",
           "text"
         );
-        console.log(customStringMarkerId);
         isAppending = false;
       }
   }
@@ -169,7 +173,6 @@ editor.commands.addCommand({
     appendCustomString().then((response) => {
       if (isAppending == true) {
         suggestions_shown_count += 1;
-        console.log(suggestions_shown_count);
       }
     });
   },

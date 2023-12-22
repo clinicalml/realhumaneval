@@ -19,6 +19,20 @@ h1 {
   font-size: 2em;
 }
 
+#thinkingIcon {
+  width: 1.2em; /* Adjust as needed */
+  height: auto; /* Maintain aspect ratio */
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
 
 /* Style for the top panel */
 .top-panel {
@@ -53,6 +67,7 @@ h1 {
 body {
   font-family: "Arial", sans-serif;
   margin: 10px;
+  font-size: 1em;
 }
 
 .container {
@@ -143,6 +158,7 @@ button:hover {
 #timer {
   font-size: medium;
   color: black;
+  display: inline-block;
   /* Add more styles as needed */
 }
 
@@ -207,4 +223,22 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+
+#progressContainer {
+  position: relative;
+}
+
+#taskProgress {
+  width: 30%; /* Make progress bar fill container */
+}
+
+#progressText {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 0;
+  left: 0;
+  font-size: smaller;
 }

@@ -11,6 +11,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
+
 const runcode = firebase.functions().httpsCallable("runcode");
 const getcompletion = firebase.functions().httpsCallable("getcompletion");
 const get_together_completion = firebase
@@ -36,6 +37,8 @@ function get_openai_response(prefix, suffix, max_tokens) {
 
 async function submitCode() {
   console.log("submitting code");
+  // check if suggestion is currently displayed
+
   rejectSuggestion();
   document.getElementById("output").innerText = "Running...";
   var editor_value = editor.getValue();
@@ -123,11 +126,13 @@ function displayResult(result) {
     log = "Code is correct! \n Next Task will now be displayed!";
     // clear editor
     editor.setValue("");
+    localStorage.setItem("code", "");
     // update task index
     if (task_index < function_signatures.length - 1)
     {
     task_index += 1;
     // update the task
+    updateProgress(); // update progress bar
     loadCurrentTask();
     // start timer  for 30mins
     if (task_index == 0)
@@ -138,12 +143,14 @@ function displayResult(result) {
 
     }
     else{
+      localStorage.setItem("code", "");
       alert("You have completed all the tasks!");
       disableBeforeUnload();
       window.location.href = "./exit_survey.html";
     }
 
 
+    
   } else {
     log =
       "Code is incorrect.\n" +

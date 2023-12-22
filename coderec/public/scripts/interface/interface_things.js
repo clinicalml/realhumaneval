@@ -2,16 +2,18 @@
 // Popup
 /////////////////////////////////////////
 
+// POPUP FOR BUTTONS SHORTCUT
 function showPopup() {
   document.getElementById("popup").style.display = "block";
   document.getElementById("overlay").style.display = "block";
 }
-
+// HIDE POPUP FOR BUTTONS SHORTCUT
 function hidePopup() {
   document.getElementById("popup").style.display = "none";
   document.getElementById("overlay").style.display = "none";
 }
 
+// POPUP FOR TUTORIAL
 function showPage(pageNumber) {
   document.getElementById("page1").style.display = "none";
   document.getElementById("page2").style.display = "none";
@@ -23,9 +25,46 @@ function showPage(pageNumber) {
   }
 }
 
+// POPUP FOR TUTORIAL
 function closePopup() {
   document.getElementById("popup_tutorial").style.display = "none";
 }
+
+
+
+
+
+
+/////////////////////////////////////////
+// disable copy pasting in the editor unless what is being pasted is copied from the editor itself
+/////////////////////////////////////////
+
+
+// Variable to store the last copied text from the editor
+var lastCopiedText = "";
+
+// Event listener for copy event
+editor.on("copy", function(e) {
+    lastCopiedText = e.text; // Store the copied text
+});
+
+// Event listener for paste event
+editor.on("paste", function(e) {
+  console.log(e);
+  console.log(e.text);
+    if (e.text !== lastCopiedText) {
+        // If the pasted text is not the same as the last copied text from the editor
+        e.event.preventDefault(); // Prevent the paste action
+
+        alert("Pasting is only allowed from content copied within this editor.");
+    }
+});
+
+
+/////////////////////////////////////////
+// end of diabling copy pasting
+/////////////////////////////////////////
+
 
 /////////////////////////////////////////
 // RECORDING: works perfectly
@@ -84,56 +123,60 @@ function stopRecording() {
 /////////////////////////////////////////
 // Timer
 /////////////////////////////////////////
-
 function startTimer() {
-  var duration = 60 * 30; // 30 mins in seconds
-  var timerStart = localStorage.getItem("timerStart");
-  var currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+  // Check if an end time is already stored
+  var endTime = localStorage.getItem('endTime');
 
-  if (!timerStart) {
-    // If the timer hasn't started before, set the start time
-    localStorage.setItem("timerStart", currentTime);
-    timerStart = currentTime;
+  if (!endTime) {
+      // If not, set the end time to 30 minutes from now
+      endTime = new Date().getTime() + (30 * 60 * 1000);
+      localStorage.setItem('endTime', endTime);
   }
 
-  var timeElapsed = currentTime - parseInt(timerStart, 10);
-  var timeRemaining = duration - timeElapsed;
+  updateTimer(endTime);
+}
 
-  if (timeRemaining <= 0) {
-    // If the timer has already completed
-    displayTimer(0);
-    return;
-  }
+function updateTimer(endTime) {
+  var timer = document.getElementById('timer');
+  var interval = setInterval(function() {
+      var currentTime = new Date().getTime();
+      var distance = endTime - currentTime;
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-  var display = document.querySelector("#timer");
-  var countdown = setInterval(function () {
-    var minutes = parseInt(timeRemaining / 60, 10);
-    var seconds = parseInt(timeRemaining % 60, 10);
-
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    seconds = seconds < 10 ? "0" + seconds : seconds;
-
-    display.textContent = "Time Left: " + minutes + ":" + seconds;
-
-    if (--timeRemaining < 0) {
-      clearInterval(countdown);
-      display.textContent = "Time's up!";
-      localStorage.removeItem("timerStart"); // Clear start time from storage
-      // Additional actions when timer ends
-    }
+      // Display the result in the timer div
+      timer.textContent = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+      
+      // If the count down is over, display "Time is up"
+      if (distance < 0) {
+          clearInterval(interval);
+          timer.textContent = "Time is up";
+      }
   }, 1000);
 }
 
-function displayTimer(timeRemaining) {
-  var minutes = parseInt(timeRemaining / 60, 10);
-  var seconds = parseInt(timeRemaining % 60, 10);
+// Initialize the timer when the page loads
 
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  seconds = seconds < 10 ? "0" + seconds : seconds;
 
-  var display = document.querySelector("#timer");
-  display.textContent = timeRemaining > 0 ? "Time Left: " + minutes + ":" + seconds : "Time's up!";
+function initializeProgressBar() {
+  var progress = document.getElementById('taskProgress');
+  var progressText = document.getElementById('progressText');
+
+  progress.max = task_descriptions.length; // Set the maximum value of the progress bar
+  progressText.textContent = `0/${task_descriptions.length} tasks completed`; // Initialize the text
 }
+
+function updateProgress() {
+  var progress = document.getElementById('taskProgress');
+  var progressText = document.getElementById('progressText');
+  
+  progress.value = task_index; // Update the progress bar
+  progressText.textContent = `${task_index}/${task_descriptions.length} tasks completed`; // Update the text
+}
+
+// Initialize the progress bar when the page loads
+
+
 
 
 // prevent user from leaving page
@@ -174,4 +217,5 @@ function restoreAfterRefresh() {
   }
   
 }
+
 restoreAfterRefresh();

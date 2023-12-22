@@ -10,14 +10,17 @@ client side:
 
 - add telemetry
 
-- fix timer
+- fix timer (if timer countdown is 0, then exit)
 
-- add exit survey
+- on refresh, restore to where user was (skip tutorial)
+
+- add exit survey: sign out, clear localdata ...
 
 - auto delete code on submit
 
+- make sure no bugs in interface when interacting with codellama
 
-
+- add a bunch of demo tasks
 
 for logging the accepts
 

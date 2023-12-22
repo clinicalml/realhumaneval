@@ -38,6 +38,7 @@
                 <li> You can run your code by pressing the "▶️" button and submit your final code by pressing the "📤"
                     button. </li>
             </ul>
+            Note: please be aware that the AI assistant is not perfect and may provide incorrect suggestions. Moreover, the AI may generate potentially offensive suggestions especially if prompted with language that is offensive. 
             </p>
             <br>
             <button onclick="closePopup()">Close</button>
@@ -81,7 +82,16 @@
                 [CTRL+ENTER] (Windows) and [CMD+ENTER] (Mac) to request a suggestion</p>
             <button onclick="hidePopup()">Close</button>
         </div>
+        <img id="thinkingIcon" src="ai_icon.png" />
+
         <div id="timer">30:00</div>
+        <div id="progressContainer">
+            <progress id="taskProgress" value="0" max="5"></progress>
+            <span id="progressText">0/5 tasks completed</span>
+        </div>
+        
+
+
     </div>
 
 
