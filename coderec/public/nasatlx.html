@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Task Load Index (TLX)</title>
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,700">
+		<link rel="stylesheet" href="setup/css/jquery-ui-1.9.2.custom.min.css">
+		<link rel="stylesheet" href="setup/css/default.css">
+	</head>
+	<body>
+		<article>
+			<header>
+				<h1>Task Load Index (TLX)</h1>
+			</header>
+			<section class="step_0">
+				<h2>Step 0: overview of TLX per proband per task</h2>
+				<div id="container"></div>
+				<button>Continue to step 1</button>
+			</section>
+			<section class="step_1">
+				<h2>Step 1: choose proband and task</h2>
+				<div class="cf">
+					<section class="first">
+						<h3>Proband</h3>
+						<h4><label for="create_proband">Create new proband</label></h4>
+						<form>
+							<input type="text" id="create_proband" required>
+							<input type="submit" value="Create">
+						</form>
+						<h4>Choose proband</h4>
+						<form class="list">
+							<div>
+								<div>
+									<input type="radio" name="probands" id="mathew_ormond" checked>
+									<label for="mathew_ormond">Mathew Ormond</label>
+								</div>
+								<div>
+									<input type="radio" name="probands" id="darcy_phillis">
+									<label for="darcy_phillis">Darcy Phillis</label>
+								</div>
+							</div>
+						</form>
+					</section>
+					<section class="second">
+						<h3>Task</h3>
+						<h4><label for="create_task">Create new task</label></h4>
+						<form>
+							<input type="text" id="create_task" required>
+							<input type="submit" value="Create">
+						</form>
+						<h4>Choose task</h4>
+						<form class="list">
+							<div>
+								<div>
+									<input type="radio" name="tasks" id="flight_simulation" checked>
+									<label for="flight_simulation">Flight simulation</label>
+								</div>
+								<div>
+									<input type="radio" name="tasks" id="drinking_beer">
+									<label for="drinking_beer">Drinking beer</label>
+								</div>
+							</div>
+						</form>
+					</section>
+				</div>
+				<button>Continue to step 2</button>
+				<p class="go_back">or go <a href="#">back to the overview page</a></p>
+			</section>
+			<section class="step_2">
+				<h2>Step 2: rating scales</h2>
+				<section>
+					<h3>Mental demand</h3>
+					<p>How mentally demanding was the task?</p>
+					<div class="slider"></div>
+				</section>
+				<section>
+					<h3>Physical demand</h3>
+					<p>How physically demanding was the task?</p>
+					<div class="slider"></div>
+				</section>
+				<section>
+					<h3>Temporal demand</h3>
+					<p>How hurried or rushed was the pace of the task?</p>
+					<div class="slider"></div>
+				</section>
+				<section>
+					<h3>Performance</h3>
+					<p>How successful were you in accomplishing what you were asked to do?</p>
+					<div class="slider performance"></div>
+				</section>
+				<section>
+					<h3>Effort</h3>
+					<p>How hard did you have to work to accomplish your level of performance?</p>
+					<div class="slider"></div>
+				</section>
+				<section>
+					<h3>Frustration</h3>
+					<p>How insecure, discouraged, irritated, stressed, and annoyed were you?</p>
+					<div class="slider"></div>
+				</section>
+				<button>Continue to step 3</button>
+			</section>
+			<section class="step_3">
+				<h2>Step 3: pair-wise comparison of factors</h2>
+				<p class="alt">Select the member of each pair that provided the most significant source of workload:</p>
+			</section>
+			<section class="step_4">
+				<h2>Step 4: resulting data</h2>
+				<div></div>
+				<button>Back to the overview page</button>
+			</section>
+		</article>
+		<script src="setup/js/jquery-1.8.3.min.js"></script>
+		<script src="setup/js/jquery-ui-1.9.2.custom.min.js"></script>
+		<script src="setup/js/highcharts-2.3.3.min.js"></script>
+		<script src="setup/js/default.js"></script>
+	</body>
+</html>

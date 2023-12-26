@@ -242,3 +242,8 @@ input:checked + .slider:before {
   left: 0;
   font-size: smaller;
 }
+
+
+/* Style for range */
+
+
