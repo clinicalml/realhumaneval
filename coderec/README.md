@@ -12,9 +12,13 @@ client side:
 
 - fix timer (if timer countdown is 0, then exit)
 
+- prevent DDOS atacks and safety
+
 - on refresh, restore to where user was (skip tutorial)
 
-- add exit survey: sign out, clear localdata ...
+- on exit: sign out, clear localdata ...
+
+- add puzzle tasks
 
 - auto delete code on submit
 

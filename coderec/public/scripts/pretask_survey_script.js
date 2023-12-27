@@ -65,16 +65,6 @@ function isNotEmpty(input) {
   return true;
 }
 
-function isNotEmpty(selection) {
-  // Check if the input value is empty or not
-  if (selection.value.length == 0) {
-    // If empty, return false and show an error message
-    alert("Please fill in this field");
-    return false;
-  }
-  // If not empty, return true
-  return true;
-}
 
 function submit(event) {
   event.preventDefault();
@@ -105,10 +95,12 @@ function submit(event) {
       document.getElementById("aiToolFrequency").selectedIndex
     ].text;
  */
+    
+
 
   if (
     firebase.auth().currentUser &&
-    name_worker != ""   ) {
+    name_worker != "" && email != ""  ) {
     // create new doc
     var worker_in_responses = true;
     response_id = task_id_rand.concat("-").concat(worker_id_rand.toString());

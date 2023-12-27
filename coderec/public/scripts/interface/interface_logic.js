@@ -12,7 +12,7 @@ var cursorString = "";
 var codeAtlastReject = editor.getValue();
 var suggestions_shown_count = 0;
 var thinkingIcon = document.getElementById('thinkingIcon');
-
+var suggestion_id = 0;
 
 /////////////////////////////////////////
 // Handle Adding Suggestion to Editor
@@ -82,15 +82,25 @@ function appendCustomString() {
         suffix_code = suffix_code.substring(0, maxSuffixLength);
       }
       // get maxtokens from input maxTokens in html
+      suggestion_id += 1;
 
+      telemetry_data.push({
+        event_type: "before_shown",
+        task_index: task_index,
+        suggestion_id: suggestion_id,
+        prefix_code: prefix_code,
+        suffix_code: suffix_code,
+        timestamp: Date.now(),
+      });
 
       // TODO:  CHANGE THESE TWO LATER
-      var max_tokens = parseInt(document.getElementById("maxTokens").value);
-      var model = document.getElementById("modelSelector").value;
+      max_tokens = parseInt(document.getElementById("maxTokens").value);
+      model = document.getElementById("modelSelector").value;
       // prepend to prefix code "# this code is in Python" - to tell LLM that the code is in Python
       prefix_code = "# this code is in Python\n" + prefix_code;
       var response_string = "";
       // get suggestion according to model
+
       if (model == "gpt35") {
         get_openai_response(prefix_code, suffix_code, max_tokens)
           .then((response_string) => {
@@ -132,6 +142,15 @@ function addSuggestion(response_string) {
   customString = response_string;
       lastSuggestion = response_string;
       if (isAppending == true) {
+        // TODO: can we get the suggestion probability?
+        telemetry_data.push({
+          event_type: "suggestion_shown",
+          task_index: task_index,
+          suggestion_id: suggestion_id,
+          suggestion: response_string,
+          timestamp: Date.now(),
+        });
+
         // remove spinning AI
         thinkingIcon.style.display = 'inline-block';
         thinkingIcon.classList.remove('spinning');
@@ -170,6 +189,12 @@ editor.commands.addCommand({
   exec: function (editor) {
     rejectSuggestion();
     isAppending = true;
+    telemetry_data.push({
+      event_type: "request_suggestion",
+      suggestion_id: suggestion_id,
+      task_index: task_index,
+      timestamp: Date.now(),
+    });
     appendCustomString().then((response) => {
       if (isAppending == true) {
         suggestions_shown_count += 1;
@@ -190,9 +215,31 @@ editor.commands.on("exec", function (e) {
   if (customString != "") {
     if (e.command.name != "indent" && e.command.name != "insertstring") {
       rejectSuggestion();
+      telemetry_data.push({
+        event_type: "reject",
+        task_index: task_index,
+        suggestion_id: suggestion_id,
+        suggestion: customString,
+        timestamp: Date.now(),
+      });
+
     } else if (e.command.name == "insertstring" && e.command.name != "indent") {
-      rejectSuggestion();
+      editor.session.removeMarker(customStringMarkerId);
+      // remove the custom string from the editor
+      let row = cursorString.row;
+      let column = cursorString.column;
+      editor.session.remove(
+        new Range(
+          row,
+          column,
+          row + customString.split("\n").length - 1,
+          column + customString.length
+        )
+      );
       // add the key that was pressed
+      customString = "";
+      codeAtlastReject = editor.getValue();
+            // add the key that was pressed
       e.command.exec(e.editor, e.args);
       // prevent the default action of the key
       e.preventDefault();
@@ -242,7 +289,16 @@ editor.commands.on("exec", function (e) {
           "text"
         );
       } else {
+        // this is an official reject
+        telemetry_data.push({
+          event_type: "reject",
+          task_index: task_index,
+          suggestion_id: suggestion_id,
+          suggestion: customString,
+          timestamp: Date.now(),
+        });
         customString = "";
+
       }
     } else if (e.command.name == "indent") {
       // Programmer Accepted Suggestion
@@ -264,6 +320,14 @@ document.addEventListener("click", rejectSuggestion);
 
 function acceptSuggestion() {
   console.log("accepting suggestion");
+  telemetry_data.push({
+    event_type: "accept",
+    task_index: task_index,
+    suggestion_id: suggestion_id,
+    suggestion: customString,
+    timestamp: Date.now(),
+  });
+
   editor.session.removeMarker(customStringMarkerId);
   let cursor = editor.getCursorPosition();
   let row = cursorString.row;
@@ -283,6 +347,14 @@ function acceptSuggestion() {
 function rejectSuggestion() {
   isAppending = false;
   if (customString != "") {
+    telemetry_data.push({
+      event_type: "reject",
+      task_index: task_index,
+      suggestion_id: suggestion_id,
+      suggestion: customString,
+      timestamp: Date.now(),
+    });
+
     console.log("rejecting suggestion");
     editor.session.removeMarker(customStringMarkerId);
     // remove the custom string from the editor

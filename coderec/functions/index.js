@@ -27,8 +27,8 @@ initializeApp();
 // runCode('your_rapidapi_key', 'print("Hello, world!")').then(stdout => console.log(stdout));
 
 // https://codewithandrea.com/articles/api-keys-2ndgen-cloud-functions-firebase/
-
-exports.runcode = onCall({ secrets: [openai_key, rapidapi_key] }, (request) => {
+// , enforceAppCheck: true
+exports.runcode = onCall({ secrets: [openai_key, rapidapi_key]}, (request) => {
   if (!request.auth) {
     throw new HttpsError(
       "failed-precondition",

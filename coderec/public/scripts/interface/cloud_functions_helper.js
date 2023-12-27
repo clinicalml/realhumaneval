@@ -11,7 +11,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
-
 const runcode = firebase.functions().httpsCallable("runcode");
 const getcompletion = firebase.functions().httpsCallable("getcompletion");
 const get_together_completion = firebase
@@ -53,6 +52,13 @@ async function submitCode() {
         log =
           "Errors:" + result.data.data.stderr + "\n" + result.data.data.stdout;
       }
+      telemetry_data.push({
+        event_type: "run_code",
+        task_index: task_index,
+        log: log,
+        timestamp: Date.now(),
+      });
+
       document.getElementById("output").innerText = log;
     })
     .catch((error) => {
@@ -67,6 +73,14 @@ async function runCodeTest() {
 
     // Step 2: Analyze the Code
     if (!isValidFunction(editorCode)) {
+      telemetry_data.push({
+        event_type: "submit_code",
+        task_index: task_index,
+        completed_task: 0,
+        log: "wrong function signature",
+        timestamp: Date.now(),
+      });
+
       alert(
         "The code does not follow the required function signature or contains extra code."
       );
@@ -74,13 +88,11 @@ async function runCodeTest() {
     }
     // Step 3: Append Unit Tests
     // Fetch the unit tests for the current task
-    if (task_index == -1)
-    {
+    if (task_index == -1) {
       var currentUnitTests = tutorial_unit_test;
+    } else {
+      var currentUnitTests = unit_tests[task_index];
     }
-    else{
-    var currentUnitTests = unit_tests[task_index];
-  }
     // Replace '\n' in the unit tests string with actual newlines
     var formattedUnitTests = currentUnitTests.replace(/\\n/g, "\n");
 
@@ -99,17 +111,15 @@ async function runCodeTest() {
 
 function isValidFunction(code) {
   // Check if the code contains the required function signature
-  if (task_index == -1)
-  {
+  if (task_index == -1) {
     if (!code.includes(tutorial_function_signature)) {
       return false;
     }
+  } else {
+    if (!code.includes(function_signatures[task_index])) {
+      return false;
+    }
   }
-  else{
-  if (!code.includes(function_signatures[task_index])) {
-    return false;
-  }
-}
   // Check for only one function definition (basic check)
   let functionCount = (code.match(/def /g) || []).length;
   if (functionCount !== 1) {
@@ -127,30 +137,28 @@ function displayResult(result) {
     // clear editor
     editor.setValue("");
     localStorage.setItem("code", "");
-    // update task index
-    if (task_index < function_signatures.length - 1)
-    {
-    task_index += 1;
-    // update the task
-    updateProgress(); // update progress bar
-    loadCurrentTask();
-    // start timer  for 30mins
-    if (task_index == 0)
-    {
-      startTimer();
-    }
-    alert(log);
+    telemetry_data.push({
+      event_type: "submit_code",
+      task_index: task_index,
+      completed_task: 1,
+      log: "correct code",
+      timestamp: Date.now(),
+    });
 
-    }
-    else{
+    // update task index
+    if (task_index < function_signatures.length - 1) {
+      task_index += 1;
+      // update the task
+      updateProgress(); // update progress bar
+      loadCurrentTask();
+      alert(log);
+    } else {
+      writeUserData();
       localStorage.setItem("code", "");
       alert("You have completed all the tasks!");
       disableBeforeUnload();
       window.location.href = "./exit_survey.html";
     }
-
-
-    
   } else {
     log =
       "Code is incorrect.\n" +
@@ -158,7 +166,18 @@ function displayResult(result) {
       result.data.data.stderr +
       "\n" +
       result.data.data.stdout;
-      alert(log);
+
+
+      telemetry_data.push({
+        event_type: "submit_code",
+        task_index: task_index,
+        completed_task: 0,
+        log: log,
+        timestamp: Date.now(),
+      });
+
+    alert(log);
+
 
   }
 }

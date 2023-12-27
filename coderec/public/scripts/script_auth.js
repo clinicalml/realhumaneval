@@ -18,7 +18,7 @@ var is_valid = false;
 var task_id_rand;
 var worker_id_rand = Math.floor(Math.random() * 10000000); // to pass to other pages
 var rand_task;
-var response_id;
+var response_id = "test00";
 var exp_condition = 0;
 
 // we retreive task from database here add conditions
@@ -74,7 +74,7 @@ document.getElementById("submit_token").onclick = function () {
                 worker_id: "test",
                 task_id: task_id_rand,
                 date_performed: date_string,
-                completed_task: 0,
+                completed_study: 0,
                 exp_condition: exp_condition,
               })
               .then(() => {
