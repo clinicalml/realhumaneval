@@ -113,7 +113,13 @@ function submit(event) {
               console.log("Document successfully written!");
               var myData = [response_id, task_id_rand, exp_condition];
               localStorage.setItem("objectToPass", JSON.stringify(myData));
-              location.href = "./interface.html";
+              // change src of iframe puzzle_frame
+              var puzzle_frame = document.getElementById("puzzle_frame");
+              puzzle_frame.src = "ccl.meteorapp.com/?worker_id=" + worker_id_rand;
+              // make div id survey hidden and div id puzzle visible
+
+              document.getElementById("survey").style.display = "none";
+              document.getElementById("puzzle").style.display = "block";
             })
             .catch((error) => {
               console.error("Error writing document: ", error);
@@ -130,6 +136,25 @@ function submit(event) {
     });
     return false;
 }
+
+// when puzzleSubmitButton is clicked
+var puzzleSubmitButton = document.getElementById("puzzleSubmitButton");
+puzzleSubmitButton.addEventListener("click", puzzleSubmit);
+
+function puzzleSubmit(event) {
+  var puzzle_code = document.getElementById("puzzle_token").value;
+  if (puzzle_code == "puzzle") {
+    // switch to "./interface.html"
+    location.href = "./interface.html";
+  }
+  else{
+    var error_answer = document.getElementById("message_highlighted_puzzle");
+    error_answer.innerHTML = "incorrect puzzle code";
+}
+  return false;
+
+}
+
 
 var form = document.getElementById("form");
 form.addEventListener("submit", submit);

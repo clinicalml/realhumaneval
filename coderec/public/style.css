@@ -255,6 +255,6 @@ input:checked + .slider:before {
 iframe {
   display: block;       /* Remove default iframe margin */
   border: none;         /* Optional: Removes the default iframe border */
-  width: 100%;
-  height: 100vh;
+  width: 90vw;
+  height: 80vh;
 }
