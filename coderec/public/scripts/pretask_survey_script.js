@@ -14,11 +14,13 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 const appCheck = firebase.appCheck();
 appCheck.activate(
-  new firebase.appCheck.ReCaptchaEnterpriseProvider("6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"  ),
+  new firebase.appCheck.ReCaptchaEnterpriseProvider(
+    "6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"
+  ),
   true // Set to true to allow auto-refresh.
 );
-console.log('user logged in', firebase.auth().currentUser);
 
+var authen_token;
 var db = firebase.firestore();
 var task_id_rand;
 var worker_id_rand = Math.floor(Math.random() * 10000000); // to pass to other pages
@@ -26,37 +28,20 @@ var rand_task;
 var response_id;
 var exp_condition = 0;
 
-// we retreive task from database here add conditions
-db.collection("tasks")
-  //.where("exp_condition", "==", exp_condition)
-  .get()
-  .then(function (query_snapshot) {
-    rand_task =
-      query_snapshot.docs[
-        Math.floor(Math.random() * query_snapshot.docs.length)
-      ];
-    task_id_rand = rand_task.id;
-    exp_condition = rand_task.data().exp_condition;
+firebase
+  .auth()
+  .signOut()
+  .then(() => {
+    console.log("signed out");
   })
-  .catch(function (error) {
-    console.log("Error getting documents: ", error);
+  .catch((error) => {
+    console.log(error);
   });
 
 let inputs = document.querySelectorAll("input");
 let selections = document.querySelectorAll("select");
 let buttonSend = document.getElementById("button-send");
-// submitButton
 let submitButton = document.getElementById("submitButton");
-let validator = {
-  workerID: false,
-  age: false,
-  gender: false,
-  education: false,
-  emailAddress: false,
-  programmingExperience: false,
-  pythonProficiency: false,
-  aiToolFrequency: false,
-};
 
 let workerID_input = document.getElementById("workerID");
 
@@ -71,66 +56,48 @@ function isNotEmpty(input) {
   return true;
 }
 
-
 function submit(event) {
   event.preventDefault();
-
   var name_worker = document.getElementById("workerID").value;
   var email = document.getElementById("emailAddress").value;
-  /* var age_worker =
-    document.getElementById("age").options[
-      document.getElementById("age").selectedIndex
-    ].text;
-  var gender_worker =
-    document.getElementById("gender").options[
-      document.getElementById("gender").selectedIndex
-    ].text;
-  var education_worker =
-    document.getElementById("education").options[
-      document.getElementById("education").selectedIndex
-    ].text;
-  var programmingExperience = document.getElementById("programmingExperience")
-    .options[document.getElementById("programmingExperience").selectedIndex]
-    .text;
-  var pythonProficiency =
-    document.getElementById("pythonProficiency").options[
-      document.getElementById("pythonProficiency").selectedIndex
-    ].text;
-  var aiToolFrequency =
-    document.getElementById("aiToolFrequency").options[
-      document.getElementById("aiToolFrequency").selectedIndex
-    ].text;
- */
-    
+  var token_user = document.getElementById("authen_token").value;
+  var email_signin = "user@gmail.com";
 
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(email_signin, token_user)
+    .then((userCredential) => {
+      // we retreive task from database here add conditions
+      db.collection("tasks")
+        //.where("exp_condition", "==", exp_condition)
+        .get()
+        .then(function (query_snapshot) {
+          rand_task =
+            query_snapshot.docs[
+              Math.floor(Math.random() * query_snapshot.docs.length)
+            ];
+          task_id_rand = rand_task.id;
+          exp_condition = rand_task.data().exp_condition;
 
-  if (
-    firebase.auth().currentUser &&
-    name_worker != "" && email != ""  ) {
-    // create new doc
-    var worker_in_responses = true;
-    response_id = task_id_rand.concat("-").concat(worker_id_rand.toString());
-    // get time now in string format month day hour and minutes secs
-    var date = new Date();
-    var date_string = date
-      .getMonth()
-      .toString()
-      .concat("-")
-      .concat(date.getDate().toString())
-      .concat("-")
-      .concat(date.getHours().toString())
-      .concat("-")
-      .concat(date.getMinutes().toString())
-      .concat("-")
-      .concat(date.getSeconds().toString());
-    console.log(date_string);
-    db.collection("responses")
-      .where("name", "==", name_worker)
-      .get()
-      .then((querySnapshot) => {
-        if (querySnapshot.docs.length == 0) {
-          // only if worker has not filled it out yet
-          worker_in_responses = false;
+          // create new doc
+          var worker_in_responses = true;
+          response_id = task_id_rand
+            .concat("-")
+            .concat(worker_id_rand.toString());
+          // get time now in string format month day hour and minutes secs
+          var date = new Date();
+          var date_string = date
+            .getMonth()
+            .toString()
+            .concat("-")
+            .concat(date.getDate().toString())
+            .concat("-")
+            .concat(date.getHours().toString())
+            .concat("-")
+            .concat(date.getMinutes().toString())
+            .concat("-")
+            .concat(date.getSeconds().toString());
+
           db.collection("responses")
             .doc(response_id)
             .set({
@@ -141,12 +108,6 @@ function submit(event) {
               date_performed: date_string,
               completed_task: 0,
               exp_condition: exp_condition,
-/*               age_worker: age_worker,
-              gender_worker: gender_worker,
-              education_worker: education_worker,
-              programmingExperience: programmingExperience,
-              pythonProficiency: pythonProficiency,
-              aiToolFrequency: aiToolFrequency, */
             })
             .then(() => {
               console.log("Document successfully written!");
@@ -157,22 +118,17 @@ function submit(event) {
             .catch((error) => {
               console.error("Error writing document: ", error);
             });
-        } else {
-          worker_in_responses = true;
-          var error_answer = document.getElementById("message_highlighted");
-          error_answer.innerHTML =
-            "Already completed task, cannot perform task again.";
-        }
-      })
-      .catch((error) => {
-        worker_in_responses = true;
-      });
-  } else {
-    console.log("error in filling out form");
-    var error_answer = document.getElementById("message_highlighted");
-    error_answer.innerHTML = "Not signed in or information missing";
-  }
-  return false;
+        })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
+    })
+    .catch(function (error) {
+      var error_answer = document.getElementById("message_highlighted");
+      error_answer.innerHTML = "Not signed in or information missing";
+      console.log("Error getting documents: ", error);
+    });
+    return false;
 }
 
 var form = document.getElementById("form");
@@ -187,3 +143,7 @@ function enableBeforeUnload() {
     return "Discard changes?";
   };
 }
+
+// remove endTime and code from local storage to reset
+localStorage.removeItem("endTime");
+localStorage.removeItem("code");

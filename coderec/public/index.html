@@ -2,64 +2,96 @@
 <html>
 
 <head>
-  <!-- https://www.geeksforgeeks.org/build-a-survey-form-using-html-and-css/ -->
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="style.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <title>
-    Code Study
-  </title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="static/favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>
+        AI4PYTHON Study
+    </title>
 
 </head>
 
-<body style=" max-width: 100%; overflow-x: hidden;  height: auto; margin-right: 20%; margin-left: 20%; margin-bottom: 5%;  margin-top: 5%;">
+<body
+    style=" max-width: 100%; overflow-x: hidden;  height: auto; margin-right: 20%; margin-left: 20%; margin-bottom: 3%;  margin-top: 3%; ">
+    <div id="survey">
+    <form id="form">
+        <h1>
+            Welcome to the AI4PYTHON Study!
+        </h1>
+        <p>
+            After you fill out the information on this page please click the Start Experiment button to proceed. <br>
+            The experiment may contain multiple stages that you will be guided through. <br>
+            Please do not refresh or press back the webpage as you may lose a fraction of your progress. <br>
+            <br>
+        Your ID and email will NOT be shared with anyone or used in the study or tied to the information below, they are
+        only collected for matching with the recorded study. <br>
 
-  <div>
-    <h1> AI4PYTHON Study</h1>
-    <p>
-    The study will consist of you solving a few coding problems (e.g., Leetcode-style) with AI support alongside potential puzzle tasks.
-    <br>
-    We anticipate that the study will take ~40 minutes.
-    </p>
+        </p>
+        <!-- Details -->
+
+        <div class="form-control">
+            <label for="workerID" id="label-name">
+                ID:
+            </label>
+            <br>
+            <!-- Input Type Text -->
+            <input type="text" id="workerID" name="user_name" placeholder="Enter your full name" required />
+        </div>
+        <br>
+        <div class="form-control">
+            <label for="emailAddress" id="email-address">
+                Please enter the email address where you would like the Amazon gift card to be delivered to.
+            </label>
+            <br>
+
+            <!-- Text input for email -->
+            <input type="email" name="emailAddress" id="emailAddress" placeholder="Enter your email" required>
+        </div>
+        <br>
+        <label for="authen_token"> Please enter the code:</label>
+        </br></br>
+        <input type="password" id="authen_token" name="authen_token" required />
 
 
-  STUDY MODE:
-  <label class="switch">
-    <input type="checkbox" id="checkbox_studymode">
-    <span class="slider round"></span>
-  </label>
-  <br>
+        <p style="color:red" id="message_highlighted"> </p>
+        <br>
+        <button type="submit" value="submit" id="submitButton">
+            Start Experiment
+        </button>
 
-    <label for="authen_token"> Please enter the code:</label>
-    </br></br>
-    <input type="password" id="authen_token" name="authen_token" required />
-    </br>
-    <p style="color:red" id="message_highlighted"> </p>
-    <button type="submit" id="submit_token">Next</button>
-  </div>
-  <div>
-    
+    </form>
+</div>
+<div id="puzzle" style="display: none;">
 
-  </div>
+    <h1>
+        Pre-Task Puzzle task
+    </h1>
 
 
+    <iframe src="http://ccl.meteorapp.com/?workerId=test0"></iframe>
+
+    <button onclick="window.location.href = 'http://ccl.meteorapp.com/?workerId=test0';">Go to the task</button>
+
+</div>
 
 
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-functions-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check-compat.js"></script>
 
-  <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"></script>
-<!-- Replace the variables below. -->
 
-  <script src="./scripts/script_auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-functions-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check-compat.js"></script>
+
+    <script
+        src="https://www.google.com/recaptcha/enterprise.js?render=6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"></script>
+    <!-- Replace the variables below. -->
+    <script src="./scripts/pretask_survey_script.js"></script>
 
 </body>
 

@@ -94,8 +94,8 @@ function appendCustomString() {
       });
 
       // TODO:  CHANGE THESE TWO LATER
-      max_tokens = parseInt(document.getElementById("maxTokens").value);
-      model = document.getElementById("modelSelector").value;
+      //max_tokens = parseInt(document.getElementById("maxTokens").value);
+      //model = document.getElementById("modelSelector").value;
       // prepend to prefix code "# this code is in Python" - to tell LLM that the code is in Python
       prefix_code = "# this code is in Python\n" + prefix_code;
       var response_string = "";

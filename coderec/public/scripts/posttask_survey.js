@@ -19,6 +19,10 @@ appCheck.activate(
 );
 console.log('user logged in', firebase.auth().currentUser);
 
+// remove endTime and code from local storage to reset
+localStorage.removeItem("endTime");
+localStorage.removeItem("code");
+
 var db = firebase.firestore();
 
 /* 

@@ -27,7 +27,9 @@ var rand_task;
 var response_id = "test00";
 var exp_condition = 0;
 
-// we retreive task from database here add conditions
+// remove endTime and code from local storage to reset
+localStorage.removeItem("endTime");
+localStorage.removeItem("code");
 
 firebase
   .auth()

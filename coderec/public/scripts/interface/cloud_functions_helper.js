@@ -218,8 +218,8 @@ function get_completion_together(model, prompt, max_tokens) {
 function calltogether() {
   var editor_value = editor.getValue();
   var editor_value_string = editor_value.toString();
-  const model = document.getElementById("modelSelector").value;
-  var max_tokens = parseInt(document.getElementById("maxTokens").value);
+  //const model = document.getElementById("modelSelector").value;
+  //var max_tokens = parseInt(document.getElementById("maxTokens").value);
   // max tokens should be an int
   console.log(max_tokens);
   console.log(model);

@@ -1,6 +1,3 @@
-server side:
-
-- add limit to between calls from same user, 1sec
 
 client side:
 
@@ -8,33 +5,22 @@ client side:
 
 - fix timer (if timer countdown is 0, then exit)
 
-- prevent DDOS atacks and safety
-
-- on refresh, restore to where user was (skip tutorial)
-
 - on exit: sign out, clear localdata ...
 clarify task is programming
 hide slider 
 
 - add puzzle tasks
 
-- auto delete code on submit
-
-- make sure no bugs in interface when interacting with codellama
+- auto delete code on submit: fix issue
 
 - add a bunch of demo tasks
 
 for logging the accepts
 
-
 - preregi https://aspredicted.org/blind.php?x=Z3D_Z2B
 https://aspredicted.org/blind.php?x=LMM_4K9
 
 - add puzzle task
-
-- interest form 
-
-- attention checks
 
 - pre registration https://aspredicted.org/
 

@@ -116,6 +116,7 @@ button:hover {
 
 /* * Popup box style */
 .popup {
+  max-height: 80vh;
   display: none;
   position: fixed;
   left: 50%;
@@ -123,19 +124,24 @@ button:hover {
   transform: translate(-50%, -50%);
   border: 1px solid #ccc;
   background-color: white;
-  padding: 20px;
+  padding: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  overflow: hidden;
+  overflow-y: auto;
+
 }
  
 
 
 .popup-page {
+  max-height: 80vh;
   background-color: white;
-  width: 40vw;
-  margin: 50px auto;
+  width: 50vw;
+  margin: 10px auto;
   padding: 20px;
   text-align: left;
+
 }
 
 /* Add additional styling as needed */

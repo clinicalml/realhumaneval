@@ -4,16 +4,17 @@ var unit_tests = [];
 var tutorial_function_signature = "";
 var tutorial_unit_test = "";
 var tutorial_task_description = "";
-var model;
-var max_tokens;
+// defaults
+var model = "togethercomputer/CodeLlama-7b";
+var max_tokens = 20;
 var db = firebase.firestore();
 var response_id;
 var task_id;
 var exp_condition;
-var task_index = -1;
 var last_code_saved = "";
 // loged data
-var telemetry_data = [];
+// var telemetry_data = [];
+// var task_index = -1;
 
 
 function writeUserData() {
