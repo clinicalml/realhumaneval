@@ -1,5 +1,5 @@
 // PARAMETERS
-const wait_time_for_sug = 500; // in milliseconds
+const wait_time_for_sug = 1000; // in milliseconds
 const context_length = 6000; // in characters, in theory should multiply context token length by 4 to get character limit
 // VARIABLES used
 let isAppending = false; // Flag to track if appendCustomString is in progress

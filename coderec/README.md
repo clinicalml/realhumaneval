@@ -1,9 +1,5 @@
 server side:
 
-- intake and informed consent
-
-- how to do testing? append tests and interpret output
-
 - add limit to between calls from same user, 1sec
 
 client side:
@@ -17,6 +13,8 @@ client side:
 - on refresh, restore to where user was (skip tutorial)
 
 - on exit: sign out, clear localdata ...
+clarify task is programming
+hide slider 
 
 - add puzzle tasks
 
@@ -28,8 +26,17 @@ client side:
 
 for logging the accepts
 
+
+- preregi https://aspredicted.org/blind.php?x=Z3D_Z2B
+https://aspredicted.org/blind.php?x=LMM_4K9
+
 - add puzzle task
 
+- interest form 
+
+- attention checks
+
+- pre registration https://aspredicted.org/
 
 one compiler supported libraries:
 https://onecompiler.com/python/3x9knsj24

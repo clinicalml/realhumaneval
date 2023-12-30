@@ -12,6 +12,12 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
+const appCheck = firebase.appCheck();
+appCheck.activate(
+  new firebase.appCheck.ReCaptchaEnterpriseProvider("6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"  ),
+  true // Set to true to allow auto-refresh.
+);
+console.log('user logged in', firebase.auth().currentUser);
 
 var db = firebase.firestore();
 

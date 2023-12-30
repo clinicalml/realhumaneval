@@ -11,6 +11,12 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+const appCheck = firebase.appCheck();
+appCheck.activate(
+  new firebase.appCheck.ReCaptchaEnterpriseProvider("6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"  ),
+  true // Set to true to allow auto-refresh.
+);
+
 firebase.analytics();
 var authen_token;
 var db = firebase.firestore();
@@ -66,7 +72,6 @@ document.getElementById("submit_token").onclick = function () {
               ];
             task_id_rand = rand_task.id;
             exp_condition = rand_task.data().exp_condition;
-            console.log("taskdata" + rand_task.data().unit_tests);
 
             db.collection("responses")
               .doc("test00")

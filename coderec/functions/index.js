@@ -28,7 +28,7 @@ initializeApp();
 
 // https://codewithandrea.com/articles/api-keys-2ndgen-cloud-functions-firebase/
 // , enforceAppCheck: true
-exports.runcode = onCall({ secrets: [openai_key, rapidapi_key]}, (request) => {
+exports.runcode = onCall({ secrets: [openai_key, rapidapi_key], enforceAppCheck: true}, (request) => {
   if (!request.auth) {
     throw new HttpsError(
       "failed-precondition",
@@ -75,7 +75,7 @@ exports.runcode = onCall({ secrets: [openai_key, rapidapi_key]}, (request) => {
 
 
 exports.get_together_completion = onCall(
-  { secrets: [ together_key] },
+  { secrets: [ together_key] , enforceAppCheck: true },
   (request) => {
     if (!request.auth) {
       throw new HttpsError(
@@ -128,7 +128,7 @@ exports.get_together_completion = onCall(
 
 
 exports.getcompletion = onCall(
-  { secrets: [openai_key, rapidapi_key] },
+  { secrets: [openai_key, rapidapi_key] , enforceAppCheck: true},
   (request) => {
     if (!request.auth) {
       throw new HttpsError(
