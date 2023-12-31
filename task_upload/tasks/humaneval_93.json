@@ -1,0 +1,6 @@
+{
+    "name": "HumanEval/93",
+    "function_signature": "def encode(message):",
+    "task_description": "Write a function that takes a message, and encodes it in such a way that it swaps the case of all letters, replaces all vowels in the message with the letter that appears 2 places ahead of that vowel in the English alphabet. Assume only letters.\n\nExamples:\n>>> encode('test')\n'TGST'\n>>> encode('This is a message')\n'tHKS KS C MGSSCGG'",
+    "unit_test": "assert candidate('TEST') == 'tgst', \"This prints if this assert fails 1 (good for debugging!)\"\nassert candidate('Mudasir') == 'mWDCSKR', \"This prints if this assert fails 2 (good for debugging!)\"\nassert candidate('YES') == 'ygs', \"This prints if this assert fails 3 (good for debugging!)\"\nassert candidate('This is a message') == 'tHKS KS C MGSSCGG', \"This prints if this assert fails 2 (also good for debugging!)\"\nassert candidate(\"I DoNt KnOw WhAt tO WrItE\") == 'k dQnT kNqW wHcT Tq wRkTg', \"This prints if this assert fails 2 (also good for debugging!)\""
+}

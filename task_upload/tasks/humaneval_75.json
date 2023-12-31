@@ -1,0 +1,6 @@
+{
+    "name": "HumanEval/75",
+    "function_signature": "def is_multiply_prime(a):",
+    "task_description": "Write a function that returns true if the given number is the multiplication of 3 prime numbers and false otherwise. Knowing that (a) is less then 100. \nExample:\nis_multiply_prime(30) == True\n30 = 2 * 3 * 5",
+    "unit_test": "assert candidate(5) == False\nassert candidate(30) == True\nassert candidate(8) == True\nassert candidate(10) == False\nassert candidate(125) == True\nassert candidate(3 * 5 * 7) == True\nassert candidate(3 * 6 * 7) == False\nassert candidate(9 * 9 * 9) == False\nassert candidate(11 * 9 * 9) == False\nassert candidate(11 * 13 * 7) == True"
+}
