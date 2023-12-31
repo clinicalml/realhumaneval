@@ -1,5 +1,5 @@
 // PARAMETERS
-const wait_time_for_sug = 1000; // in milliseconds
+const wait_time_for_sug = 1500; // in milliseconds
 const context_length = 6000; // in characters, in theory should multiply context token length by 4 to get character limit
 // VARIABLES used
 let isAppending = false; // Flag to track if appendCustomString is in progress
@@ -25,12 +25,33 @@ var undoManager = editor.session.getUndoManager();
 
 
 editor.session.on("change", handleChange);
+// for any mouse click selection or left click
+editor.session.on("changeScrollTop", handleandReject);
+// same for any mouse left or right clickl
+document.addEventListener("click", handleandReject);
+document.addEventListener("contextmenu", handleandReject);
+// same for selecting text
+editor.selection.on("changeSelection", handleandReject);
+// same for scrolling
+editor.session.on("changeScrollTop", handleandReject);
+
+
+
+function handleandReject(){
+  handleChange();
+  rejectSuggestion();
+}
+
+
 
 function handleChange() {
   clearTimeout(typingTimeout); // Clear previous timeout
   // Set new timeout
+  // check if any text is currently selected
+  var selectedText = editor.getSelectedText();
+
   typingTimeout = setTimeout(function () {
-    if (customString == "") {
+    if (customString == "" && selectedText == "") {
       if (editor.getValue() != codeAtlastReject && !isAppending) {
         isAppending = true;
         appendCustomString().then((response) => {
@@ -254,7 +275,9 @@ editor.commands.on("exec", function (e) {
       }
 
       var rangeToRemove = new Range(row, column, endRow, endColumn);
+      if (cursorString != ""){
       editor.session.replace(rangeToRemove, "");
+      }
       // add the key that was pressed
       customString = "";
       codeAtlastReject = editor.getValue();
@@ -335,9 +358,8 @@ document.addEventListener("keydown", function (event) {
     rejectSuggestion();
   }
 });
-// same for any mouse left or right clickl
-document.addEventListener("click", rejectSuggestion);
-document.addEventListener("contextmenu", rejectSuggestion);
+
+
 
 function acceptSuggestion() {
   if (customString == "" || currentlyShown == false) {
@@ -402,7 +424,9 @@ function rejectSuggestion() {
     }
 
     var rangeToRemove = new Range(row, column, endRow, endColumn);
-    editor.session.replace(rangeToRemove, "");
+    if (cursorString != ""){
+      editor.session.replace(rangeToRemove, "");
+    }
     // add the key that was pressed
     customString = "";
     codeAtlastReject = editor.getValue();
