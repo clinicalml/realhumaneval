@@ -128,11 +128,7 @@ function isValidFunction(code) {
       return false;
     }
   }
-  // Check for only one function definition (basic check)
-  let functionCount = (code.match(/def /g) || []).length;
-  if (functionCount !== 1) {
-    return false;
-  }
+
   return true;
 }
 

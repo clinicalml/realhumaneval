@@ -260,7 +260,7 @@ function restoreAfterRefresh() {
   else{
     telemetry_data = [];
   }
-
+  updateProgress(); // progress bar
 }
 
 restoreAfterRefresh();
