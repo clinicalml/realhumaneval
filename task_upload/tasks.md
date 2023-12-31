@@ -41,10 +41,12 @@ Individual coding task structure and example:
     "function_signature": "def average(nums)",
 
     "task_description": "Write a Python function named average that calculates and returns the average of a list of numbers. The function should take one argument, nums, which is a list of numerical values. The average should be calculated as the sum of all elements in the list divided by the number of elements. If the list is empty, the function should return 0. \n\n The function signature should be: def average(nums)",
-   
+    "name": "average",
     "unit_test": "assert average([1, 2.5, 3, 4.5]) == 2.75\nassert average([-10, -20, -30]) == -20\nassert average([]) == 0"
 }
 ```
+
+For max_tokens, we are using 64 per https://huggingface.co/blog/personal-copilot
 
 # STUDY TASKS
 

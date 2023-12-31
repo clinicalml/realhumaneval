@@ -99,11 +99,11 @@ exports.get_together_completion = onCall(
       data: {
         model: request.data.model,
         prompt: request.data.prompt,
-        temperature: 0.1,
-        top_p: 0.7,
+        temperature: 0.2,
+        top_p: 1,
         top_k: 50,
         max_tokens: request.data.max_tokens,
-        repetition_penalty: 1,
+        repetition_penalty: 0,
       },
     };
 
@@ -151,7 +151,7 @@ exports.getcompletion = onCall(
         prompt: request.data.prefix,
         suffix: request.data.suffix,
         max_tokens: request.data.max_tokens,
-        temperature: 0,
+        temperature: 0.2,
       },
     };
 
