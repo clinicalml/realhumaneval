@@ -234,6 +234,7 @@ editor.commands.on("exec", function (e) {
     } else if (e.command.name == "insertstring" && e.command.name != "indent") {
       
       // TODO: FIX THIS
+
       editor.session.removeMarker(customStringMarkerId);
       // remove the custom string from the editor
       let row = cursorString.row;
@@ -306,6 +307,7 @@ editor.commands.on("exec", function (e) {
           "errorHighlight",
           "text"
         );
+        currentlyShown = true;
       } else {
         // this is an official reject
         telemetry_data.push({
@@ -316,6 +318,7 @@ editor.commands.on("exec", function (e) {
           timestamp: Date.now(),
         });
         customString = "";
+        currentlyShown = false;
 
       }
     } else if (e.command.name == "indent") {
@@ -368,6 +371,7 @@ function acceptSuggestion() {
 }
 
 function rejectSuggestion() {
+  editor.session.removeMarker(customStringMarkerId);
   if (customString != "" && currentlyShown == true) {
     telemetry_data.push({
       event_type: "reject",

@@ -2,5 +2,5 @@
     "name": "HumanEval/108",
     "function_signature": "def count_nums(arr):",
     "task_description": "Write a function count_nums which takes an array of integers and returns the number of elements which has a sum of digits > 0. If a number is negative, then its first signed digit will be negative: e.g. -123 has signed digits -1, 2, and 3.\n>>> count_nums([]) == 0\n>>> count_nums([-1, 11, -11]) == 1\n>>> count_nums([1, 1, 2]) == 3",
-    "unit_test": "assert candidate([]) == 0\nassert candidate([-1, -2, 0]) == 0\nassert candidate([1, 1, 2, -2, 3, 4, 5]) == 6\nassert candidate([1, 6, 9, -6, 0, 1, 5]) == 5\nassert candidate([1, 100, 98, -7, 1, -1]) == 4\nassert candidate([12, 23, 34, -45, -56, 0]) == 5\nassert candidate([-0, 1**0]) == 1\nassert candidate([1]) == 1"
+    "unit_test": "assert count_nums([]) == 0\nassert count_nums([-1, -2, 0]) == 0\nassert count_nums([1, 1, 2, -2, 3, 4, 5]) == 6\nassert count_nums([1, 6, 9, -6, 0, 1, 5]) == 5\nassert count_nums([1, 100, 98, -7, 1, -1]) == 4\nassert count_nums([12, 23, 34, -45, -56, 0]) == 5\nassert count_nums([-0, 1**0]) == 1\nassert count_nums([1]) == 1"
 }
