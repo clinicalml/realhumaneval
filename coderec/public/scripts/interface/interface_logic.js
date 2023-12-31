@@ -3,6 +3,7 @@ const wait_time_for_sug = 1000; // in milliseconds
 const context_length = 6000; // in characters, in theory should multiply context token length by 4 to get character limit
 // VARIABLES used
 let isAppending = false; // Flag to track if appendCustomString is in progress
+var currentlyShown = false;
 var Range = ace.require("ace/range").Range;
 let typingTimeout;
 let customStringMarkerId; // This will hold the ID of the marker for our custom string
@@ -147,7 +148,6 @@ function addSuggestion(response_string) {
       lastSuggestion = response_string;
       if (isAppending == true) {
         // TODO: can we get the suggestion probability?
-
         // remove spinning AI
         thinkingIcon.style.display = 'inline-block';
         thinkingIcon.classList.remove('spinning');
@@ -155,12 +155,13 @@ function addSuggestion(response_string) {
         let string_added_column = customString.length;
         let string_added_row = customString.split("\n").length - 1;
         var cursor = editor.getCursorPosition();
-        let row = cursor.row;
+        let row= cursor.row;
         let column = cursor.column;
         // get the all the text from the editor
         // Append the custom string to the editor at cursor location
         editor.session.insert({ row: row, column: column }, customString);
         cursorString = cursor;
+        currentlyShown = true;
         // keep cursor at location before the string was appended
         editor.gotoLine(row + 1, column);
         // Highlight the appended string
@@ -216,6 +217,8 @@ editor.commands.addCommand({
 // Handle Accept and Reject of Suggestions
 /////////////////////////////////////////
 
+
+
 editor.commands.on("exec", function (e) {
   if (customString != "") {
     if (e.command.name != "indent" && e.command.name != "insertstring") {
@@ -230,21 +233,27 @@ editor.commands.on("exec", function (e) {
 
     } else if (e.command.name == "insertstring" && e.command.name != "indent") {
       
+      // TODO: FIX THIS
       editor.session.removeMarker(customStringMarkerId);
       // remove the custom string from the editor
       let row = cursorString.row;
       let column = cursorString.column;
-      undoManager.undo(editor.session);
+      var string_added_column = customString.length;
+      var string_added_row = customString.split("\n").length - 1;
+      var endRow = row + string_added_row;
+      var endColumn;
+      if (string_added_row === 0) {
+          // Custom string and the following text are on the same line
+          endColumn = column + customString.length;
+      } else {
+          // Custom string spans multiple lines
+          // Find the length of the custom string on the last line
+          var lastLineLength = customString.split("\n").pop().length;
+          endColumn = lastLineLength;
+      }
 
-      /* editor.session.remove(
-        new Range(
-          row,
-          column,
-          row + customString.split("\n").length - 1,
-          column + customString.length
-        )
-      ); */
-
+      var rangeToRemove = new Range(row, column, endRow, endColumn);
+      editor.session.replace(rangeToRemove, "");
       // add the key that was pressed
       customString = "";
       codeAtlastReject = editor.getValue();
@@ -323,11 +332,14 @@ document.addEventListener("keydown", function (event) {
     rejectSuggestion();
   }
 });
-
 // same for any mouse left or right clickl
 document.addEventListener("click", rejectSuggestion);
+document.addEventListener("contextmenu", rejectSuggestion);
 
 function acceptSuggestion() {
+  if (customString == "" || currentlyShown == false) {
+    return;
+  }
   console.log("accepting suggestion");
   telemetry_data.push({
     event_type: "accept",
@@ -351,10 +363,12 @@ function acceptSuggestion() {
   // Triger a change event to show the next suggestion
   lastSuggestion = "";
   handleChange();
+  isAppending = false;
+  currentlyShown = false;
 }
 
 function rejectSuggestion() {
-  if (customString != "" && isAppending == false) {
+  if (customString != "" && currentlyShown == true) {
     telemetry_data.push({
       event_type: "reject",
       task_index: task_index,
@@ -368,22 +382,29 @@ function rejectSuggestion() {
     // remove the custom string from the editor
     let row = cursorString.row;
     let column = cursorString.column;
-    undoManager.undo(editor.session);
-/* 
-    editor.session.remove(
-      new Range(
-        row,
-        column,
-        row + customString.split("\n").length - 1,
-        column + customString.length
-      )
-    ); */
+    // undoManager.undo(editor.session);
+    var string_added_column = customString.length;
+    var string_added_row = customString.split("\n").length - 1;
+    var endRow = row + string_added_row;
+    var endColumn;
+    if (string_added_row === 0) {
+        // Custom string and the following text are on the same line
+        endColumn = column + customString.length;
+    } else {
+        // Custom string spans multiple lines
+        // Find the length of the custom string on the last line
+        var lastLineLength = customString.split("\n").pop().length;
+        endColumn = lastLineLength;
+    }
+
+    var rangeToRemove = new Range(row, column, endRow, endColumn);
+    editor.session.replace(rangeToRemove, "");
     // add the key that was pressed
     customString = "";
     codeAtlastReject = editor.getValue();
   }
   isAppending = false;
-
+  currentlyShown = false;
 }
 
 /////////////////////////////////////////

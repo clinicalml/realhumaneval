@@ -1,13 +1,11 @@
 
 client side:
 
-- fix bugs in interface coding: due to suggesion in middle
+- fix bugs in interface coding: due to suggesion in middle: fixed in theory
 
 - add a bunch of demo tasks
 
-- enable no copilot
-
-- enable no puzzle
+- enable no copilot: change visuals based on that later
 
 - add codes from puzzles once Mo does it
 

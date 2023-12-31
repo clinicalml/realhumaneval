@@ -1,3 +1,17 @@
+var currentTheme = "monokai";
+var timer_minutes = 20;
+document.getElementById("changeThemeButton").addEventListener("click", function() {
+    // Switch between themes
+    if (currentTheme === "monokai") {
+        editor.setTheme("ace/theme/github");
+        currentTheme = "github";
+    } else {
+        editor.setTheme("ace/theme/monokai");
+        currentTheme = "monokai";
+    }
+});
+
+
 /////////////////////////////////////////
 // Popup
 /////////////////////////////////////////
@@ -129,7 +143,7 @@ function startTimer() {
 
   if (!endTime) {
     // If not, set the end time to 30 minutes from now
-    endTime = new Date().getTime() + 120 * 60 * 1000;
+    endTime = new Date().getTime() + timer_minutes * 60 * 1000;
     localStorage.setItem("endTime", endTime);
   }
 

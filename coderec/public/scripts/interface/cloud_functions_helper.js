@@ -173,7 +173,7 @@ function displayResult(result) {
     }
   } else {
     log =
-      "Code is incorrect.\n" +
+      "Code is incorrect.\n"; +
       "Error:" +
       result.data.data.stderr +
       "\n" +

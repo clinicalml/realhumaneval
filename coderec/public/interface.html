@@ -28,7 +28,7 @@
         <div class="popup-page" id="page1">
             <h2>Study Introduction</h2>
             <p>Welcome to the user study! You will first complete a tutorial task to make you familiar with the study.
-                <br> After the tutorial task, you will have 30 minutes total where you will try to solve as many
+                <br> After the tutorial task, you will have 20 minutes total where you will try to solve as many
                 coding tasks as possible one at a time.
             </p>
             <br>
@@ -44,8 +44,8 @@
             <ul>
                 <li> You can accept a suggestion by pressing [TAB] or reject a suggestion by pressing [ESC]. </li>
                 <li> You can also request a suggestion by pressing [CTRL+ENTER] (Windows) or [CMD+ENTER] (Mac). </li>
-                <li> You can run your code by pressing the "▶️" button and submit your final code by pressing the "📤"
-                    button. </li>
+                <li> You can run your code by pressing the "▶️" button and the output will be in the output box below </li>
+                <li> You can submit your final code for evaluation by pressing the "📤" button.  /li></and>
             </ul>
             Note: please be aware that the AI assistant is not perfect and may provide incorrect suggestions. Moreover,
             the AI may generate potentially offensive suggestions especially if prompted with language that is
@@ -69,6 +69,7 @@
         </select>
         Max Tokens Suggestion:
         <input type="number" id="maxTokens" min="1" max="1000" value=20> -->
+        <button id="changeThemeButton">Change Theme</button>
 
         <!-- Button to open the popup -->
         <button onclick="showPopup()">Show Shortcuts and Button Info</button>
@@ -120,7 +121,8 @@
         <button id="runCodeTest" style="background-color: rgb(130, 14, 14); font-size: large;"
             onclick="runCodeTest()">📤</i>Submit</button>
     </div>
-    <!-- <button onclick="calltogether()">call together</button> -->
+
+    <label for id="output_label">Output of Run:</label>
     <div id="output"></div>
 
 

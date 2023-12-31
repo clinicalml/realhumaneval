@@ -1,5 +1,5 @@
 var editor = ace.edit("editor");
-editor.setTheme("ace/theme/monokai");
+editor.setTheme("ace/theme/github");
 editor.session.setMode("ace/mode/python");
 editor.setOption("showPrintMargin", false);
 document.getElementById("editor").style.fontSize = "15px";
@@ -31,13 +31,13 @@ var suggestions_shown_count = 0;
 function get_constant_response(prefix, suffix) {
   return new Promise((resolve, reject) => {
     var text_response =
-      "if True:\n    x =1\n    y = 2\n    z = 3\n    if z == 3:\n        print('hello')\n    else:\n        print('world')\nelse:\n    print('hello world')\n";
+      "abcdefj\nhjik";
     resolve(text_response);
   });
 }
 
 function get_openai_response(prefix, suffix) {
-  // return get_constant_response(prefix, suffix);
+  return get_constant_response(prefix, suffix);
   const requestOptions = {
     method: "POST",
     headers: {
@@ -66,6 +66,7 @@ function get_openai_response(prefix, suffix) {
 }
 
 async function submitCode() {
+  return false;
   // TODO: print exceptions
   const url = "https://onecompiler-apis.p.rapidapi.com/api/v1/run";
   const options = {
@@ -304,14 +305,22 @@ document.addEventListener("keydown", function (event) {
       // remove the custom string from the editor
       let row = cursorString.row;
       let column = cursorString.column;
-      editor.session.remove(
-        new Range(
-          row,
-          column,
-          row + customString.split("\n").length - 1,
-          column + customString.length
-        )
-      );
+      var string_added_column = customString.length;
+      var string_added_row = customString.split("\n").length - 1;
+      var endRow = row + string_added_row;
+      var endColumn;
+      if (string_added_row === 0) {
+          // Custom string and the following text are on the same line
+          endColumn = column + customString.length;
+      } else {
+          // Custom string spans multiple lines
+          // Find the length of the custom string on the last line
+          var lastLineLength = customString.split("\n").pop().length;
+          endColumn = lastLineLength;
+      }
+
+      var rangeToRemove = new Range(row, column, endRow, endColumn);
+      editor.session.replace(rangeToRemove, "");
       // add the key that was pressed
       customString = "";
     }
@@ -357,7 +366,7 @@ editor.session.on("change", function () {
       }
     }
     //document.getElementById("output").innerText = "user paused";
-  }, 2000); // Wait for 1 second
+  }, 1000); // Wait for 1 second
 });
 
 // RECORDING: works perfectly
