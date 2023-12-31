@@ -30,6 +30,13 @@ function closePopup() {
   document.getElementById("popup_tutorial").style.display = "none";
 }
 
+
+// POPUP for end
+function proceed_timeout() {
+  document.getElementById("timeout_popup").style.display = "none";
+  window.location.href = "exit_survey.html";
+}
+
 /////////////////////////////////////////
 // disable copy pasting in the editor unless what is being pasted is copied from the editor itself
 /////////////////////////////////////////
@@ -122,7 +129,7 @@ function startTimer() {
 
   if (!endTime) {
     // If not, set the end time to 30 minutes from now
-    endTime = new Date().getTime() + 30 * 60 * 1000;
+    endTime = new Date().getTime() + 120 * 60 * 1000;
     localStorage.setItem("endTime", endTime);
   }
 
@@ -146,7 +153,26 @@ function updateTimer(endTime) {
       timer.textContent = "Time is up";
       // get the user out
       writeUserData();
+      disableBeforeUnload();
+      var myData = [response_id, task_id, exp_condition, worker_id];
+      localStorage.setItem("objectToPass", JSON.stringify(myData));
       localStorage.setItem("code", "");
+      var time_completed = new Date();
+      var time_completed_string = time_completed.toString();
+      db.collection("responses")
+        .doc(response_id)
+        .update({
+          timeout_time: time_completed_string,
+          task_index: task_index,
+        })
+        .then(() => {
+          console.log("Document successfully written!");
+          // show popup timeout_popup
+          document.getElementById("timeout_popup").style.display = "block";
+        })
+        .catch((error) => {
+          console.error("Error writing document: ", error);
+        }); 
     }
   }, 1000);
 }

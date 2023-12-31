@@ -13,12 +13,16 @@ var codeAtlastReject = editor.getValue();
 var suggestions_shown_count = 0;
 var thinkingIcon = document.getElementById('thinkingIcon');
 var suggestion_id = 0;
+var undoManager = editor.session.getUndoManager();
 
 /////////////////////////////////////////
 // Handle Adding Suggestion to Editor
 /////////////////////////////////////////
 
 // check if programmer is actively typing
+
+
+
 editor.session.on("change", handleChange);
 
 function handleChange() {
@@ -143,13 +147,6 @@ function addSuggestion(response_string) {
       lastSuggestion = response_string;
       if (isAppending == true) {
         // TODO: can we get the suggestion probability?
-        telemetry_data.push({
-          event_type: "suggestion_shown",
-          task_index: task_index,
-          suggestion_id: suggestion_id,
-          suggestion: response_string,
-          timestamp: Date.now(),
-        });
 
         // remove spinning AI
         thinkingIcon.style.display = 'inline-block';
@@ -177,6 +174,14 @@ function addSuggestion(response_string) {
           "errorHighlight",
           "text"
         );
+        telemetry_data.push({
+          event_type: "suggestion_shown",
+          task_index: task_index,
+          suggestion_id: suggestion_id,
+          suggestion: response_string,
+          timestamp: Date.now(),
+        });
+
         isAppending = false;
       }
   }
@@ -224,18 +229,22 @@ editor.commands.on("exec", function (e) {
       });
 
     } else if (e.command.name == "insertstring" && e.command.name != "indent") {
+      
       editor.session.removeMarker(customStringMarkerId);
       // remove the custom string from the editor
       let row = cursorString.row;
       let column = cursorString.column;
-      editor.session.remove(
+      undoManager.undo(editor.session);
+
+      /* editor.session.remove(
         new Range(
           row,
           column,
           row + customString.split("\n").length - 1,
           column + customString.length
         )
-      );
+      ); */
+
       // add the key that was pressed
       customString = "";
       codeAtlastReject = editor.getValue();
@@ -345,8 +354,7 @@ function acceptSuggestion() {
 }
 
 function rejectSuggestion() {
-  isAppending = false;
-  if (customString != "") {
+  if (customString != "" && isAppending == false) {
     telemetry_data.push({
       event_type: "reject",
       task_index: task_index,
@@ -360,6 +368,8 @@ function rejectSuggestion() {
     // remove the custom string from the editor
     let row = cursorString.row;
     let column = cursorString.column;
+    undoManager.undo(editor.session);
+/* 
     editor.session.remove(
       new Range(
         row,
@@ -367,11 +377,13 @@ function rejectSuggestion() {
         row + customString.split("\n").length - 1,
         column + customString.length
       )
-    );
+    ); */
     // add the key that was pressed
     customString = "";
     codeAtlastReject = editor.getValue();
   }
+  isAppending = false;
+
 }
 
 /////////////////////////////////////////

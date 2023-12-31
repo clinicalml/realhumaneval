@@ -162,9 +162,13 @@ function displayResult(result) {
       alert(log);
     } else {
       writeUserData();
+      disableBeforeUnload();
+
       localStorage.setItem("code", "");
       alert("You have completed all the tasks!");
-      disableBeforeUnload();
+      // next two lines probably not needed
+      var myData = [response_id, task_id, exp_condition, worker_id];
+      localStorage.setItem("objectToPass", JSON.stringify(myData));
       window.location.href = "./exit_survey.html";
     }
   } else {

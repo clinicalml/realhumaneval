@@ -56,6 +56,9 @@ function isNotEmpty(input) {
   return true;
 }
 
+var form = document.getElementById("form");
+form.addEventListener("submit", submit);
+
 function submit(event) {
   event.preventDefault();
   var name_worker = document.getElementById("workerID").value;
@@ -86,17 +89,7 @@ function submit(event) {
             .concat(worker_id_rand.toString());
           // get time now in string format month day hour and minutes secs
           var date = new Date();
-          var date_string = date
-            .getMonth()
-            .toString()
-            .concat("-")
-            .concat(date.getDate().toString())
-            .concat("-")
-            .concat(date.getHours().toString())
-            .concat("-")
-            .concat(date.getMinutes().toString())
-            .concat("-")
-            .concat(date.getSeconds().toString());
+          var date_string = date.toString();
 
           db.collection("responses")
             .doc(response_id)
@@ -111,13 +104,17 @@ function submit(event) {
             })
             .then(() => {
               console.log("Document successfully written!");
-              var myData = [response_id, task_id_rand, exp_condition];
+              var myData = [
+                response_id,
+                task_id_rand,
+                exp_condition,
+                worker_id_rand,
+              ];
               localStorage.setItem("objectToPass", JSON.stringify(myData));
               // change src of iframe puzzle_frame
               var puzzle_frame = document.getElementById("puzzle_frame");
-              puzzle_frame.src = "ccl.meteorapp.com/?worker_id=" + worker_id_rand;
+              puzzle_frame.src = "https://ccl.meteorapp.com/?worker_id=" + worker_id_rand;
               // make div id survey hidden and div id puzzle visible
-
               document.getElementById("survey").style.display = "none";
               document.getElementById("puzzle").style.display = "block";
             })
@@ -134,8 +131,10 @@ function submit(event) {
       error_answer.innerHTML = "Not signed in or information missing";
       console.log("Error getting documents: ", error);
     });
-    return false;
+  return false;
 }
+
+
 
 // when puzzleSubmitButton is clicked
 var puzzleSubmitButton = document.getElementById("puzzleSubmitButton");
@@ -144,31 +143,27 @@ puzzleSubmitButton.addEventListener("click", puzzleSubmit);
 function puzzleSubmit(event) {
   var puzzle_code = document.getElementById("puzzle_token").value;
   if (puzzle_code == "puzzle") {
-    // switch to "./interface.html"
-    location.href = "./interface.html";
-  }
-  else{
+    var time_now = new Date();
+    var time_now_string = time_now.toString();
+    db.collection("responses")
+      .doc(response_id)
+      .update({
+        completed_pre_puzzle: time_now_string,
+      })
+      .then(() => {
+        location.href = "./interface.html";
+      })
+      .catch((error) => {
+        console.error("Error writing document: ", error);
+      });
+  } else {
     var error_answer = document.getElementById("message_highlighted_puzzle");
     error_answer.innerHTML = "incorrect puzzle code";
-}
+  }
   return false;
-
-}
-
-
-var form = document.getElementById("form");
-form.addEventListener("submit", submit);
-
-function disableBeforeUnload() {
-  window.onbeforeunload = null;
-}
-
-function enableBeforeUnload() {
-  window.onbeforeunload = function (e) {
-    return "Discard changes?";
-  };
 }
 
 // remove endTime and code from local storage to reset
 localStorage.removeItem("endTime");
 localStorage.removeItem("code");
+localStorage.removeItem("task_index");

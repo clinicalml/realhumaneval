@@ -17,75 +17,79 @@
 
 <body style=" max-width: 100%; overflow-x: hidden;  height: auto;  ">
     <div id="survey" style=" margin-right: 20%; margin-left: 20%; margin-bottom: 3%;  margin-top: 3%; ">
-    <form id="form">
-        <h1>
-            Welcome to the AI4PYTHON Study!
-        </h1>
-        <p>
-            After you fill out the information on this page please click the Start Experiment button to proceed. <br>
-            The experiment may contain multiple stages that you will be guided through. <br>
-            Please do not refresh or press back the webpage as you may lose a fraction of your progress. <br>
-            <br>
-        Your ID and email will NOT be shared with anyone or used in the study or tied to the information below, they are
-        only collected for matching with the recorded study. <br>
+        <form id="form">
+            <h1>
+                Welcome to the AI4PYTHON Study!
+            </h1>
+            <p>
+                After you fill out the information on this page please click the Start Experiment button to proceed.
+                <br>
+                The experiment may contain multiple stages that you will be guided through. <br>
+                Please do not refresh or press back the webpage as you may lose a fraction of your progress. <br>
+                <br>
+                Your ID and email will NOT be shared with anyone or used in the study or tied to the information below,
+                they are
+                only collected for matching with the recorded study. <br>
 
-        </p>
-        <!-- Details -->
+            </p>
+            <!-- Details -->
 
-        <div class="form-control">
-            <label for="workerID" id="label-name">
-                ID:
-            </label>
+            <div class="form-control">
+                <label for="workerID" id="label-name">
+                    ID:
+                </label>
+                <br>
+                <!-- Input Type Text -->
+                <input type="text" id="workerID" name="user_name" placeholder="Enter your full name" required />
+            </div>
             <br>
-            <!-- Input Type Text -->
-            <input type="text" id="workerID" name="user_name" placeholder="Enter your full name" required />
+            <div class="form-control">
+                <label for="emailAddress" id="email-address">
+                    Please enter the email address where you would like the Amazon gift card to be delivered to.
+                </label>
+                <br>
+
+                <!-- Text input for email -->
+                <input type="email" name="emailAddress" id="emailAddress" placeholder="Enter your email" required>
+            </div>
+            <br>
+            <label for="authen_token"> Please enter the code:</label>
+            </br></br>
+            <input type="password" id="authen_token" name="authen_token" required />
+
+
+            <p style="color:red" id="message_highlighted"> </p>
+            <br>
+            <button type="submit" value="submit" id="submitButton">
+                Start Experiment
+            </button>
+
+        </form>
+    </div>
+
+    <div id="puzzle" style="display: none; margin-right: 3%; margin-left: 3%; margin-bottom: 3%;  margin-top: 3%;" >
+
+        <h2>
+            The following is a puzzle task that you will be asked to complete before the study.
+            Once you complete it, please enter the code given below. <br>
+        </h2>
+
+        <iframe id="puzzle_frame" src="https://www.google.com"></iframe>
+        <br>
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+
+            <label for="puzzle_token"> Please enter the code:</label>
+            </br> </br>
+            <input id="puzzle_token" name="puzzle_token" required />
+            <br>
+            <p style="color:red" id="message_highlighted_puzzle"> </p>
+
+            <button id="puzzleSubmitButton">
+                Submit
+            </button>
+
         </div>
-        <br>
-        <div class="form-control">
-            <label for="emailAddress" id="email-address">
-                Please enter the email address where you would like the Amazon gift card to be delivered to.
-            </label>
-            <br>
-
-            <!-- Text input for email -->
-            <input type="email" name="emailAddress" id="emailAddress" placeholder="Enter your email" required>
-        </div>
-        <br>
-        <label for="authen_token"> Please enter the code:</label>
-        </br></br>
-        <input type="password" id="authen_token" name="authen_token" required />
-
-
-        <p style="color:red" id="message_highlighted"> </p>
-        <br>
-        <button type="submit" value="submit" id="submitButton">
-            Start Experiment
-        </button>
-
-    </form>
-</div>
-<div id="puzzle" style="display: none; margin-right: 3%; margin-left: 3%; margin-bottom: 3%;  margin-top: 3%; "">
-
-    <h2>
-        The following is a puzzle task that you will be asked to complete before the study.
-        Once you complete it, please enter the code given below. <br>
-    </h2>
-
-    <iframe id="puzzle_frame" src="https://codeinterface-85b5e.web.app/interface.html"></iframe>
-    <br>
-    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;"
-    <label for="puzzle_token"> Please enter the code:</label>
-    </br></br>
-    <input  id="puzzle_token" name="puzzle_token" required />
-    <br>
-    <p style="color:red" id="message_highlighted_puzzle"> </p>
-
-    <button type="submit" value="submit" id="puzzleSubmitButton">
-        Submit
-    </button>
-
-</div>
-
+    </div>
 
 
 

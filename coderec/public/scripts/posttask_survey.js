@@ -14,88 +14,165 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 const appCheck = firebase.appCheck();
 appCheck.activate(
-  new firebase.appCheck.ReCaptchaEnterpriseProvider("6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"  ),
+  new firebase.appCheck.ReCaptchaEnterpriseProvider(
+    "6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"
+  ),
   true // Set to true to allow auto-refresh.
 );
-console.log('user logged in', firebase.auth().currentUser);
+console.log("user logged in", firebase.auth().currentUser);
 
 // remove endTime and code from local storage to reset
 localStorage.removeItem("endTime");
 localStorage.removeItem("code");
 
+
+var response_id;
+var task_id;
+var exp_condition;
+var worker_id;
+function loadlocalstorage() {
+  var myData = localStorage["objectToPass"];
+  myData = JSON.parse(myData);
+  response_id = myData[0];
+  task_id = myData[1];
+  exp_condition = myData[2];
+  worker_id = myData[3];
+  // set next puzzle location
+  var puzzle_frame = document.getElementById("puzzle_frame");
+  puzzle_frame.src = "https://ccl-post.meteorapp.com/?worker_id=" + worker_id;
+  //showlocalstorage();
+}
+loadlocalstorage();
+
+
 var db = firebase.firestore();
 
-/* 
+// when puzzleSubmitButton is clicked
+var puzzleSubmitButton = document.getElementById("puzzleSubmitButton");
+puzzleSubmitButton.addEventListener("click", puzzleSubmit);
 
-document.getElementById("proceed_exp").onclick = function() {
-
-    var quest1 = document.getElementById("quest1").value;
-    var quest2 = document.getElementById("quest2").value;
-  
-    if (firebase.auth().currentUser){
-      console.log("logged in");
-    }
-    if (quest1 != "" && quest2 != "") {
-      db.collection("responses").doc(response_id).update({
-          outake_quest1: quest1,
-          outake_quest2: quest2,
-          completed_task: 1
-        })
-        .then(() => {
-          console.log("Document successfully written!");
-          document.getElementById("body_end").style.display = "none";
-          document.getElementById("header_end").innerHTML = "Please copy the code below into the Prolific stuy on the Prolific site and then you can close this window as the task is over.";
-          document.getElementById("header_end").innerHTML += "<br> If you do not copy the code, your study will not be approved.";
-          var worker_id = response_id.split("-");
-          document.getElementById("worker_id_send").innerHTML = "C1I4M3L1";
-  
-          firebase.auth().signOut().then(() => {
-            console.log("signed out");
-          }).catch((error) => {
-            console.log(error);
-          });
-  
-  
-        })
-        .catch((error) => {
-          console.error("Error writing document: ", error);
-        });
-    } else {
-      document.getElementById("message_highlighted").innerHTML = "Please answer all questions";
-    }
-  };
-  
-   */
-
-// FOR THE SLIDERS 
-document.addEventListener('DOMContentLoaded', function() {
-    var submitButton = document.getElementById('submitButton');
-    var ranges = document.querySelectorAll('input[type="range"]');
-    var interactedRanges = {};
-
-    // Initialize interactedRanges with false for each range input
-    ranges.forEach(function(range) {
-        interactedRanges[range.id] = false;
+function puzzleSubmit(event) {
+  var puzzle_code = document.getElementById("puzzle_token").value;
+  if (puzzle_code == "puzzle") {
+    
+    var time_now = new Date();
+    var time_now_string = time_now.toString();
+    db.collection("responses")
+    .doc(response_id)
+    .update({
+      completed_post_puzzle: time_now_string,
+    })
+    .then(() => {
+      console.log("Document successfully written!");
+      document.getElementById("survey").style.display = "block";
+      document.getElementById("puzzle").style.display = "none";
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
     });
 
-    ranges.forEach(function(range) {
-        range.addEventListener('change', function() {
-            interactedRanges[this.id] = true;
 
-            // Check if all ranges have been interacted with
-            var allInteracted = Object.keys(interactedRanges).every(function(key) {
-                return interactedRanges[key];
-            });
+  } else {
+    var error_answer = document.getElementById("message_highlighted_puzzle");
+    error_answer.innerHTML = "incorrect puzzle code";
+  }
+  return false;
+}
 
-            if (allInteracted) {
-                // change background color of submit button
-                submitButton.style.backgroundColor = 'green';
-                submitButton.disabled = false;
-            }
-        });
+var form = document.getElementById("form");
+form.addEventListener("submit", submit);
+
+
+function submit(event) {
+  // add post survey
+  event.preventDefault();
+  // Retrieve the value for the AI Tool Typical Usage
+  var aiToolTypicalUsage = document.getElementById("aiToolTypicalUsage").value;
+  // Retrieve the value for the Additional Comments
+  var aiToolFreeForm = document.getElementById("aiToolFreeForm").value;
+  // Retrieve the value for the Mental Demand
+  var mentalDemand = document.getElementById("mentalDemand").value;
+  // Retrieve the value for the Physical Demand
+  var physicalDemand = document.getElementById("physicalDemand").value;
+  // Retrieve the value for the Temporal Demand
+  var temporalDemand = document.getElementById("temporalDemand").value;
+  // Retrieve the value for the Performance
+  var performance = document.getElementById("performance").value;
+  // Retrieve the value for the Effort
+  var effort = document.getElementById("effort").value;
+  // Retrieve the value for the Frustration
+  var frustration = document.getElementById("frustration").value;
+
+  var time_now_string = new Date().toString();
+  db.collection("responses")
+    .doc(response_id)
+    .update({
+      completed_task: 1,
+      completed_task_time: time_now_string,
+      aiToolTypicalUsage: aiToolTypicalUsage,
+      aiToolFreeForm: aiToolFreeForm,
+      mentalDemand: mentalDemand,
+      physicalDemand: physicalDemand,
+      temporalDemand: temporalDemand,
+      performance: performance,
+      effort: effort,
+      frustration: frustration,
+    })
+    .then(() => {
+      document.getElementById("survey").style.display = "none";
+      document.getElementById("puzzle").style.display = "none";
+      document.getElementById("end_task").style.display = "block";
+      firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        console.log("signed out");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    // clear all local storage
+    localStorage.clear();
+
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
     });
+  
+}
+
+
+
+
+
+// FOR THE SLIDERS
+document.addEventListener("DOMContentLoaded", function () {
+  var submitButton = document.getElementById("submitButton");
+  var ranges = document.querySelectorAll('input[type="range"]');
+  var interactedRanges = {};
+
+  // Initialize interactedRanges with false for each range input
+  ranges.forEach(function (range) {
+    interactedRanges[range.id] = false;
+  });
+
+  ranges.forEach(function (range) {
+    range.addEventListener("change", function () {
+      interactedRanges[this.id] = true;
+
+      // Check if all ranges have been interacted with
+      var allInteracted = Object.keys(interactedRanges).every(function (key) {
+        return interactedRanges[key];
+      });
+
+      if (allInteracted) {
+        // change background color of submit button
+        submitButton.style.backgroundColor = "green";
+        submitButton.disabled = false;
+      }
+    });
+  });
 });
-
 
 // FOR THE SLIDERS
 function updateSliderValue(slider) {

@@ -13,14 +13,23 @@
 
 <body style=" max-width: 100%; overflow-x: hidden;  height: auto;">
 
+
+    <div id="timeout_popup" class="popup" style="display: none;">
+        <h2>Time's Up!</h2>
+        <p> You have reached the end of the coding part of the studys. 
+        </p>
+        <br>
+        <button onclick="proceed_timeout()">Proceed</button>
+    </div>
+
     <!-- Tutorial popup -->
     <div id="popup_tutorial" class="popup">
         <!-- First Page: Task Introduction -->
         <div class="popup-page" id="page1">
             <h2>Study Introduction</h2>
             <p>Welcome to the user study! You will first complete a tutorial task to make you familiar with the study.
-                <br> After the tutorial task, a timer for 30 minutes will turn on where you will try to solve as many
-                coding tasks as possible.
+                <br> After the tutorial task, you will have 30 minutes total where you will try to solve as many
+                coding tasks as possible one at a time.
             </p>
             <br>
             <button onclick="showPage(2)">Next</button>
@@ -144,9 +153,10 @@
         //});
     </script>
     <script src="./scripts/interface/cloud_functions_helper.js"></script>
-    <script src="./scripts/interface/interface_logic.js"></script>
     <script src="./scripts/interface//interface_things.js"></script>
     <script src="./scripts/interface/task_logic.js"></script>
+    <!-- <script src="./scripts/interface/interface_logic.js"></script> -->
+
 </body>
 
 </html>

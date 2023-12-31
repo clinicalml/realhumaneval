@@ -4,12 +4,14 @@ var unit_tests = [];
 var tutorial_function_signature = "";
 var tutorial_unit_test = "";
 var tutorial_task_description = "";
+
 // defaults
 var model = "togethercomputer/CodeLlama-7b";
 var max_tokens = 20;
 var db = firebase.firestore();
 var response_id;
 var task_id;
+var worker_id;
 var exp_condition;
 var last_code_saved = "";
 // loged data
@@ -39,6 +41,7 @@ function loadlocalstorage() {
   response_id = myData[0];
   task_id = myData[1];
   exp_condition = myData[2];
+  worker_id = myData[3];
   //showlocalstorage();
 }
 
@@ -61,6 +64,11 @@ function loadTaskData() {
       max_tokens = query_snapshot.data().max_tokens;
       loadCurrentTask();
       initializeProgressBar();
+      if (model != "none"){
+        var script = document.createElement("script");
+        script.src = "./scripts/interface/interface_logic.js"
+        document.head.appendChild(script);
+      }
 
     })
     .catch(function (error) {

@@ -1,28 +1,21 @@
 
 client side:
 
-- add telemetry
-
-- fix timer (if timer countdown is 0, then exit)
-
-- on exit: sign out, clear localdata ...
-clarify task is programming
-hide slider 
-
-- add puzzle tasks
-
-- auto delete code on submit: fix issue
+- fix bugs in interface coding: due to suggesion in middle
 
 - add a bunch of demo tasks
 
-for logging the accepts
+- enable no copilot
 
-- preregi https://aspredicted.org/blind.php?x=Z3D_Z2B
-https://aspredicted.org/blind.php?x=LMM_4K9
+- enable no puzzle
 
-- add puzzle task
+- add codes from puzzles once Mo does it
 
 - pre registration https://aspredicted.org/
+
+ preregi https://aspredicted.org/blind.php?x=Z3D_Z2B
+https://aspredicted.org/blind.php?x=LMM_4K9
+
 
 one compiler supported libraries:
 https://onecompiler.com/python/3x9knsj24
