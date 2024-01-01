@@ -192,8 +192,9 @@ function updateTimer(endTime) {
 }
 
 // Initialize the timer when the page loads
-
+var progressbar_initialized = false;
 function initializeProgressBar() {
+  progressbar_initialized = true;
   var progress = document.getElementById("taskProgress");
   var progressText = document.getElementById("progressText");
 
@@ -260,7 +261,9 @@ function restoreAfterRefresh() {
   else{
     telemetry_data = [];
   }
+  if (progressbar_initialized){
   updateProgress(); // progress bar
+  }
 }
 
 restoreAfterRefresh();

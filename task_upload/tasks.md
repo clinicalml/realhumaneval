@@ -56,7 +56,7 @@ We pick 4 common types of settings we think programmers would benefit from LLM s
 
 ##  Python interview problems → LLM would be helpful in getting logic
 
-- HumanEval/91 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/91.md
+- HumanEval/91 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/91.md 
 ```python
 def is_bored(S):
     """
@@ -243,6 +243,64 @@ def check(candidate):
 
     # Check some edge cases that are easy to work out by hand.
     assert True
+```
+
+- HumanEval/8 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/8.md
+
+```python
+def sum_product(numbers):
+    """ For a given list of integers, return a tuple consisting of a sum and a product of all the integers in a list.
+    Empty sum should be equal to 0 and empty product should be equal to 1.
+    >>> sum_product([])
+    (0, 1)
+    >>> sum_product([1, 2, 3, 4])
+    (10, 24)
+    """
+```
+
+```python
+def check(candidate):
+    assert candidate([]) == (0, 1)
+    assert candidate([1, 1, 1]) == (3, 1)
+    assert candidate([100, 0]) == (100, 0)
+    assert candidate([3, 5, 7]) == (3 + 5 + 7, 3 * 5 * 7)
+    assert candidate([10]) == (10, 10)
+```
+
+- HumanEval/40 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/40.md
+
+```python
+def triples_sum_to_zero(l):
+    """
+    triples_sum_to_zero takes a list of integers as an input.
+    it returns True if there are three distinct elements in the list that
+    sum to zero, and False otherwise.
+
+    >>> triples_sum_to_zero([1, 3, 5, 0])
+    False
+    >>> triples_sum_to_zero([1, 3, -2, 1])
+    True
+    >>> triples_sum_to_zero([1, 2, 3, 7])
+    False
+    >>> triples_sum_to_zero([2, 4, -5, 3, 9, 7])
+    True
+    >>> triples_sum_to_zero([1])
+    False
+    """
+```
+
+
+```python
+def check(candidate):
+    assert candidate([1, 3, 5, 0]) == False
+    assert candidate([1, 3, 5, -1]) == False
+    assert candidate([1, 3, -2, 1]) == True
+    assert candidate([1, 2, 3, 7]) == False
+    assert candidate([1, 2, 5, 7]) == False
+    assert candidate([2, 4, -5, 3, 9, 7]) == True
+    assert candidate([1]) == False
+    assert candidate([1, 3, 5, -100]) == False
+    assert candidate([100, 3, 5, -100]) == False
 ```
 
 ## Data manipulation tasks → LLM would be helpful in remembering syntax

@@ -1,0 +1,6 @@
+{
+    "name": "HumanEval/40",
+    "function_signature": "def triples_sum_to_zero(l):",
+    "task_description": "triples_sum_to_zero takes a list of integers as an input. It returns True if there are three distinct elements in the list that sum to zero, and False otherwise.\n\n>>> triples_sum_to_zero([1, 3, 5, 0])\nFalse\n>>> triples_sum_to_zero([1, 3, -2, 1])\nTrue\n>>> triples_sum_to_zero([1, 2, 3, 7])\nFalse\n>>> triples_sum_to_zero([2, 4, -5, 3, 9, 7])\nTrue\n>>> triples_sum_to_zero([1])\nFalse",
+    "unit_test": "assert triples_sum_to_zero([1, 3, 5, 0]) == False\nassert triples_sum_to_zero([1, 3, 5, -1]) == False\nassert triples_sum_to_zero([1, 3, -2, 1]) == True\nassert triples_sum_to_zero([1, 2, 3, 7]) == False\nassert triples_sum_to_zero([1, 2, 5, 7]) == False\nassert triples_sum_to_zero([2, 4, -5, 3, 9, 7]) == True\nassert triples_sum_to_zero([1]) == False\nassert triples_sum_to_zero([1, 3, 5, -100]) == False\nassert triples_sum_to_zero([100, 3, 5, -100]) == False"
+}
