@@ -2,19 +2,18 @@
 const wait_time_for_sug = 1500; // in milliseconds
 const context_length = 6000; // in characters, in theory should multiply context token length by 4 to get character limit
 // VARIABLES used
-let currentlyGenerating = false; // Flag to track if appendCustomString is in progress
+let isAppending = false; // Flag to track if appendCustomString is in progress
 var currentlyShown = false;
 var Range = ace.require("ace/range").Range;
 let typingTimeout;
 let customStringMarkerId; // This will hold the ID of the marker for our custom string
-var customString = ""; // This will hold the suggestion that we will append to the editor
+var customString = ""; // This will hold the custom string that we will append to the editor
 var lastSuggestion = "";
-var cursorSuggestion = "";
+var cursorString = "";
 var codeAtlastReject = editor.getValue();
 var suggestions_shown_count = 0;
 var thinkingIcon = document.getElementById('thinkingIcon');
 var suggestion_id = 0;
-
 var undoManager = editor.session.getUndoManager();
 
 /////////////////////////////////////////
@@ -22,6 +21,7 @@ var undoManager = editor.session.getUndoManager();
 /////////////////////////////////////////
 
 // check if programmer is actively typing
+
 
 
 editor.session.on("change", handleChange);
@@ -36,10 +36,12 @@ editor.selection.on("changeSelection", handleandReject);
 editor.session.on("changeScrollTop", handleandReject);
 
 
+
 function handleandReject(){
-  rejectSuggestion();
   handleChange();
+  rejectSuggestion();
 }
+
 
 
 function handleChange() {
@@ -50,10 +52,10 @@ function handleChange() {
 
   typingTimeout = setTimeout(function () {
     if (customString == "" && selectedText == "") {
-      if (editor.getValue() != codeAtlastReject && !currentlyGenerating) {
-        currentlyGenerating = true;
+      if (editor.getValue() != codeAtlastReject && !isAppending) {
+        isAppending = true;
         appendCustomString().then((response) => {
-          if (currentlyGenerating == true) {
+          if (isAppending == true) {
             suggestions_shown_count += 1;
           }
         });
@@ -65,7 +67,7 @@ function handleChange() {
 // Add suggestion
 function appendCustomString() {
   return new Promise((resolve, reject) => {
-    if (TODO) {
+    if (customString == "") {
       // make spinning AI logo
       if (!thinkingIcon.classList.contains('spinning')) {
         thinkingIcon.style.display = 'inline-block';
@@ -117,6 +119,7 @@ function appendCustomString() {
         timestamp: Date.now(),
       });
 
+      // TODO:  CHANGE THESE TWO LATER
       //max_tokens = parseInt(document.getElementById("maxTokens").value);
       //model = document.getElementById("modelSelector").value;
       // prepend to prefix code "# this code is in Python" - to tell LLM that the code is in Python
@@ -164,7 +167,7 @@ function appendCustomString() {
 function addSuggestion(response_string) {
   customString = response_string;
       lastSuggestion = response_string;
-      if (currentlyGenerating == true) {
+      if (isAppending == true) {
         // TODO: can we get the suggestion probability?
         // remove spinning AI
         thinkingIcon.style.display = 'inline-block';
@@ -178,7 +181,7 @@ function addSuggestion(response_string) {
         // get the all the text from the editor
         // Append the custom string to the editor at cursor location
         editor.session.insert({ row: row, column: column }, customString);
-        cursorSuggestion = cursor;
+        cursorString = cursor;
         currentlyShown = true;
         // keep cursor at location before the string was appended
         editor.gotoLine(row + 1, column);
@@ -201,7 +204,7 @@ function addSuggestion(response_string) {
           timestamp: Date.now(),
         });
 
-        currentlyGenerating = false;
+        isAppending = false;
       }
   }
 
@@ -212,7 +215,7 @@ editor.commands.addCommand({
   bindKey: { win: "Ctrl-Enter", mac: "Command-Enter" },
   exec: function (editor) {
     rejectSuggestion();
-    currentlyGenerating = true;
+    isAppending = true;
     telemetry_data.push({
       event_type: "request_suggestion",
       suggestion_id: suggestion_id,
@@ -220,7 +223,7 @@ editor.commands.addCommand({
       timestamp: Date.now(),
     });
     appendCustomString().then((response) => {
-      if (currentlyGenerating == true) {
+      if (isAppending == true) {
         suggestions_shown_count += 1;
       }
     });
@@ -255,8 +258,8 @@ editor.commands.on("exec", function (e) {
 
       editor.session.removeMarker(customStringMarkerId);
       // remove the custom string from the editor
-      let row = cursorSuggestion.row;
-      let column = cursorSuggestion.column;
+      let row = cursorString.row;
+      let column = cursorString.column;
       var string_added_column = customString.length;
       var string_added_row = customString.split("\n").length - 1;
       var endRow = row + string_added_row;
@@ -272,7 +275,7 @@ editor.commands.on("exec", function (e) {
       }
 
       var rangeToRemove = new Range(row, column, endRow, endColumn);
-      if (cursorSuggestion != ""){
+      if (cursorString != ""){
       editor.session.replace(rangeToRemove, "");
       }
       // add the key that was pressed
@@ -313,7 +316,7 @@ editor.commands.on("exec", function (e) {
           { row: row, column: column },
           remainderSuggestion
         );
-        cursorSuggestion = cursor;
+        cursorString = cursor;
         // keep cursor at location before the string was appended
         editor.gotoLine(row + 1, column);
         // Highlight the appended string
@@ -373,8 +376,8 @@ function acceptSuggestion() {
 
   editor.session.removeMarker(customStringMarkerId);
   let cursor = editor.getCursorPosition();
-  let row = cursorSuggestion.row;
-  let column = cursorSuggestion.column;
+  let row = cursorString.row;
+  let column = cursorString.column;
   editor.gotoLine(
     row + 1 + customString.split("\n").length - 1,
     column + customString.length
@@ -385,7 +388,7 @@ function acceptSuggestion() {
   // Triger a change event to show the next suggestion
   lastSuggestion = "";
   handleChange();
-  currentlyGenerating = false;
+  isAppending = false;
   currentlyShown = false;
 }
 
@@ -403,8 +406,8 @@ function rejectSuggestion() {
     console.log("rejecting suggestion");
     editor.session.removeMarker(customStringMarkerId);
     // remove the custom string from the editor
-    let row = cursorSuggestion.row;
-    let column = cursorSuggestion.column;
+    let row = cursorString.row;
+    let column = cursorString.column;
     // undoManager.undo(editor.session);
     var string_added_column = customString.length;
     var string_added_row = customString.split("\n").length - 1;
@@ -421,14 +424,14 @@ function rejectSuggestion() {
     }
 
     var rangeToRemove = new Range(row, column, endRow, endColumn);
-    if (cursorSuggestion != ""){
+    if (cursorString != ""){
       editor.session.replace(rangeToRemove, "");
     }
     // add the key that was pressed
     customString = "";
     codeAtlastReject = editor.getValue();
   }
-  currentlyGenerating = false;
+  isAppending = false;
   currentlyShown = false;
 }
 

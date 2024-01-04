@@ -3,8 +3,6 @@ client side:
 
 - add loading when buttons pressed
 
-- fix spacing for output
-
 - problems with reject
 
 - task index

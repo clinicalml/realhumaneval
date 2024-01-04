@@ -104,9 +104,6 @@
             <progress id="taskProgress" value="0" max="5"></progress>
             <span id="progressText">0/5 tasks completed</span>
         </div>
-
-
-
     </div>
 
 
@@ -121,9 +118,11 @@
         <button id="runCodeTest" style="background-color: rgb(130, 14, 14); font-size: large;"
             onclick="runCodeTest()">📤</i>Submit</button>
     </div>
-
-    Output of Run:
-    <div id="output"></div>
+    <div class="container" style=" justify-content: center; align-items: center ;">
+       <span>Output of Run:   </span> 
+        <div id="output" style="height: 5vh; width: 80vw;"></div>
+    </div>
+    
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>

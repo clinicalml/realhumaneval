@@ -93,10 +93,18 @@ body {
 
 
 #output {
-  border: 1px solid #ccc;
-  padding: 15px;
-  margin-top: 20px;
+  font-family: 'Courier New', monospace;
+  color: #333; /* Dark text color for readability */
+  background-color: #f9f9f9; /* Light background */
+  border: 1px solid #ddd; /* Light grey border */
+  padding: 5px;
+  margin: 10px 0;
+  overflow: auto; /* Enables scrolling if content is too long */
+  white-space: pre-wrap; /* Keeps the formatting of the output */
+  word-break: break-all; /* Ensures long words/lines don't overflow */
+  max-height: 50vh; /* Adjust as needed */
 }
+
 
 button {
     margin: 10px 10px;
