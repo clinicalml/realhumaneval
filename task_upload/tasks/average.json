@@ -1,5 +1,5 @@
 {
-    "function_signature": "def average(nums)",
+    "function_signature": "def average(nums):",
     "task_description": "Write a Python function named average that calculates and returns the average of a list of numbers. The function should take one argument, nums, which is a list of numerical values. The average should be calculated as the sum of all elements in the list divided by the number of elements. If the list is empty, the function should return 0. \n\n The function signature should be: def average(nums)",
     "unit_test": "assert average([1, 2.5, 3, 4.5]) == 2.75\nassert average([-10, -20, -30]) == -20\nassert average([]) == 0",
     "name": "Average"

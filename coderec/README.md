@@ -1,9 +1,15 @@
 
 client side:
 
-- fix bugs in interface coding: due to suggesion in middle: fixed in theory
+- add loading when buttons pressed
 
-- add a bunch of demo tasks
+- fix spacing for output
+
+- problems with reject
+
+- task index
+
+- add model probs in api call
 
 - enable no copilot: change visuals based on that later
 

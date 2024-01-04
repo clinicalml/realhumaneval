@@ -305,20 +305,93 @@ def check(candidate):
 
 ## Data manipulation tasks → LLM would be helpful in remembering syntax
 
-[ ADD Valeries task]
+(from valerie)
 
+from ds1000
 
 ## Machine Learning Problems → LLM would be helpful for ideation
 
 [ ADD Valeries task]
 
 
-
-
-## Editing Existing Code → LLM would be helpful as it can quickly digest existing code 
+## Editing and Augmenting Existing Code → LLM would be helpful as it can quickly digest existing code 
 
 [ create task inspired by my prior work]
 
+ Given the following class, this class is a Retreiver which given a set of numerical vectors and a paramter k, can return the k-nearest neighbors of a given vector.
+
+ Perform the following edits to the code:
+
+ -  write a method that returns the least similar k vectors
+ -  write a method that given a set of query vectors, returns the top k vectors for each of the query vectors
+ -  create a method to append new vectors to the already vectors in Retreiver
+ -  create a new distance function that instead of norm we make it a weighted distance as follows:
+
+    Compute maximum scale of each feature on the training set:
+
+    $$ scales = [\max_{i}(X_{1,i}), \cdots, \max_{i}(X_{d,i}),] $$
+
+    Then let the distance function be:
+
+    $$ dist(x,z) = \sum_i \frac{1}{scales[i]} * (x_i - z_i)^2 $$
+- create a method to change k to user specified value
 
 
+```python
+import numpy as np
+class Retreiver:
+    def __init__(self, vectors, k):
+        self.vectors = vectors
+        self.k = k
+    
+    def distance(self, query):
+        ''' 
+        query: single numpy arrray
+        return: inverse l2 distances from query to the vectors
+        '''
+        distances = np.linalg.norm(self.vectors - query, axis=1)
+        return distances
+    
+
+    def get_top_k_similar_vectors(self, query):
+        '''
+        query: single numpy array
+        return: top k similar vectors
+        '''
+        scores = self.distance(query)
+        # np.argsort sorts in ascending order
+        indices_top = np.argsort(scores)
+        top_k_indices = indices_top[:self.k]
+        return self.vectors[top_k_indices]
+```
+
+
+- two more
+
+## Repetative Coding Tasks -> LLM suggestions can help in typing speed
+
+
+- Node
+
+Define a class for a node (call it Node) that has attributes: text (string), id (integer), location(string), time (float). 
+
+The class should have a constructor that can set all 4 values  and has methods that set the value of each attribute to user specified value. 
+
+Furthermore, create a method that adds a certain value to the time attribute.
+
+
+
+- Graph 
+
+
+Define a class for a graph (call it Node) that has as attribute a list of nodes.
+
+Create a method that appends an element to the list of nodes.
+
+Create a method that calculates the total time for all the nodes in the Graph. 
+  
+Create a method that prints the name of all the nodes in the graph.
+
+
+- Three more tasks
 
