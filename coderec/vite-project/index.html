@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/x-icon" href="static/favicon.ico">
+    <link rel="stylesheet" href="/src/styles/style.css">
+    <link rel="icon" type="image/x-icon" href="/src/assets/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css" />
     <meta charset="UTF-8">
@@ -38,13 +38,12 @@
         <!-- Second Page: Image of Code Editor -->
         <div class="popup-page" id="page2" style="display:none;">
             <h2>Code Editor Information:</h2>
-            <img src="static/interface_pic.JPG" style="width: 39vw; height: 30vh ;" alt="Code Editor">
+            <img src="/src/assets/interface_pic.JPG" style="width: 39vw; height: 30vh ;" alt="Code Editor">
             <p> You will write code in the interface above: a code editor equipped with an AI assistant that provides
                 suggestion inline is applied.
             <ul>
-                <li> The AI provides a suggestion whenever you stop typing for more than 2 seconds.</li>
                 <li> You can accept a suggestion by pressing [TAB] or reject a suggestion by pressing [ESC]. </li>
-                <li> You can also request a suggestion at any time by pressing [CTRL+ENTER] (Windows) or [CMD+ENTER] (Mac). </li>
+                <li> You can also request a suggestion by pressing [CTRL+ENTER] (Windows) or [CMD+ENTER] (Mac). </li>
                 <li> You can run your code by pressing the "▶️" button and the output will be in the output box below </li>
                 <li> You can submit your final code for evaluation by pressing the "📤" button.  </li>
             </ul>
@@ -60,16 +59,6 @@
 
 
     <div class="top-panel">
-        <!-- <button id="startRecord" onclick="startRecording()">Start Recording</button>
-        <button id="stopRecord" onclick="stopRecording()">Stop Recording</button>
-        <select id="modelSelector">
-            <option value="gpt35">GPT-3.5</option>
-            <option value="togethercomputer/CodeLlama-7b">CodeLlama-7b</option>
-            <option value="togethercomputer/CodeLlama-13b">CodeLlama-13b</option>
-            <option value="togethercomputer/CodeLlama-34b">CodeLlama-34b</option>
-        </select>
-        Max Tokens Suggestion:
-        <input type="number" id="maxTokens" min="1" max="1000" value=20> -->
         <button id="changeThemeButton">Change Theme</button>
 
         <!-- Button to open the popup -->
@@ -86,7 +75,7 @@
                 <b>Model Selector</b> - Selects the model to use for suggestions. <br />
                 <b>Max Tokens Suggestion</b> - Sets the maximum number of tokens to use for suggestions. <br /> -->
                 <b>Show Shortcuts and Button Info</b> - Shows this popup. <br />
-                <img id="ai_icon" src="static/ai_icon.png" style="height: 1em; width: 1em;" /> - When this icon spins,
+                <img id="ai_icon" src="/src/assets/ai_icon.png" style="height: 1em; width: 1em;" /> - When this icon spins,
                 the AI is generating a suggestion <br />
                 <b> Timer </b> - Displays the time remaining in the task. <br />
                 <b> Progress Bar </b> - Displays the progress of the task. <br />
@@ -100,7 +89,7 @@
             <button onclick="hidePopup()">Close</button>
         </div>
         <div id="timer">30:00</div>
-        <img id="thinkingIcon" src="static/ai_icon.png" />
+        <img id="thinkingIcon" src="/src/assets/ai_icon.png" />
         <div id="progressContainer">
             <progress id="taskProgress" value="0" max="5"></progress>
             <span id="progressText">0/5 tasks completed</span>
@@ -109,11 +98,14 @@
 
 
     <div class="container">
-        <div style="margin-right: 5px;" id="taskDescription">
+        <div style="min-width: 40%;" id="taskDescription">
             <p></p>
-        </div>
-        <div id="editor" style="height: 70vh; width: 60vw;"></div>
+        </div> 
+        <div id="editor" style="width: 30%; min-width: 30%; height: 70vh;"></div>
+        <div id="root" style="width: 30%; min-width: 30%; height: 70vh;"></div>
+        <script type="module" src="/src/main.tsx"></script> 
     </div>
+
     <div class="container" style=" justify-content: center; align-items: center;">
         <button onclick="submitCode()" style="font-size: large;">▶️</i>Run</button>
         <button id="runCodeTest" style="background-color: rgb(130, 14, 14); font-size: large;"
@@ -133,17 +125,17 @@
 
     <script
         src="https://www.google.com/recaptcha/enterprise.js?render=6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript"
-        charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+
     <script>
         var editor = ace.edit("editor");
         editor.setTheme("ace/theme/monokai");
         editor.session.setMode("ace/mode/python");
         editor.setOption("showPrintMargin", false);
         document.getElementById("editor").style.fontSize = "15px";
+
         ace.require("ace/ext/language_tools");
         editor.setOption("behavioursEnabled", false);
         //editor.setOptions({
@@ -152,9 +144,9 @@
         //  enableLiveAutocompletion: true
         //});
     </script>
-    <script src="./scripts/interface/cloud_functions_helper.js"></script>
-    <script src="./scripts/interface//interface_things.js"></script>
-    <script src="./scripts/interface/task_logic.js"></script>
+    <script src="/src/scripts/interface/cloud_functions_helper.js"></script>
+    <script src="/src/scripts/interface/interface_things.js"></script>
+    <script src="/src/scripts/interface/task_logic.js"></script>
     <!-- <script src="./scripts/interface/interface_logic.js"></script> -->
 
 </body>

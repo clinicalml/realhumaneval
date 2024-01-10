@@ -3,15 +3,19 @@ client side:
 
 - add loading when buttons pressed
 
-- problems with reject
+- task index: not sure the issue
 
-- task index
+- timeout for executing code for more than 30s
+
+- timeout: auto move the person
 
 - add model probs in api call
 
+- add button called restore code to get the function signature loaded back
+
 - enable no copilot: change visuals based on that later
 
-- add codes from puzzles once Mo does it
+- add codes from puzzles once Mo does it - add variable to remove puzzles
 
 - pre registration https://aspredicted.org/
 

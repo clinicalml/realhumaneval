@@ -1,0 +1,271 @@
+/* Apply to all elements */
+* {
+    border-radius: 10px; /* Adjust the radius as needed */
+}
+
+/* for everything inside editor do not apply border radius */
+#editor * {
+    border-radius: 0px;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* style for h1 and h2 */
+h1, h2 {
+    text-align: left;
+}
+h2 {
+  font-size: 1.5em;
+}
+h1 {
+  font-size: 2em;
+}
+
+#thinkingIcon {
+  width: 1.2em; /* Adjust as needed */
+  height: auto; /* Maintain aspect ratio */
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+/* Style for the top panel */
+.top-panel {
+  width: 100%;
+  background-color: #c9c6c6;
+  color: rgb(11, 9, 9);
+  padding: 10px 0;
+  text-align: center;
+}
+
+/* Style for the buttons */
+.top-panel button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.top-panel button:hover {
+  background-color: #45a049;
+}
+
+.errorHighlight {
+  position: absolute;
+  z-index: 20;
+  background-color: grey;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  margin: 10px;
+  font-size: 1em;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-width: 100%;
+}
+
+
+#editor {
+  flex: 30%; /* 40% of the container width */
+}
+
+
+#taskDescription {
+    flex: 40%; /* 40% of the container width */
+    border: 1px solid #ccc; /* For visual representation */
+    padding: 10px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+
+
+#output {
+  font-family: 'Courier New', monospace;
+  color: #333; /* Dark text color for readability */
+  background-color: #f9f9f9; /* Light background */
+  border: 1px solid #ddd; /* Light grey border */
+  padding: 5px;
+  margin: 10px 0;
+  overflow: auto; /* Enables scrolling if content is too long */
+  white-space: pre-wrap; /* Keeps the formatting of the output */
+  word-break: break-all; /* Ensures long words/lines don't overflow */
+  max-height: 50vh; /* Adjust as needed */
+}
+
+
+button {
+    margin: 10px 10px;
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* * Popup box style */
+.popup {
+  max-height: 80vh;
+  display: none;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #ccc;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+  overflow-y: auto;
+
+}
+ 
+
+
+.popup-page {
+  max-height: 80vh;
+  background-color: white;
+  width: 50vw;
+  margin: 10px auto;
+  padding: 20px;
+  text-align: left;
+
+}
+
+/* Add additional styling as needed */
+
+
+/* Overlay style */
+.overlay {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+#timer {
+  font-size: medium;
+  color: black;
+  display: inline-block;
+  /* Add more styles as needed */
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+#progressContainer {
+  position: relative;
+}
+
+#taskProgress {
+  width: 30%; /* Make progress bar fill container */
+}
+
+#progressText {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 0;
+  left: 0;
+  font-size: smaller;
+}
+
+
+
+
+iframe {
+  display: block;       /* Remove default iframe margin */
+  border: none;         /* Optional: Removes the default iframe border */
+  width: 90vw;
+  height: 80vh;
+}

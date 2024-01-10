@@ -48,6 +48,11 @@ Individual coding task structure and example:
 
 For max_tokens, we are using 64 per https://huggingface.co/blog/personal-copilot
 
+40 here https://github.com/bigcode-project/jupytercoder/blob/main/src/api.js (openai)
+
+https://github.com/LucienShui/huggingface-vscode-endpoint-server 64
+
+https://thakkarparth007.github.io/copilot-explorer/codeviz/templates/code-viz.html#m9334&pos=1:1 - single line 
 # STUDY TASKS
 
 
@@ -56,7 +61,7 @@ We pick 4 common types of settings we think programmers would benefit from LLM s
 
 ##  Python interview problems → LLM would be helpful in getting logic
 
-- HumanEval/91 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/91.md 
+### HumanEval/91 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/91.md 
 ```python
 def is_bored(S):
     """
@@ -87,7 +92,7 @@ def check(candidate):
     assert True, "This prints if this assert fails 2 (also good for debugging!)"
 ```
 
-- HumanEval/75 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/75.md
+### HumanEval/75 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/75.md
 
 ```python
 def is_multiply_prime(a):
@@ -117,7 +122,7 @@ def check(candidate):
 
 
 
-- HumanEval/93 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/93.md
+### HumanEval/93 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/93.md
 ```python
 def encode(message):
     """
@@ -150,7 +155,7 @@ def check(candidate):
 ```
 
 
-- HumanEval/108 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/108.md
+### HumanEval/108 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/108.md
 
 ```python
 def count_nums(arr):
@@ -183,7 +188,7 @@ def check(candidate):
 ```
 
 
-- HumanEval/145 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/145.md
+### HumanEval/145 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/145.md
 
 ```python
 def order_by_points(nums):
@@ -215,7 +220,7 @@ def check(candidate):
 ```
 
 
-- HumanEval/155 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/155.md
+### HumanEval/155 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/155.md
 
 ```python
 def even_odd_count(num):
@@ -245,7 +250,7 @@ def check(candidate):
     assert True
 ```
 
-- HumanEval/8 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/8.md
+### HumanEval/8 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/8.md
 
 ```python
 def sum_product(numbers):
@@ -267,7 +272,7 @@ def check(candidate):
     assert candidate([10]) == (10, 10)
 ```
 
-- HumanEval/40 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/40.md
+### HumanEval/40 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/40.md
 
 ```python
 def triples_sum_to_zero(l):
@@ -305,17 +310,416 @@ def check(candidate):
 
 ## Data manipulation tasks → LLM would be helpful in remembering syntax
 
-(from valerie)
+### Transform input pandas dataframe to output dataframe (Valerie problem, solved by gpt-4)
 
-from ds1000
+Task description:
+```python
++----+-------+---------+---------------------+----------+
+|    |   age | color   | dates               |   height |
+|----+-------+---------+---------------------+----------|
+|  0 |     1 | blue    | 2019-03-06 00:00:00 |  2.72656 |
+|  1 |     4 | blue    | 2019-03-05 00:00:00 |  4.77665 |
+|  2 |     4 | green   | 2019-03-10 00:00:00 |  8.12169 |
+|  3 |    10 | brown   | 2019-03-07 00:00:00 |  4.79977 |
+|  4 |    20 | green   | 2019-03-01 00:00:00 |  3.92785 |
++----+-------+---------+---------------------+----------+
 
-## Machine Learning Problems → LLM would be helpful for ideation
 
-[ ADD Valeries task]
+This is a pandas dataframe provided to you above as input.
+
+You need to transform it exactly to the following output dataframe:
+
++----+----------+--------+---------+---------+---------+-------+----------+
+|    | age      |   blue |   brown |   green |   month |   day |   height |
+|----+----------+--------+---------+---------+---------+-------+----------|
+|  0 | Under 18 |      1 |       0 |       0 |       3 |     6 |        3 |
+|  1 | Under 18 |      1 |       0 |       0 |       3 |     5 |        5 |
+|  2 | Under 18 |      0 |       0 |       1 |       3 |    10 |        8 |
+|  3 | Under 18 |      0 |       1 |       0 |       3 |     7 |        5 |
+|  4 | 18-25    |      0 |       0 |       1 |       3 |     1 |        4 |
++----+----------+--------+---------+---------+---------+-------+----------+
+
+Your code should be placed inside a function called transform_df that takes as input a dataframe and returns the transformed dataframe
+```
+
+Code provided (function signature)
+
+```python
+import pandas as pd
+from io import StringIO
+
+# Original dataset
+data = """
+age,color,dates,height
+1,blue,2019-03-06,2.72656
+4,blue,2019-03-05,4.77665
+4,green,2019-03-10,8.12169
+10,brown,2019-03-07,4.79977
+20,green,2019-03-01,3.92785
+"""
+
+# Read the dataset into a DataFrame
+df = pd.read_csv(StringIO(data))
+
+def transform_df(df):
+    # Your code here
+
+print(transform_df(df))
+
+```
+
+Testing code:
+
+```python
+
+data = """
+age,color,dates,height
+1,blue,2019-03-06,2.72656
+4,blue,2019-03-05,4.77665
+4,green,2019-03-10,8.12169
+10,brown,2019-03-07,4.79977
+20,green,2019-03-01,3.92785
+"""
+df = pd.read_csv(StringIO(data))
+new_data_testing = """
+age,blue,brown,green,month,day,height
+Under 18,1,0,0,3,6,3
+Under 18,1,0,0,3,5,5
+Under 18,0,0,1,3,10,8
+Under 18,0,1,0,3,7,5
+18-25,0,0,1,3,1,4
+"""
+def evaluate_correctness(target_df, input_df):
+    target_df.reset_index(drop=True, inplace=True)
+    input_df.reset_index(drop=True, inplace=True)
+    score = 0
+    for col in target_df.columns:
+        if col not in input_df.columns:
+            score -=1 
+        else:
+            if np.all(target_df[col] != input_df[col]):
+                score-=1
+    for col in input_df.columns:
+        if col not in target_df.columns:
+            score -=1
+    return score
+new_data_df_testing = pd.read_csv(StringIO(new_data_testing))
+assert evaluate_correctness(new_data_df_testing, transform_df(df)) == 0
+```
+
+solution code:
+
+```python
+import pandas as pd
+from io import StringIO
+
+def transform_df(df):
+    # Process the dataset to match the desired format
+    # 1. Convert 'age' to categorical data
+    df['age'] = pd.cut(df['age'], bins=[0, 18, 25, 100], labels=["Under 18", "18-25", "Over 25"], right=False)
+
+    # 2. Convert 'color' to one-hot encoding
+    color_dummies = pd.get_dummies(df['color'])
+    df = pd.concat([df, color_dummies], axis=1)
+
+    # 3. Extract 'month' and 'day' from 'dates'
+    df['dates'] = pd.to_datetime(df['dates'])
+    df['month'] = df['dates'].dt.month
+    df['day'] = df['dates'].dt.day
+
+    # 4. Round 'height' to nearest integer
+    df['height'] = df['height'].round().astype(int)
+
+    # 5. Drop the original 'color' and 'dates' columns
+    df.drop(['color', 'dates'], axis=1, inplace=True)
+
+    # Rearrange columns to match the desired format
+    df = df[['age', 'blue', 'brown', 'green', 'month', 'day', 'height']]
+    return df
+```
+
+### Unstructured input to output transformation First one
+
+
+Task description (gpt-4 fails)
+```python
++----+--------+--------+---------+--------+--------+
+|    |   col1 |   col2 |    col3 |   col4 |   col5 |
+|----+--------+--------+---------+--------+--------|
+|  0 |      6 |      4 | 0.56713 |     10 |      4 |
+|  1 |      1 |      6 | 2.72656 |      9 |      6 |
+|  2 |      4 |      3 | 4.77665 |     10 |      1 |
+|  3 |      4 |      5 | 8.12169 |      5 |      3 |
+|  4 |      8 |      8 | 4.79977 |      4 |      4 |
+|  5 |     10 |      7 | 3.92785 |      1 |      9 |
++----+--------+--------+---------+--------+--------+
+
+This is a pandas dataframe provided to you above as input.
+
+You need to transform it exactly to the following output dataframe:
+
++----+--------+--------+---------+--------+
+|    |   col1 |   col2 |    col3 |   col4 |
+|----+--------+--------+---------+--------|
+|  0 |     60 |      1 | 0.56713 |   1000 |
+|  1 |      9 |      3 | 2.72656 |    900 |
+|  2 |     40 |      5 | 4.77665 |   1000 |
+|  3 |     20 |      8 | 8.12169 |    500 |
+|  4 |     32 |      5 | 4.79977 |    400 |
+|  5 |     10 |      4 | 3.92785 |    100 |
++----+--------+--------+---------+--------+
+
+Your code should be placed inside a function called transform_df that takes as input a dataframe and returns the transformed dataframe. There are patterns that you have to discover.
+```
+
+Code provided (function signature)
+
+```python
+import pandas as pd
+from io import StringIO
+
+# Original dataset
+data = """
+col1,col2,col3,col4,col5
+6,4,0.5671297731744318,10,4
+1,6,2.726562945801132,9,6
+4,3,4.776651173213499,10,1
+4,5,8.121687287754932,5,3
+8,8,4.799771723750573,4,4
+10,7,3.9278479610082973,1,9
+"""
+
+# Read the dataset into a DataFrame
+df = pd.read_csv(StringIO(data))
+
+def transform_df(df):
+    # Your code here
+
+print(transform_df(df))
+
+```
+
+
+
+Testing code
+
+```python
+data = """
+col1,col2,col3,col4,col5
+6,4,0.5671297731744318,10,4
+1,6,2.726562945801132,9,6
+4,3,4.776651173213499,10,1
+4,5,8.121687287754932,5,3
+8,8,4.799771723750573,4,4
+10,7,3.9278479610082973,1,9
+"""
+df = pd.read_csv(StringIO(data))
+new_data_testing = """
+col1,col2,col3,col4
+60,1,0.5671297731744318,1000
+9,3,2.726562945801132,900
+40,5,4.776651173213499,1000
+20,8,8.121687287754932,500
+32,5,4.799771723750573,400
+10,4,3.9278479610082973,100
+"""
+def evaluate_correctness(target_df, input_df):
+    # drop index column from both
+    target_df.reset_index(drop=True, inplace=True)
+    input_df.reset_index(drop=True, inplace=True)
+    score = 0
+    for col in target_df.columns:
+        if col not in input_df.columns:
+            score -=1 
+        else:
+            if np.all(target_df[col] != input_df[col]):
+                score-=1
+    for col in input_df.columns:
+        if col not in target_df.columns:
+            score -=1
+    return score
+new_data_df_testing = pd.read_csv(StringIO(new_data_testing))
+assert evaluate_correctness(new_data_df_testing, transform_df(df)) == 0
+```
+
+
+Solution code
+
+```python
+import pandas as pd
+from io import StringIO
+def transform_df(df):
+    df_transformed = df.copy()
+
+    # col1 as the multiplication of col1 and col4
+    df_transformed['col1'] = df['col1'] * df['col4']
+
+    # col2 as col3 truncated to the nearest integer
+    df_transformed['col2'] = df['col3'].round().astype(int)
+
+    # col4 multiplied by 100
+    df_transformed['col4'] = df['col4'] * 100
+
+    # Remove col5
+    df_transformed.drop('col5', axis=1, inplace=True)
+    return df_transformed
+
+```
+
+### Unstructured input to output transformation Second one
+
+Task description:
+```python
++----+--------+--------+----------+--------+--------+
+|    |   col1 |   col2 |     col3 |   col4 |   col5 |
+|----+--------+--------+----------+--------+--------|
+|  0 |      6 |      2 | 4.19195  |      8 |      7 |
+|  1 |      9 |      8 | 6.8522   |      8 |     10 |
+|  2 |     10 |      7 | 2.04452  |     10 |     10 |
+|  3 |      6 |     10 | 8.78117  |      2 |      8 |
+|  4 |      1 |      3 | 0.273876 |      8 |      7 |
+|  5 |      1 |      5 | 6.70468  |      1 |     10 |
++----+--------+--------+----------+--------+--------+
+
+This is a pandas dataframe provided to you above as input.
+
+You need to transform it exactly to the following output dataframe by recognizing the relationship between the input and output dataframes.
+
++----+--------+-----------+----------+
+|    |   col1 |      col2 |     col3 |
+|----+--------+-----------+----------|
+|  0 |      6 | -3.83333  | -3.80805 |
+|  1 |     15 |  2.16667  | -1.1478  |
+|  2 |     25 |  1.16667  | -7.95548 |
+|  3 |     31 |  4.16667  |  6.78117 |
+|  4 |     32 | -2.83333  | -7.72612 |
+|  5 |     33 | -0.833333 |  5.70468 |
++----+--------+-----------+----------+
+
+Your code should be placed inside a function called transform_df that takes as input a dataframe and returns the transformed dataframe. There are patterns that you have to discover.
+```
+
+Code provided (function signature)
+
+```python
+import pandas as pd
+from io import StringIO
+
+# Original dataset
+data = """
+col1,col2,col3,col4,col5
+6,2,4.191945144032948,8,7
+9,8,6.852195003967595,8,10
+10,7,2.0445224973151745,10,10
+6,10,8.781174363909454,2,8
+1,3,0.27387593197926163,8,7
+1,5,6.704675101784022,1,10
+"""
+
+# Read the dataset into a DataFrame
+df = pd.read_csv(StringIO(data))
+
+def transform_df(df):
+    # Your code here
+
+print(transform_df(df))
+
+```
+
+
+
+Testing code
+
+```python
+data = """
+col1,col2,col3,col4,col5
+6,2,4.191945144032948,8,7
+9,8,6.852195003967595,8,10
+10,7,2.0445224973151745,10,10
+6,10,8.781174363909454,2,8
+1,3,0.27387593197926163,8,7
+1,5,6.704675101784022,1,10
+"""
+df = pd.read_csv(StringIO(data))
+new_data_testing = """
+col1,col2,col3
+6,-3.833333333333333,-3.808054855967052
+15,2.166666666666667,-1.1478049960324048
+25,1.166666666666667,-7.9554775026848255
+31,4.166666666666667,6.781174363909454
+32,-2.833333333333333,-7.726124068020738
+33,-0.833333333333333,5.704675101784022
+"""
+def evaluate_correctness(target_df, input_df):
+    # drop index column from both
+    target_df.reset_index(drop=True, inplace=True)
+    input_df.reset_index(drop=True, inplace=True)
+    score = 0
+    for col in target_df.columns:
+        if col not in input_df.columns:
+            score -=1 
+        else:
+            if np.all(target_df[col] != input_df[col]):
+                score-=1
+    for col in input_df.columns:
+        if col not in target_df.columns:
+            score -=1
+    return score
+new_data_df_testing = pd.read_csv(StringIO(new_data_testing))
+assert evaluate_correctness(new_data_df_testing, transform_df(df)) == 0
+```
+
+
+Solution code
+
+```python
+import pandas as pd
+from io import StringIO
+def transform_df(df):
+    df_transformed_requested = df.copy()
+    df_transformed_requested['col1'] = df['col1'].cumsum()
+
+    # col2 minus the average of col2
+    average_col2 = df['col2'].mean()
+    df_transformed_requested['col2'] = df['col2'] - average_col2
+
+    # col3 minus col4
+    df_transformed_requested['col3'] = df['col3'] - df['col4']
+
+    # Remove col4 and col5
+    df_transformed_requested.drop(['col4', 'col5'], axis=1, inplace=True)
+    return df_transformed_requested
+
+```
 
 
 ## Editing and Augmenting Existing Code → LLM would be helpful as it can quickly digest existing code 
 
+- edit existing code
+
+class calculator
+
+class tokenizer
+
+
+- fix code
+
+class Login
+
+class SurveyAnalysis
+
+- augment only
+
+class Retreiver
+
+class DataLoader 
+ split by different conditions
+ balancing 
+
+
+
+
+### Task one
 [ create task inspired by my prior work]
 
  Given the following class, this class is a Retreiver which given a set of numerical vectors and a paramter k, can return the k-nearest neighbors of a given vector.
@@ -371,13 +775,16 @@ class Retreiver:
 ## Repetative Coding Tasks -> LLM suggestions can help in typing speed
 
 
-- Node
+see https://chat.openai.com/share/28873ded-f820-4ebe-a225-d327a051b876
 
-Define a class for a node (call it Node) that has attributes: text (string), id (integer), location(string), time (float). 
+todo list
 
-The class should have a constructor that can set all 4 values  and has methods that set the value of each attribute to user specified value. 
+employee
 
-Furthermore, create a method that adds a certain value to the time attribute.
+event scheduler
+
+classroom
+
 
 
 
@@ -395,3 +802,4 @@ Create a method that prints the name of all the nodes in the graph.
 
 - Three more tasks
 
+classroom 

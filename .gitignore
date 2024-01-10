@@ -17,7 +17,7 @@ functions_python
 .next
 .pnp.js
 .yarn/install-state.gz
-
+/coderec/vite-project/*
 # testing
 /coverage
 
