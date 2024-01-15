@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="static/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI4PYTHON Study </title>
+</head>
+
+<body style=" max-width: 100%; overflow-x: hidden;  height: auto;">
+
+
+    <div id="timeout_popup" class="popup" style="display: none;">
+        <h2>Time's Up!</h2>
+        <p> You have reached the end of the coding part of the studys.
+        </p>
+        <br>
+        <button onclick="proceed_timeout()">Proceed</button>
+    </div>
+
+    <!-- Tutorial popup -->
+    <div id="popup_tutorial" class="popup">
+        <!-- First Page: Task Introduction -->
+        <div class="popup-page" id="page1">
+            <h2>Study Introduction</h2>
+            <p>Welcome to the user study! You will first complete a tutorial task to make you familiar with the study.
+                <br> After the tutorial task, you will have 20 minutes total where you will try to solve as many
+                coding tasks as possible one at a time.
+            </p>
+            <br>
+            <button onclick="showPage(2)">Next</button>
+        </div>
+
+        <!-- Second Page: Image of Code Editor -->
+        <div class="popup-page" id="page2" style="display:none;">
+            <h2>Code Editor Information:</h2>
+            <img src="static/interface_pic.JPG" style="width: 39vw; height: 30vh ;" alt="Code Editor">
+            <p> You will write code in the interface above: a code editor equipped with an AI assistant that provides
+                suggestion inline is applied.
+            <ul>
+                <li> The AI provides a suggestion whenever you stop typing for more than 2 seconds.</li>
+                <li> You can accept a suggestion by pressing [TAB] or reject a suggestion by pressing [ESC]. </li>
+                <li> You can also request a suggestion at any time by pressing [CTRL+ENTER] (Windows) or [CMD+ENTER]
+                    (Mac). </li>
+                <li> You can run your code by pressing the "▶️" button and the output will be in the output box below
+                </li>
+                <li> You can submit your final code for evaluation by pressing the "📤" button. </li>
+            </ul>
+            Note: please be aware that the AI assistant is not perfect and may provide incorrect suggestions. Moreover,
+            the AI may generate potentially offensive suggestions especially if prompted with language that is
+            offensive.
+            </p>
+            <br>
+            <button onclick="closePopup()">Close</button>
+        </div>
+    </div>
+
+
+
+    <div class="top-panel">
+        <!-- <button id="startRecord" onclick="startRecording()">Start Recording</button>
+        <button id="stopRecord" onclick="stopRecording()">Stop Recording</button>
+        <select id="modelSelector">
+            <option value="gpt35">GPT-3.5</option>
+            <option value="togethercomputer/CodeLlama-7b">CodeLlama-7b</option>
+            <option value="togethercomputer/CodeLlama-13b">CodeLlama-13b</option>
+            <option value="togethercomputer/CodeLlama-34b">CodeLlama-34b</option>
+        </select>
+        Max Tokens Suggestion:
+        <input type="number" id="maxTokens" min="1" max="1000" value=20> -->
+        <button id="changeThemeButton">Change Theme</button>
+
+        <!-- Button to open the popup -->
+        <button onclick="showPopup()">Show Shortcuts and Button Info</button>
+        <!-- Overlay for the popup -->
+        <div class="overlay" id="overlay" onclick="hidePopup()"></div>
+
+        <!-- Popup box -->
+        <div class="popup" id="popup">
+            <h2> Button Information</h2>
+            <p>
+                <!-- <b>Start Recording</b> - Starts recording your screen. <br />
+                <b>Stop Recording</b> - Stops recording screen <br />
+                <b>Model Selector</b> - Selects the model to use for suggestions. <br />
+                <b>Max Tokens Suggestion</b> - Sets the maximum number of tokens to use for suggestions. <br /> -->
+                <b>Show Shortcuts and Button Info</b> - Shows this popup. <br />
+                <img id="ai_icon" src="static/ai_icon.png" style="height: 1em; width: 1em;" /> - When this icon spins,
+                the AI is generating a suggestion <br />
+                <b> Timer </b> - Displays the time remaining in the task. <br />
+                <b> Progress Bar </b> - Displays the progress of the task. <br />
+                <b> Run </b> - Runs the code in the editor and displays output in box below code. <br />
+                <b> Submit </b> - Evaluates the code in the editor with unit tests given task. <br />
+            </p>
+            <h2>Keyboard Shortcuts</h2>
+            <p>[TAB] to accept a suggestion<br />
+                [ESC] to reject suggestion<br />
+                [CTRL+ENTER] (Windows) and [CMD+ENTER] (Mac) to request a suggestion</p>
+            <button onclick="hidePopup()">Close</button>
+        </div>
+        <div id="timer">30:00</div>
+        <img id="thinkingIcon" src="static/ai_icon.png" />
+        <div id="progressContainer">
+            <progress id="taskProgress" value="0" max="5"></progress>
+            <span id="progressText">0/5 tasks completed</span>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div style="  height: 70vh; width: 15vw;"  id="taskDescription">
+            <p>
+                test
+        </p>
+        </div>
+        <div id="editor" style="height: 70vh; width: 50vw;"></div>
+        <div id="chat-container" style="height: 70vh; width: 30vw; margin-left: 5px;">
+            <button id="clear-chat">Clear Chat</button>
+            <div id="chat-box"></div>
+            <div id="input-area">
+              <textarea id="user-input" placeholder="Type your message..."></textarea>
+              <button id="send-button">📤</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style=" justify-content: center; align-items: center;">
+        <button onclick="submitCode()" style="font-size: large;">▶️</i>Run</button>
+        <button id="runCodeTest" style="background-color: rgb(130, 14, 14); font-size: large;"
+            onclick="runCodeTest()">📤</i>Submit</button>
+    </div>
+
+
+    <div class="container" style=" justify-content: center; align-items: center ;">
+        <span>Output of Run: </span>
+        <div id="output" style="height: 5vh; width: 80vw;"></div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-functions-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check-compat.js"></script>
+
+    <script
+        src="https://www.google.com/recaptcha/enterprise.js?render=6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript"
+        charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/python");
+        editor.setOption("showPrintMargin", false);
+        document.getElementById("editor").style.fontSize = "15px";
+        ace.require("ace/ext/language_tools");
+        editor.setOption("behavioursEnabled", false);
+        //editor.setOptions({
+        //  enableBasicAutocompletion: true,
+        //  enableSnippets: true,
+        //  enableLiveAutocompletion: true
+        //});
+    </script>
+    <script src="./scripts/interface/cloud_functions_helper.js"></script>
+    <script src="./scripts/interface//interface_things.js"></script>
+    <script src="./scripts/interface/task_logic.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="./scripts/interface_chat/chat_logic.js"></script>
+
+</body>
+
+</html>

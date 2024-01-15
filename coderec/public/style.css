@@ -266,3 +266,100 @@ iframe {
   width: 90vw;
   height: 80vh;
 }
+
+#taskDescription {
+  margin-right: 5px;
+  overflow: auto; /* Enables scrolling if content overflows */
+  resize: horizontal; /* Enables horizontal resizing */
+  border: 1px solid black; /* Optional: adds a border for visibility of resize area */
+  background-color: rgb(255, 255, 255);
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
+}
+
+/* chat style */
+#chat-container {
+  width: 40vw;
+  height: 90vh;
+  border: 1px solid #ccc;
+  border-color: #ccc;
+  padding: 10px;
+  overflow-wrap: break-word;
+  flex-direction: column;
+  display: flex;
+  overflow-x: auto;
+  resize: horizontal;
+}
+
+
+#chat-box {
+  height: 85vh;
+  flex-grow: 1; /* Allow it to take up available space */
+  overflow-y: auto; /* Scroll if content overflows vertically */
+  /* overflow-y: auto; */
+}
+
+#clear-chat {
+  height: 30px;
+  width: 100px;
+}
+
+#text-elem {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#user-input {
+  height: 5vh;
+  width: 34vw;
+  resize: vertical;
+  max-height: 20vh;
+  min-height: 5vh;
+
+}
+
+#input-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#send-button {
+  color: #ddd;
+  width: 5vw;
+  height: 4vh;
+  font-size: 15px;
+  color: black;
+}
+
+.message {
+  margin: 5px;
+  padding: 5px;
+  /* border: 1px solid #ddd; */
+  /* border-radius: 5px; */
+}
+
+/* Existing styles... */
+
+.typing-indicator {
+  font-style: italic;
+  color: grey;
+}
+
+.copy-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+
+
