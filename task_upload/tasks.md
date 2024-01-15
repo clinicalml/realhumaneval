@@ -461,12 +461,12 @@ You need to transform it exactly to the following output dataframe:
 +----+--------+--------+---------+--------+
 |    |   col1 |   col2 |    col3 |   col4 |
 |----+--------+--------+---------+--------|
-|  0 |     60 |      1 | 0.56713 |   1000 |
-|  1 |      9 |      3 | 2.72656 |    900 |
-|  2 |     40 |      5 | 4.77665 |   1000 |
+|  0 |     60 |      0 | 0.56713 |   1000 |
+|  1 |      9 |      2 | 2.72656 |    900 |
+|  2 |     40 |      4 | 4.77665 |   1000 |
 |  3 |     20 |      8 | 8.12169 |    500 |
-|  4 |     32 |      5 | 4.79977 |    400 |
-|  5 |     10 |      4 | 3.92785 |    100 |
+|  4 |     32 |      4 | 4.79977 |    400 |
+|  5 |     10 |      3 | 3.92785 |    100 |
 +----+--------+--------+---------+--------+
 
 Your code should be placed inside a function called transform_df that takes as input a dataframe and returns the transformed dataframe. There are patterns that you have to discover.
@@ -516,12 +516,12 @@ col1,col2,col3,col4,col5
 df = pd.read_csv(StringIO(data))
 new_data_testing = """
 col1,col2,col3,col4
-60,1,0.5671297731744318,1000
-9,3,2.726562945801132,900
-40,5,4.776651173213499,1000
+60,0,0.5671297731744318,1000
+9,2,2.726562945801132,900
+40,4,4.776651173213499,1000
 20,8,8.121687287754932,500
-32,5,4.799771723750573,400
-10,4,3.9278479610082973,100
+32,4,4.799771723750573,400
+10,3,3.9278479610082973,100
 """
 def evaluate_correctness(target_df, input_df):
     # drop index column from both
@@ -555,7 +555,7 @@ def transform_df(df):
     df_transformed['col1'] = df['col1'] * df['col4']
 
     # col2 as col3 truncated to the nearest integer
-    df_transformed['col2'] = df['col3'].round().astype(int)
+    df_transformed['col2'] = df['col3'].astype(int)
 
     # col4 multiplied by 100
     df_transformed['col4'] = df['col4'] * 100
@@ -570,31 +570,31 @@ def transform_df(df):
 
 Task description:
 ```python
-+----+--------+--------+----------+--------+--------+
-|    |   col1 |   col2 |     col3 |   col4 |   col5 |
-|----+--------+--------+----------+--------+--------|
-|  0 |      6 |      2 | 4.19195  |      8 |      7 |
-|  1 |      9 |      8 | 6.8522   |      8 |     10 |
-|  2 |     10 |      7 | 2.04452  |     10 |     10 |
-|  3 |      6 |     10 | 8.78117  |      2 |      8 |
-|  4 |      1 |      3 | 0.273876 |      8 |      7 |
-|  5 |      1 |      5 | 6.70468  |      1 |     10 |
-+----+--------+--------+----------+--------+--------+
++----+--------+--------+---------+--------+--------+
+|    |   col1 |   col2 |    col3 |   col4 |   col5 |
+|----+--------+--------+---------+--------+--------|
+|  0 |      6 |      1 | 5.38817 |      3 |      2 |
+|  1 |      9 |      2 | 4.19195 |      5 |      8 |
+|  2 |     10 |      8 | 6.8522  |      8 |      1 |
+|  3 |      6 |      7 | 2.04452 |      8 |      7 |
+|  4 |      1 |     10 | 8.78117 |     10 |     10 |
++----+--------+--------+---------+--------+--------+
 
 This is a pandas dataframe provided to you above as input.
 
 You need to transform it exactly to the following output dataframe by recognizing the relationship between the input and output dataframes.
 
-+----+--------+-----------+----------+
-|    |   col1 |      col2 |     col3 |
-|----+--------+-----------+----------|
-|  0 |      6 | -3.83333  | -3.80805 |
-|  1 |     15 |  2.16667  | -1.1478  |
-|  2 |     25 |  1.16667  | -7.95548 |
-|  3 |     31 |  4.16667  |  6.78117 |
-|  4 |     32 | -2.83333  | -7.72612 |
-|  5 |     33 | -0.833333 |  5.70468 |
-+----+--------+-----------+----------+
++----+--------+--------+----------+
+|    |   col1 |   col2 |     col3 |
+|----+--------+--------+----------|
+|  0 |      6 |      2 |  8.38817 |
+|  1 |     15 |      3 |  9.19195 |
+|  2 |     25 |      9 | 14.8522  |
+|  3 |     31 |      8 | 10.0445  |
+|  4 |     32 |     11 | 18.7812  |
+|  0 |      0 |      0 |  0       |
+|  0 |      0 |      0 |  0       |
++----+--------+--------+----------+
 
 Your code should be placed inside a function called transform_df that takes as input a dataframe and returns the transformed dataframe. There are patterns that you have to discover.
 ```
@@ -608,12 +608,11 @@ from io import StringIO
 # Original dataset
 data = """
 col1,col2,col3,col4,col5
-6,2,4.191945144032948,8,7
-9,8,6.852195003967595,8,10
-10,7,2.0445224973151745,10,10
-6,10,8.781174363909454,2,8
-1,3,0.27387593197926163,8,7
-1,5,6.704675101784022,1,10
+6,1,5.3881673400335695,3,2
+9,2,4.191945144032948,5,8
+10,8,6.852195003967595,8,1
+6,7,2.0445224973151745,8,7
+1,10,8.781174363909454,10,10
 """
 
 # Read the dataset into a DataFrame
@@ -633,22 +632,22 @@ Testing code
 ```python
 data = """
 col1,col2,col3,col4,col5
-6,2,4.191945144032948,8,7
-9,8,6.852195003967595,8,10
-10,7,2.0445224973151745,10,10
-6,10,8.781174363909454,2,8
-1,3,0.27387593197926163,8,7
-1,5,6.704675101784022,1,10
+6,1,5.3881673400335695,3,2
+9,2,4.191945144032948,5,8
+10,8,6.852195003967595,8,1
+6,7,2.0445224973151745,8,7
+1,10,8.781174363909454,10,10
 """
 df = pd.read_csv(StringIO(data))
 new_data_testing = """
 col1,col2,col3
-6,-3.833333333333333,-3.808054855967052
-15,2.166666666666667,-1.1478049960324048
-25,1.166666666666667,-7.9554775026848255
-31,4.166666666666667,6.781174363909454
-32,-2.833333333333333,-7.726124068020738
-33,-0.833333333333333,5.704675101784022
+6,2,8.388167340033569
+15,3,9.191945144032948
+25,9,14.852195003967594
+31,8,10.044522497315175
+32,11,18.781174363909454
+0,0,0.0
+0,0,0.0
 """
 def evaluate_correctness(target_df, input_df):
     # drop index column from both
@@ -679,15 +678,18 @@ def transform_df(df):
     df_transformed_requested = df.copy()
     df_transformed_requested['col1'] = df['col1'].cumsum()
 
-    # col2 minus the average of col2
-    average_col2 = df['col2'].mean()
-    df_transformed_requested['col2'] = df['col2'] - average_col2
+    # col2 + 1
+    df_transformed_requested['col2'] = df['col2'] + 1
 
-    # col3 minus col4
-    df_transformed_requested['col3'] = df['col3'] - df['col4']
+    # col3 plus col4
+    df_transformed_requested['col3'] = df['col3'] + df['col4']
 
     # Remove col4 and col5
     df_transformed_requested.drop(['col4', 'col5'], axis=1, inplace=True)
+
+    # add two extra rows that are all zeros to the df
+    df_transformed_requested = df_transformed_requested.append(pd.DataFrame([[0,0,0]], columns=df_transformed_requested.columns))
+    df_transformed_requested = df_transformed_requested.append(pd.DataFrame([[0,0,0]], columns=df_transformed_requested.columns))
     return df_transformed_requested
 
 ```
@@ -695,9 +697,237 @@ def transform_df(df):
 
 ## Editing and Augmenting Existing Code → LLM would be helpful as it can quickly digest existing code 
 
+
+### Calculator
+
+Task description:
+
+```
+This is a special calculator that keeps track of the previous operations performed.
+Note that the operations like add are not the standard ones and this is on purpose
+
+Your job is to fix some remaining bugs in the calculator class:
+
+- you should not modify the behavior add, subtract, multiply, divide methods in terms of the calculation
+
+- make sure that the add, subtract, multiply, divide methods only execute if the input is valid, if the input is not valid, the method should return WITHOUT doing anything or raising any errors.
+
+- fix the implementation of undo_last_operation by relying on the previous_operations list. 
+
+```
+
+Function signature:
+
+```python
+class Calculator:
+    def __init__(self):
+        # the calculator only keeps track of the current number
+        self.current_number = 0
+        # stores the previous operations performed
+        self.previous_operations = []
+    def add(self, a):
+        '''
+        a: real number
+        '''
+        # the two lines below should not be changed
+        self.previous_operations.append((a, "add"))
+        self.current_number += a + 20
+    
+    def subtract(self, a):
+        '''
+        a: real number
+        '''
+
+        # the two lines below should not be changed
+        self.previous_operations.append((a, "subtract"))
+        self.current_number =  self.current_number - a/10
+
+    def multiply(self, a):
+        '''
+        a: real number
+        '''
+
+        # the two lines below should not be changed
+        self.previous_operations.append((a, "multiply"))
+        self.current_number =  (self.current_number ** a ) / a
+
+    def divide(self, a):
+        '''
+        a: positive integer
+        '''
+
+        # the two lines below should not be changed
+        self.previous_operations.append((a, "divide"))
+        self.current_number =  self.current_number / a * 2
+
+    def undo_last_operation(self):
+        '''
+        undoes the last operation performed and restors current_number to the value before the last operation
+        '''
+        # fix this code
+        last_operation = self.previous_operations.pop()
+    
+    def undo_last_k_operations(self, k):
+        ''' 
+        undoes the last k operations performed and restores current_number to the value before the last k operations
+        Args:
+            k (int): number of operations to undo
+        '''
+        for i in range(k):
+            self.undo_last_operation()
+
+```
+
+unit tests:
+
+```python
+calc = Calculator()
+calc.add(5)
+assert calc.current_number == 25
+calc.add('a')
+assert calc.current_number == 25
+calc.subtract(2.2)
+assert calc.current_number == 24.78
+calc.multiply(0)
+assert calc.current_number == 24.78
+calc.multiply(2)
+assert calc.current_number == 307.0242
+calc.divide(-1)
+assert calc.current_number == 307.0242
+calc.undo_last_operation()
+assert calc.current_number == 24.78
+calc.undo_last_k_operations(2)
+assert calc.current_number == 0.0
+```
+
+solution:
+```python
+
+class Calculator:
+    def __init__(self):
+        # the calculator only keeps track of the current number
+        self.current_number = 0
+        # stores the previous operations performed
+        self.previous_operations = []
+
+
+    def add(self, a):
+        '''
+        a: real number
+        '''
+        if not isinstance(a, (int, float)):
+            return
+        # two lines below should not be changed
+        self.previous_operations.append((a, "add"))
+        self.current_number += a + 20
+    
+    def subtract(self, a):
+        '''
+        a: real number
+        '''
+        if not isinstance(a, (int, float)):
+            return
+        # two lines below should not be changed
+        self.previous_operations.append((a, "subtract"))
+        self.current_number =  self.current_number - a/10
+
+    def multiply(self, a):
+        '''
+        a: real number
+        '''
+        if not isinstance(a, (int, float)) or a == 0:
+            return
+        # two lines below should not be changed
+        self.previous_operations.append((a, "multiply"))
+        self.current_number =  (self.current_number ** a ) / a
+
+    def divide(self, a):
+        '''
+        a: positive integer
+        '''
+        if not isinstance(a, (int)) or a <= 0:
+            return
+        # two lines below should not be changed
+        self.previous_operations.append((a, "divide"))
+        self.current_number =  self.current_number / a * 2
+
+    def undo_last_operation(self):
+        '''
+        undoes the last operation performed and restors current_number to the value before the last operation
+        '''
+        last_operation = self.previous_operations.pop()
+        if last_operation[1] == "add":
+            self.current_number -= last_operation[0] + 20
+        elif last_operation[1] == "subtract":
+            self.current_number += last_operation[0]/10
+        elif last_operation[1] == "multiply":
+            self.current_number =  (self.current_number * last_operation[0] ) ** (1/last_operation[0])
+        elif last_operation[1] == "divide":
+            self.current_number =  self.current_number * last_operation[0] / 2
+        
+    def undo_last_k_operations(self, k):
+        ''' 
+        undoes the last k operations performed and restores current_number to the value before the last k operations
+        Args:
+            k (int): number of operations to undo
+        '''
+        for i in range(k):
+            self.undo_last_operation()
+          
+```
+
+
+### Tokenizer
+
+Task description:
+```
+In the code shown in the editor, is a class that implements a tokenizer. A tokenizer maps a set of individual words to a number. 
+
+We have implemented a majority of the code but have not yet implemented the core functionality that creates the dictionary that maps words to ids, and ids to words.
+
+
+```
+
+
+function signature:
+```python
+from collections import Counter
+
+class Tokenizer:
+    def __init__(self, max_vocab_size=200):
+        self.max_vocab_size = max_vocab_size
+        self.word_to_id = {}
+        self.id_to_word = {}
+
+    def tokenize(self, text):
+        # do not change
+        # Split text into words by spaces
+        return text.lower().split()
+
+    def build_vocabulary(self, corpus):
+        # to be implemented
+        # write your code here
+    
+
+    def get_word_id(self, word):
+        # do not change
+        # Retrieve the ID of a word, return None if the word is not in the vocabulary
+        return self.word_to_id.get(word)
+
+    def get_word_by_id(self, word_id):
+        # do not change
+        # Retrieve a word by its ID, return None if the ID is not in the vocabulary
+        return self.id_to_word.get(word_id)
+
+```
+
+
+look at problems in swebench
+
+take an existing function in pandas, and change it
+
 - edit existing code
 
-class calculator
 
 class tokenizer
 

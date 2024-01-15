@@ -1,0 +1,80 @@
+#chat-container {
+    width: 40vw;
+    height: 90vh;
+    border: 1px solid #ccc;
+    padding: 10px;
+    overflow-wrap: break-word;
+    flex-direction: column;
+    display: flex;
+    overflow-x: auto;
+    resize: horizontal;
+}
+
+
+#chat-box {
+    height: 85vh;
+    /* overflow-y: auto; */
+}
+
+#clear-chat {
+    height: 30px;
+    width: 100px;
+}
+
+#text-elem {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#user-input {
+    height: 5vh;
+    width: 34vw;
+    resize: vertical;
+    max-height: 20vh;
+    min-height: 5vh;
+
+}
+
+#input-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#send-button {
+    color: #ddd;
+    width: 5vw;
+    height: 4vh;
+    font-size: 15px;
+    color: black;
+}
+
+.message {
+    margin: 5px;
+    padding: 5px;
+    /* border: 1px solid #ddd; */
+    /* border-radius: 5px; */
+}
+
+/* Existing styles... */
+
+.typing-indicator {
+    font-style: italic;
+    color: grey;
+}
+
+.copy-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+
+
