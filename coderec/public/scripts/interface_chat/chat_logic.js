@@ -1,5 +1,23 @@
 /* TODO:
 cancel button doesnt work right now
+add telemetry tracking
+- when send is pressed: track what got sent
+- when message is received: track what got received
+- when clear chat is pressed: track that
+- when copy is pressed: track that
+example of telemetry tracking:
+    telemetry_data.push({
+      event_type: "suggestion_shown",
+      task_index: task_index,
+      suggestion_id: suggestion_id,
+      suggestion: response_string,
+      timestamp: Date.now(),
+    });
+
+keep track of chat history in array with each element 'sender' agent/user and 'message'
+
+any bugs and visual fixes?
+make sure horizontal resizing works
  */
 var chatBox = document.getElementById("chat-box");
 
@@ -40,9 +58,6 @@ document.getElementById("send-button").addEventListener("click", function () {
 
   }
 });
-
-
-
 
 
 document.getElementById("clear-chat").addEventListener("click", function () {
