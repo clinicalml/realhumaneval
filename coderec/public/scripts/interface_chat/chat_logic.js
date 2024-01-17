@@ -19,6 +19,8 @@ keep track of chat history in array with each element 'sender' agent/user and 'm
 any bugs and visual fixes?
 make sure horizontal resizing works
  */
+const chatHistory = [];
+
 var chatBox = document.getElementById("chat-box");
 
 document.getElementById("send-button").addEventListener("click", function () {
@@ -31,10 +33,22 @@ document.getElementById("send-button").addEventListener("click", function () {
   if (button.textContent === "✖") {
     clearTimeout(typingTimeout);
     removeAgentTyping();
+
     button.textContent = '📤';
   } else if (message) {
     userInput.value = "";
     displayUserMessage(message);
+
+    // Track asking question
+    telemetry_data.push({
+      event_type: "ask_question",
+      task_index: task_index,
+      question: message,
+      timestamp: Date.now(),
+    });
+
+
+    chatHistory.push({ sender: "user", message: message });
     // scroll to end of chat-box
     chatBox.scrollTop = chatBox.scrollHeight;
     // Display typing indicator
@@ -46,9 +60,28 @@ document.getElementById("send-button").addEventListener("click", function () {
         // user pressed cancel
         removeAgentTyping();
         button.textContent = '📤';
+        
+        // Track cancel
+        telemetry_data.push({
+          event_type: "cancel_question",
+          task_index: task_index,
+          question: message,
+          timestamp: Date.now(),
+        });
+
         return;
       }
       displayAgentMessage(response_string);
+
+      // Track displaying/receiving msg
+      telemetry_data.push({
+        event_type: "receive_answer",
+        task_index: task_index,
+        answer: response_string,
+        timestamp: Date.now(),
+      });
+
+      chatHistory.push({ sender: "agent", message: response_string });
       removeAgentTyping();
       button.textContent = '📤';
     })
@@ -62,6 +95,13 @@ document.getElementById("send-button").addEventListener("click", function () {
 
 document.getElementById("clear-chat").addEventListener("click", function () {
   let chatBox = document.getElementById("chat-box");
+
+  telemetry_data.push({
+    event_type: "clear_chat",
+    task_index: task_index,
+    timestamp: Date.now(),
+  });
+
   chatBox.innerHTML = "";
 });
 
@@ -240,9 +280,18 @@ function addCopyButton(preElement) {
 
   copyButton.addEventListener("click", () => {
     navigator.clipboard
-      .writeText(preElement.querySelector("code").textContent + "​")
+      .writeText(preElement.querySelector("code").textContent)
       .then(() => {
         copyButton.textContent = "Copied!";
+
+        // Track copy and what was copied
+        telemetry_data.push({
+          event_type: "copy_code",
+          task_index: task_index,
+          code: preElement.querySelector("code").textContent,
+          timestamp: Date.now(),
+        });
+
         setTimeout(() => {
           copyButton.textContent = "Copy";
         }, 1000);
