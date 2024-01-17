@@ -12,6 +12,46 @@ document.getElementById("changeThemeButton").addEventListener("click", function(
 });
 
 
+document.getElementById('resetCodeButton').addEventListener('click', function() {
+  // Show confirmation dialog
+  var isConfirmed = confirm("Are you sure you want to reset your code to when the task was loaded? This deletes your current code.");
+
+  if (isConfirmed) {
+    telemetry_data.push({
+      event_type: "code_reset",
+      code: editor.getValue(),
+      task_id: task_id,
+      task_index: task_index,
+      timestamp: Date.now(),
+    });
+    // User clicked 'OK', reset the editor's content
+    editor.session.off("change", handleChange);
+    if (task_index == -1) {
+      editor.setValue(tutorial_function_signature.replace(/\\n/g, "\n"));
+    } else {
+    var newCode = function_signatures[task_index].replace(/\\n/g, "\n");
+    editor.setValue(newCode);
+    }
+    editor.session.on("change", handleChange);
+  }
+});
+
+
+document.getElementById("skipTaskButton").addEventListener("click", function() {
+  telemetry_data.push({
+    event_type: "skip_task",
+    task_id: task_id,
+    task_index: task_index,
+    timestamp: Date.now(),
+  });
+  task_index++;
+  loadCurrentTask();
+});
+
+
+
+
+
 /////////////////////////////////////////
 // Popup
 /////////////////////////////////////////
@@ -42,6 +82,9 @@ function showPage(pageNumber) {
 // POPUP FOR TUTORIAL
 function closePopup() {
   document.getElementById("popup_tutorial").style.display = "none";
+  // START TIMER
+  startTimer();
+
 }
 
 
@@ -71,7 +114,7 @@ editor.on("paste", function (e) {
     setTimeout(function () {
       alert("Pasting is only allowed from content copied within this editor.");
     }, 10);
-    e.cancel(); // Cancel the paste event
+    //e.cancel(); // Cancel the paste event
     e.event.preventDefault(); // Prevent the default paste event
   }
 });
@@ -79,7 +122,7 @@ editor.on("paste", function (e) {
 /////////////////////////////////////////
 // end of diabling copy pasting
 /////////////////////////////////////////
-
+/* 
 /////////////////////////////////////////
 // RECORDING: works perfectly
 /////////////////////////////////////////
@@ -132,7 +175,7 @@ function stopRecording() {
     mediaRecorder.stop();
     mediaStream.getTracks().forEach((track) => track.stop()); // Stopping all tracks
   }
-}
+} */
 
 /////////////////////////////////////////
 // Timer
@@ -267,4 +310,3 @@ function restoreAfterRefresh() {
 }
 
 restoreAfterRefresh();
-startTimer();

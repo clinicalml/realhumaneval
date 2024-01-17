@@ -8,16 +8,19 @@ var tutorial_task_description = "";
 // defaults
 var model = "togethercomputer/CodeLlama-7b";
 var max_tokens = 20;
+const timeout_time_skip = 600000; // 10 minutes
+const interval_time_savecode = 15000; // 15 seconds
 var db = firebase.firestore();
 var response_id;
 var task_id;
 var worker_id;
 var exp_condition;
 var last_code_saved = "";
+let hideButtonTimeout; // used for skip button
+
 // loged data
 // var telemetry_data = [];
 // var task_index = -1;
-
 
 function writeUserData() {
   db.collection("responses")
@@ -32,8 +35,6 @@ function writeUserData() {
       console.error("Error writing document: ", error);
     });
 }
-
-
 
 function loadlocalstorage() {
   var myData = localStorage["objectToPass"];
@@ -64,12 +65,11 @@ function loadTaskData() {
       max_tokens = query_snapshot.data().max_tokens;
       loadCurrentTask();
       initializeProgressBar();
-      if (model != "none"){
+      if (model != "none") {
         var script = document.createElement("script");
-        script.src = "./scripts/interface/interface_logic.js"
+        script.src = "./scripts/interface/interface_logic.js";
         document.head.appendChild(script);
       }
-
     })
     .catch(function (error) {
       console.log("Error getting documents: ", error);
@@ -77,6 +77,12 @@ function loadTaskData() {
 }
 
 function loadCurrentTask() {
+  updateProgress();
+  times_pressed_submit_task = 0;
+  // Hide the skip button
+  document.getElementById("skipTaskButton").style.display = "none";
+  editor.session.off("change", handleChange);
+
   if (task_index == -1) {
     document.getElementById("taskDescription").innerText =
       tutorial_task_description.replace(/\\n/g, "\n");
@@ -84,8 +90,6 @@ function loadCurrentTask() {
     editor.setValue(tutorial_function_signature.replace(/\\n/g, "\n"));
     var lines = editor.getValue().split("\n");
     editor.gotoLine(lines.length + 1);
-        
-
   } else {
     document.getElementById("taskDescription").innerText = task_descriptions[
       task_index
@@ -94,19 +98,33 @@ function loadCurrentTask() {
     editor.setValue(function_signatures[task_index].replace(/\\n/g, "\n"));
     var lines = editor.getValue().split("\n");
     editor.gotoLine(lines.length + 1);
-        
+    // can skip when not in tutorial
+
+    if (hideButtonTimeout) {
+      clearTimeout(hideButtonTimeout);
+    }
+  
+    // Set a new timeout
+    hideButtonTimeout = setTimeout(function () {
+      document.getElementById("skipTaskButton").style.display = "block";
+    }, timeout_time_skip);
+
   }
+  editor.session.on("change", handleChange);
+
   telemetry_data.push({
     event_type: "load_task",
     task_id: task_id,
     task_index: task_index,
     timestamp: Date.now(),
   });
+
+ 
+
   writeUserData();
 }
 
 function repeatFunction() {
-
   if (last_code_saved != editor.getValue()) {
     telemetry_data.push({
       event_type: "save_code",
@@ -115,8 +133,7 @@ function repeatFunction() {
       timestamp: Date.now(),
     });
     last_code_saved = editor.getValue();
-  }
-  else{
+  } else {
     telemetry_data.push({
       event_type: "save_code",
       task_index: task_index,
@@ -127,7 +144,6 @@ function repeatFunction() {
   writeUserData();
 }
 
-
-setInterval(repeatFunction, 30000);
+setInterval(repeatFunction, interval_time_savecode);
 loadlocalstorage();
 loadTaskData();

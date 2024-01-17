@@ -28,8 +28,11 @@
         <div class="popup-page" id="page1">
             <h2>Study Introduction</h2>
             <p>Welcome to the user study! You will first complete a tutorial task to make you familiar with the study.
-                <br> After the tutorial task, you will have 20 minutes total where you will try to solve as many
-                coding tasks as possible one at a time.
+                <ul>
+              <li>  After the tutorial task, you will have 30 minutes total where you will try to solve as many
+                coding tasks as possible one at a time. </li>
+                <li>  It is NOT allowed to use any outside ressources to solve the coding questions (e.g. Google, StackOverflow, ChatGPT), your compensation is tied to effort only. </li> 
+            </ul>
             </p>
             <br>
             <button onclick="showPage(2)">Next</button>
@@ -42,7 +45,7 @@
             <p> You will write code in the interface above: a code editor equipped with an AI assistant that provides
                 suggestion inline is applied.
             <ul>
-                <li> The AI provides a suggestion whenever you stop typing for more than 2 seconds.</li>
+                <li> The AI automatically provides a suggestion whenever you stop typing for more than 2 seconds.</li>
                 <li> You can accept a suggestion by pressing [TAB] or reject a suggestion by pressing [ESC]. </li>
                 <li> You can also request a suggestion at any time by pressing [CTRL+ENTER] (Windows) or [CMD+ENTER] (Mac). </li>
                 <li> You can run your code by pressing the "▶️" button and the output will be in the output box below </li>
@@ -70,10 +73,11 @@
         </select>
         Max Tokens Suggestion:
         <input type="number" id="maxTokens" min="1" max="1000" value=20> -->
+        <button id="resetCodeButton">Reset Code</button>
         <button id="changeThemeButton">Change Theme</button>
 
         <!-- Button to open the popup -->
-        <button onclick="showPopup()">Show Shortcuts and Button Info</button>
+        <button onclick="showPopup()" style="background-color:darkblue">Show Shortcuts and Button Info</button>
         <!-- Overlay for the popup -->
         <div class="overlay" id="overlay" onclick="hidePopup()"></div>
 
@@ -118,6 +122,7 @@
         <button onclick="submitCode()" style="font-size: large;">▶️</i>Run</button>
         <button id="runCodeTest" style="background-color: rgb(130, 14, 14); font-size: large;"
             onclick="runCodeTest()">📤</i>Submit</button>
+        <button id="skipTaskButton"  style="display: none; background-color: rgb(54, 54, 54); font-size: large;">Skip Task</button>
     </div>
     <div class="container" style=" justify-content: center; align-items: center ;">
        <span>Output of Run:   </span> 

@@ -1,19 +1,15 @@
 
 client side:
 
-- add loading when buttons pressed
 
-- task index: not sure the issue
 
 - timeout for executing code for more than 30s
 
 - timeout: auto move the person
 
-- add model probs in api call
-
-- add button called restore code to get the function signature loaded back
-
 - enable no copilot: change visuals based on that later
+
+
 
 - add codes from puzzles once Mo does it - add variable to remove puzzles
 
@@ -26,6 +22,12 @@ https://aspredicted.org/blind.php?x=LMM_4K9
 one compiler supported libraries:
 https://onecompiler.com/python/3x9knsj24
 
+
+server side:
+- timeout for executing code for more than 30s
+- add model probs in api call
+- chat openai messages
+- llama instruct chat
 
 How to add secret api key:
 
