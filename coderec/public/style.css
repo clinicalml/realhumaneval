@@ -77,14 +77,12 @@ body {
 
 
 #editor {
-  resize: both;
-  flex: 60%; /* 40% of the container width */
+  resize: horizontal;
   overflow: auto;
   max-width: 95vw;
   max-height: 150vh;
 }
 #taskDescription {
-    flex: 40%; /* 40% of the container width */
     border: 1px solid #ccc; /* For visual representation */
     padding: 10px;
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
@@ -282,7 +280,8 @@ iframe {
 /* chat style */
 #chat-container {
   width: 40vw;
-  height: 90vh;
+  /* max-height: 70vh; */
+  height: 70vh;
   border: 1px solid #ccc;
   border-color: #ccc;
   padding: 10px;
@@ -291,11 +290,12 @@ iframe {
   display: flex;
   overflow-x: auto;
   resize: horizontal;
+  box-sizing: border-box;
 }
 
 
 #chat-box {
-  height: 85vh;
+  height: 45vh;
   flex-grow: 1; /* Allow it to take up available space */
   overflow-y: auto; /* Scroll if content overflows vertically */
   /* overflow-y: auto; */
@@ -317,6 +317,7 @@ iframe {
   resize: vertical;
   max-height: 20vh;
   min-height: 5vh;
+  padding: 5px;
 
 }
 
