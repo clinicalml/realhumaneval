@@ -42,7 +42,8 @@
         <div class="popup-page" id="page2" style="display:none;">
             <h2>Code Editor Information:</h2>
             <img src="static/interface_pic.JPG" style="width: 39vw; height: 30vh ;" alt="Code Editor">
-            <p> You will write code in the interface above: a code editor equipped with an AI assistant that provides
+            <br>
+            <span id="page2_tutorial_text"> You will write code in the interface above: a code editor equipped with an AI assistant that provides
                 suggestion inline is applied.
             <ul>
                 <li> The AI automatically provides a suggestion whenever you stop typing for more than 2 seconds.</li>
@@ -54,7 +55,13 @@
             Note: please be aware that the AI assistant is not perfect and may provide incorrect suggestions. Moreover,
             the AI may generate potentially offensive suggestions especially if prompted with language that is
             offensive.
-            </p>
+        </span>
+        <span id="page2_tutorial_text_nomodel" style="display: none;"> You will write code in the interface above: a code editor.
+        <ul>
+            <li> You can run your code by pressing the "▶️" button and the output will be in the output box below </li>
+            <li> You can submit your final code for evaluation by pressing the "📤" button.  </li>
+        </ul>
+        </span>
             <br>
             <button onclick="closePopup()">Close</button>
         </div>
@@ -90,7 +97,9 @@
                 <b>Model Selector</b> - Selects the model to use for suggestions. <br />
                 <b>Max Tokens Suggestion</b> - Sets the maximum number of tokens to use for suggestions. <br /> -->
                 <b>Show Shortcuts and Button Info</b> - Shows this popup. <br />
-                <img id="ai_icon" src="static/ai_icon.png" style="height: 1em; width: 1em;" /> - When this icon spins,
+                <b>Reset Code</b> - Resets the code in the editor to the original code. <br />
+                <b>Change Theme</b> - Changes the theme of the editor. <br />
+                <img id="ai_icon" src="static/ai_icon.png" style="height: 1em; width: 1em;" /> - (if AI enabled) When this icon spins,
                 the AI is generating a suggestion <br />
                 <b> Timer </b> - Displays the time remaining in the task. <br />
                 <b> Progress Bar </b> - Displays the progress of the task. <br />
@@ -113,7 +122,7 @@
 
 
     <div class="container">
-        <div style="margin-right: 5px;" id="taskDescription">
+        <div style="margin-right: 5px; width: 40vw;" id="taskDescription">
             <p></p>
         </div>
         <div id="editor" style="height: 70vh; width: 60vw;"></div>
@@ -122,7 +131,7 @@
         <button onclick="submitCode()" style="font-size: large;">▶️</i>Run</button>
         <button id="runCodeTest" style="background-color: rgb(130, 14, 14); font-size: large;"
             onclick="runCodeTest()">📤</i>Submit</button>
-        <button id="skipTaskButton"  style="display: none; background-color: rgb(54, 54, 54); font-size: large;">Skip Task</button>
+        <button id="skipTaskButton"  style="display: none; background-color: rgb(54, 54, 54); font-size: large;">Can't solve it? Skip Task</button>
     </div>
     <div class="container" style=" justify-content: center; align-items: center ;">
        <span>Output of Run:   </span> 

@@ -113,7 +113,7 @@ function submit(event) {
               localStorage.setItem("objectToPass", JSON.stringify(myData));
               // change src of iframe puzzle_frame
               var puzzle_frame = document.getElementById("puzzle_frame");
-              puzzle_frame.src = "https://ccl.meteorapp.com/?worker_id=" + worker_id_rand;
+              puzzle_frame.src = "https://ccl.meteorapp.com/?workerId=" + worker_id_rand;
               // make div id survey hidden and div id puzzle visible
               document.getElementById("survey").style.display = "none";
               document.getElementById("puzzle").style.display = "block";
@@ -142,7 +142,7 @@ puzzleSubmitButton.addEventListener("click", puzzleSubmit);
 
 function puzzleSubmit(event) {
   var puzzle_code = document.getElementById("puzzle_token").value;
-  if (puzzle_code == "puzzle") {
+  if (puzzle_code == "PRE0NXYU1") {
     var time_now = new Date();
     var time_now_string = time_now.toString();
     db.collection("responses")
@@ -162,6 +162,27 @@ function puzzleSubmit(event) {
   }
   return false;
 }
+
+// when puzzleSkipButton is clicked
+var puzzleSkipButton = document.getElementById("puzzleSkipButton");
+puzzleSkipButton.addEventListener("click", puzzleSkip);
+function puzzleSkip(event) {
+  var time_now = new Date();
+  var time_now_string = time_now.toString();
+  db.collection("responses")
+    .doc(response_id)
+    .update({
+      skipped_pre_puzzle: time_now_string,
+    })
+    .then(() => {
+      location.href = "./interface.html";
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
+    });
+  return false;
+}
+
 
 // remove endTime and code from local storage to reset
 localStorage.removeItem("endTime");

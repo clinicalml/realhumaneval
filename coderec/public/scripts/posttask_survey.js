@@ -39,7 +39,7 @@ function loadlocalstorage() {
   worker_id = myData[3];
   // set next puzzle location
   var puzzle_frame = document.getElementById("puzzle_frame");
-  puzzle_frame.src = "https://ccl-post.meteorapp.com/?worker_id=" + worker_id;
+  puzzle_frame.src = "https://ccl-post.meteorapp.com/?workerId=" + worker_id;
   //showlocalstorage();
 }
 loadlocalstorage();
@@ -53,7 +53,7 @@ puzzleSubmitButton.addEventListener("click", puzzleSubmit);
 
 function puzzleSubmit(event) {
   var puzzle_code = document.getElementById("puzzle_token").value;
-  if (puzzle_code == "puzzle") {
+  if (puzzle_code == "PSTQY3RE7") {
     
     var time_now = new Date();
     var time_now_string = time_now.toString();
@@ -78,6 +78,28 @@ function puzzleSubmit(event) {
   }
   return false;
 }
+// puzzleSkipButton on click
+var puzzleSkipButton = document.getElementById("puzzleSkipButton");
+puzzleSkipButton.addEventListener("click", puzzleSkip);
+function puzzleSkip(event) {
+  var time_now = new Date();
+  var time_now_string = time_now.toString();
+  db.collection("responses")
+    .doc(response_id)
+    .update({
+      skipped_post_puzzle: time_now_string,
+    })
+    .then(() => {
+      console.log("Document successfully written!");
+      document.getElementById("survey").style.display = "block";
+      document.getElementById("puzzle").style.display = "none";
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
+    });
+  return false;
+}
+
 
 var form = document.getElementById("form");
 form.addEventListener("submit", submit);

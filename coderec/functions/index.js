@@ -56,6 +56,7 @@ exports.runcode = onCall({ secrets: [openai_key, rapidapi_key], enforceAppCheck:
       "X-RapidAPI-Host": "onecompiler-apis.p.rapidapi.com",
     },
     data: postData,
+    timeout: 45000,
   };
   // Perform the API request
   return axios(options)
@@ -65,11 +66,12 @@ exports.runcode = onCall({ secrets: [openai_key, rapidapi_key], enforceAppCheck:
     })
     .catch((error) => {
       // Handle error
-      throw new functions.https.HttpsError(
+      return {data: {data: {stdout: "Error", stderr: "error"}}};
+/*       throw new functions.https.HttpsError(
         "unknown",
         "Error calling the API",
         error
-      );
+      ); */
     });
 });
 
@@ -83,11 +85,7 @@ exports.get_together_completion = onCall(
         "The function must be called while authenticated."
       );
     }
-/*     curl -X POST "$ENDPOINT_URL" \
-     -H "Authorization: Bearer $API_KEY" \
-     -H "Content-Type: application/json" \
-     -d '{"model": "togethercomputer/RedPajama-INCITE-7B-Instruct", "prompt": "Q: The capital of France is?\nA:", "temperature": 0.8, "top_p": 0.7, "top_k": 50, "max_tokens": 1, "repetition_penalty": 1}'
- */
+
     const apiUrl = "https://api.together.xyz/inference";
     const options = {
       method: "POST",
@@ -99,11 +97,57 @@ exports.get_together_completion = onCall(
       data: {
         model: request.data.model,
         prompt: request.data.prompt,
-        temperature: 0.2,
-        top_p: 1,
-        top_k: 50,
+        temperature: 1,
         max_tokens: request.data.max_tokens,
-        repetition_penalty: 0,
+        logprobs: 1,
+        stop: ["\n\n"],
+        },
+    };
+
+    // Perform the API request
+    return axios(options)
+      .then((response) => {
+        // Handle success
+        return { data: response.data };
+      })
+      .catch((error) => {
+        // Handle error
+        throw new functions.https.HttpsError(
+          "unknown",
+          "Error calling the API",
+          error
+        );
+      });
+  }
+);
+
+
+
+exports.get_together_chat = onCall(
+  { secrets: [ together_key] , enforceAppCheck: true },
+  (request) => {
+    if (!request.auth) {
+      throw new HttpsError(
+        "failed-precondition",
+        "The function must be called while authenticated."
+      );
+    }
+
+    const apiUrl = "https://api.together.xyz/v1/chat/completions";
+    const options = {
+      method: "POST",
+      url: apiUrl,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${together_key.value()}`,
+      },
+      data: {
+        model: request.data.model,
+        messages: request.data.messages,
+        temperature: 1,
+        max_tokens: request.data.max_tokens,
+        logprobs: 1,
+        stop: ["\n\n","</s>","[/INST]"],
       },
     };
 
@@ -151,7 +195,8 @@ exports.getcompletion = onCall(
         prompt: request.data.prefix,
         suffix: request.data.suffix,
         max_tokens: request.data.max_tokens,
-        temperature: 0.2,
+        temperature: 1,
+        logprobs: 1,
       },
     };
 
@@ -171,3 +216,52 @@ exports.getcompletion = onCall(
       });
   }
 );
+
+
+
+exports.get_openai_chat = onCall(
+  { secrets: [openai_key, rapidapi_key] , enforceAppCheck: true},
+  (request) => {
+    if (!request.auth) {
+      throw new HttpsError(
+        "failed-precondition",
+        "The function must be called while authenticated."
+      );
+    }
+
+    const apiUrl = "https://api.openai.com/v1/chat/completions";
+
+    const options = {
+      method: "POST",
+      url: apiUrl,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${openai_key.value()}`,
+      },
+      data: {
+        model: request.data.model,
+        messages: request.data.messages,
+        max_tokens: request.data.max_tokens,
+        temperature: 1,
+        top_logprobs: 1,
+        logprobs: true,
+      },
+    };
+
+    // Perform the API request
+    return axios(options)
+      .then((response) => {
+        // Handle success
+        return { data: response.data };
+      })
+      .catch((error) => {
+        // Handle error
+        throw new functions.https.HttpsError(
+          "unknown",
+          "Error calling the API",
+          error
+        );
+      });
+  }
+);
+

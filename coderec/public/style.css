@@ -261,8 +261,8 @@ input:checked + .slider:before {
 iframe {
   display: block;       /* Remove default iframe margin */
   border: none;         /* Optional: Removes the default iframe border */
-  width: 90vw;
-  height: 80vh;
+  width: 95vw;
+  height: 100vh;
 }
 
 #taskDescription {

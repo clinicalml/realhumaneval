@@ -21,9 +21,9 @@ console.log('user logged in', firebase.auth().currentUser);
 
 const runcode = firebase.functions().httpsCallable("runcode");
 const getcompletion = firebase.functions().httpsCallable("getcompletion");
-const get_together_completion = firebase
-  .functions()
-  .httpsCallable("get_together_completion");
+const get_together_completion = firebase.functions().httpsCallable("get_together_completion");
+const get_openai_chat = firebase.functions().httpsCallable("get_openai_chat");
+const get_together_chat = firebase.functions().httpsCallable("get_together_chat");
 
 /////////////////////////////////////////
 // CLOUD FUNCTIONS CALLS
@@ -33,7 +33,8 @@ function get_openai_response(prefix, suffix, max_tokens) {
     getcompletion({ prefix: prefix, suffix: suffix, max_tokens: max_tokens })
       .then((result) => {
         const text_response = result.data.data.choices[0].text;
-        console.log(text_response);
+        logprobs = result.data.data.choices[0].logprobs.token_logprobs;
+        logprobs = get_summary_statistics(logprobs);
         resolve(text_response);
       })
       .catch((error) => {
@@ -54,11 +55,11 @@ async function submitCode() {
     .then((result) => {
       // check if stderr is null, if so, hide the error message
       var log = "";
-      if (result.data.data.stderr == null) {
+      if (result.data.data.stderr == null && result.data.data.exception == null) {
         log = result.data.data.stdout;
       } else {
         log =
-          "Errors:" + result.data.data.stderr + "\n" + result.data.data.stdout;
+          "Errors:" + result.data.data.stderr + "\n" + result.data.data.stdout + "\n" + result.data.data.exception;
       }
       telemetry_data.push({
         event_type: "run_code",
@@ -108,7 +109,6 @@ async function runCodeTest() {
     var testCode = editorCode + "\n\n" + formattedUnitTests;
     // Step 4: Call the API
     var result = await runcode({ prompt: testCode });
-
     // Step 5: Display Results
     displayResult(result);
   } catch (error) {
@@ -136,7 +136,8 @@ function displayResult(result) {
   // result.data.data.stderr
   // check if stderr is null, if so, say code is correct
   var log = "";
-  if (result.data.data.stderr == null) {
+
+  if (result.data.data.stderr == null && result.data.data.exception == null) {
     log = "Code is correct! \n Next Task will now be displayed!";
     // clear editor
     editor.setValue("");
@@ -207,6 +208,8 @@ function get_completion_together(model, prompt, max_tokens) {
     })
       .then((result) => {
         const text_response = result.data.data.output.choices[0].text;
+        logprobs = result.data.data.output.choices[0].token_logprobs;
+        logprobs = get_summary_statistics(logprobs);
         resolve(text_response);
       })
       .catch((error) => {
@@ -235,3 +238,39 @@ function calltogether() {
 /////////////////////////////////////////
 // END CLOUD FUNCTIONS CALLS
 /////////////////////////////////////////
+
+
+// util
+
+function get_summary_statistics(data) {
+  if (!Array.isArray(data) || data.length === 0) {
+      return {};
+  }
+
+  // Sorting the array for median calculation
+  const sortedData = data.slice().sort((a, b) => a - b);
+  const n = sortedData.length;
+  const middleIndex = Math.floor(n / 2);
+
+  // Calculating mean
+  const sum = sortedData.reduce((acc, val) => acc + val, 0);
+  const mean = sum / n;
+
+  // Calculating median
+  const median = n % 2 === 0 ? (sortedData[middleIndex - 1] + sortedData[middleIndex]) / 2 : sortedData[middleIndex];
+
+  // Calculating standard deviation
+  const meanDiffSquaredSum = sortedData.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0);
+  const std = Math.sqrt(meanDiffSquaredSum / n);
+
+  return {
+      min: sortedData[0],
+      max: sortedData[n - 1],
+      mean: mean,
+      median: median,
+      std: std,
+      firstElement: data[0],
+      middleElement: sortedData[middleIndex],
+      lastElement: data[n - 1]
+  };
+}

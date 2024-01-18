@@ -53,8 +53,6 @@ For max_tokens, we are using 64 per https://huggingface.co/blog/personal-copilot
 https://github.com/LucienShui/huggingface-vscode-endpoint-server 64
 
 https://thakkarparth007.github.io/copilot-explorer/codeviz/templates/code-viz.html#m9334&pos=1:1 - single line 
-
-https://github.com/facebookresearch/codellama/issues/89 - codellama doesnt know when to stop
 # STUDY TASKS
 
 
@@ -951,15 +949,15 @@ Task description:
 
 ```
 This is a special calculator that keeps track of the previous operations performed.
-Note that the operations like add are not the standard ones and this is on purpose
+Note that operations like add or sutract are not the standard ones---this is on purpose.
 
-Your job is to fix some remaining bugs in the calculator class:
+Your job is to fix the following remaining bugs in the Calculator class:
 
-- you should not modify the behavior add, subtract, multiply, divide methods in terms of the calculation
+- You should not modify the two lines of code in the add, subtract, multiply, and divide methods.
 
-- make sure that the add, subtract, multiply, divide methods only execute if the input is valid, if the input is not valid, the method should return WITHOUT doing anything or raising any errors.
+- Ensure that the add, subtract, multiply, and divide methods only execute if the input is valid. If the input is not valid, the method should return WITHOUT doing anything or raising any errors.
 
-- fix the implementation of undo_last_operation by relying on the previous_operations list. 
+- Fix the implementation of undo_last_operation by using the previous_operations list. 
 
 ```
 
@@ -1130,15 +1128,18 @@ name: tokenizer
 
 Task description:
 ```
-Your goal is to implement the  build_vocabulary method in the Tokenizer class provided. 
+Your goal is to implement the build_vocabulary method in the provided Tokenizer class. 
 A tokenizer is an object that converts words to numerical IDs.
 
-Objective of build_vocabulary Method:
+The objective of the build_vocabulary method is as follows:
 
-The method's primary goal is to create two dictionaries: self.word_to_id and self.id_to_word.
-self.word_to_id should map each unique word in your corpus to a unique numerical identifier (ID).
-self.id_to_word is the reverse mapping, where each unique ID corresponds to a word.
-The method should only consider the most frequent words in the corpus, up to a limit specified by max_vocab_size.
+- The method's primary goal is to create two dictionaries: self.word_to_id and self.id_to_word.
+
+- self.word_to_id should map each unique word in your corpus to a unique numerical identifier (ID).
+
+- self.id_to_word is the reverse mapping, where each unique ID corresponds to a word.
+
+- The method should only consider the most frequent words in the corpus, up to a limit specified by max_vocab_size.
 
 
 ```
@@ -1258,7 +1259,7 @@ Task description:
 ```
 Your goal is to implement the LoginAuthenticator class. This class will be used to authenticate users of a system. 
 
-To implement the methods of the LoginAuthenticator class, follow these instructions for each method:
+You will implement the following methods in the LoginAuthenticator class:
 
 _hash_password (Private Method):
 
@@ -1268,12 +1269,13 @@ Process: use any hashing tehnique you like
 Return: The hashed password 
 
 add_user Method:
+
 Purpose: To add a new user to the system with a username and a password.
 Parameters: username (string), password (string).
 Process:
-Check if the username already exists in self.user_credentials.
-If it does, return False to indicate the username is already taken.
-If not, hash the password using _hash_password method and store the username and hashed password in self.user_credentials.
+- Check if the username already exists in self.user_credentials.
+- If it does, return False to indicate the username is already taken.
+- If not, hash the password using _hash_password method and store the username and hashed password in self.user_credentials.
 Return: True if the user was successfully added, otherwise False.
 
 remove_user Method:
@@ -1281,8 +1283,8 @@ remove_user Method:
 Purpose: To remove a user from the system.
 Parameters: username (string).
 Process:
-Check if the username exists in self.user_credentials.
-If it does, delete the username entry from self.user_credentials.
+- Check if the username exists in self.user_credentials.
+- If it does, delete the username entry from self.user_credentials.
 Return: True if the user was successfully removed, otherwise False.
 
 
@@ -1291,8 +1293,8 @@ change_password Method:
 Purpose: To change a user's password.
 Parameters: username (string), old_password (string), new_password (string).
 Process:
-First, authenticate the user using the authenticate_user method with username and old_password.
-If authentication is successful, hash the new_password and update the self.user_credentials with the new hashed password.
+- First, authenticate the user using the authenticate_user method with username and old_password.
+- If authentication is successful, hash the new_password and update the self.user_credentials with the new hashed password.
 Return: True if the password was successfully changed, otherwise False.
 ```
 
@@ -1405,9 +1407,7 @@ name: t_test
 
 Task description:
 ```
-Your goal is to complete the function simplified_t_test. This function takes as input two arrays of numbers and will return a float value called t_test. 
-
-The simplified_t_test is a statistical test that is used to compare the means of two populations. The value is computed as follows:
+Your goal is to complete the function simplified_t_test. The simplified_t_test is a statistical test that is used to compare the means of two populations. This function takes as input two arrays of numbers and will return a float value called t_test, which is computed as follows:
 
 t_test =  abs ( (mean1 - mean2) / sqrt((variance1 / n1) + (variance2 / n2))  )
 

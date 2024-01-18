@@ -1,5 +1,5 @@
 var currentTheme = "monokai";
-var timer_minutes = 20;
+var timer_minutes = 30;
 document.getElementById("changeThemeButton").addEventListener("click", function() {
     // Switch between themes
     if (currentTheme === "monokai") {
@@ -82,9 +82,6 @@ function showPage(pageNumber) {
 // POPUP FOR TUTORIAL
 function closePopup() {
   document.getElementById("popup_tutorial").style.display = "none";
-  // START TIMER
-  startTimer();
-
 }
 
 
@@ -225,7 +222,10 @@ function updateTimer(endTime) {
         .then(() => {
           console.log("Document successfully written!");
           // show popup timeout_popup
-          document.getElementById("timeout_popup").style.display = "block";
+          alert("Time's Up! You have reached the end of the coding part of the studys. ");
+          window.location.href = "exit_survey.html";
+
+          //document.getElementById("timeout_popup").style.display = "block";
         })
         .catch((error) => {
           console.error("Error writing document: ", error);
@@ -309,4 +309,38 @@ function restoreAfterRefresh() {
   }
 }
 
+// REMOVE AI from interface
+
+function removeAIinterface() {
+  // hide thinkingIcon
+  document.getElementById("thinkingIcon").style.display = "none";
+  // hide page2_tutorial_text and show page2_tutorial_text_nomodel
+  document.getElementById("page2_tutorial_text").style.display = "none";
+  document.getElementById("page2_tutorial_text_nomodel").style.display = "block";
+
+}
+
+
+// utilities
+
+function randomGaussian(mean, stdDev) {
+  let u = 0, v = 0;
+  while (u === 0) u = Math.random(); // Converting [0,1) to (0,1)
+  while (v === 0) v = Math.random();
+  let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+  num = num * stdDev + mean; // Adjust for mean and std deviation
+  return num;
+}
+
+function sampleGaussianTruncated(mean, stdDev, min, max) {
+  let sample;
+  do {
+      sample = randomGaussian(mean, stdDev);
+  } while (sample < min || sample > max);
+  return Math.round(sample);
+}
+
+
+
+startTimer();
 restoreAfterRefresh();

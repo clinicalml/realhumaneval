@@ -3,16 +3,6 @@ client side:
 
 
 
-- timeout for executing code for more than 30s
-
-- timeout: auto move the person
-
-- enable no copilot: change visuals based on that later
-
-
-
-- add codes from puzzles once Mo does it - add variable to remove puzzles
-
 - pre registration https://aspredicted.org/
 
  preregi https://aspredicted.org/blind.php?x=Z3D_Z2B
@@ -23,11 +13,6 @@ one compiler supported libraries:
 https://onecompiler.com/python/3x9knsj24
 
 
-server side:
-- timeout for executing code for more than 30s
-- add model probs in api call
-- chat openai messages
-- llama instruct chat
 
 How to add secret api key:
 

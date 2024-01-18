@@ -14,7 +14,7 @@ var codeAtlastReject = editor.getValue();
 var suggestions_shown_count = 0;
 var thinkingIcon = document.getElementById("thinkingIcon");
 var suggestion_id = 0;
-
+var logprobs = 0;
 var undoManager = editor.session.getUndoManager();
 
 /////////////////////////////////////////
@@ -107,6 +107,10 @@ function appendCustomString() {
         timestamp: Date.now(),
       });
 
+      let mean = max_tokens_task, stdDev = 25, min = 10, max = 120;
+      var actual_max_tokens = sampleGaussianTruncated(mean, stdDev, min, max);
+      
+
       //max_tokens = parseInt(document.getElementById("maxTokens").value);
       //model = document.getElementById("modelSelector").value;
       // prepend to prefix code "# this code is in Python" - to tell LLM that the code is in Python
@@ -115,7 +119,7 @@ function appendCustomString() {
       // get suggestion according to model
 
       if (model == "gpt35") {
-        get_openai_response(prefix_code, suffix_code, max_tokens)
+        get_openai_response(prefix_code, suffix_code, actual_max_tokens)
           .then((response_string) => {
             addSuggestion(response_string);
           })
@@ -133,7 +137,7 @@ function appendCustomString() {
         if (prompt.length == 0) {
           prompt = " ";
         }
-        get_completion_together(model, prompt, max_tokens)
+        get_completion_together(model, prompt, actual_max_tokens)
           .then((response_string) => {
             addSuggestion(response_string);
           })
@@ -188,6 +192,7 @@ function addSuggestion(response_string) {
       task_index: task_index,
       suggestion_id: suggestion_id,
       suggestion: response_string,
+      logprobs: logprobs,
       timestamp: Date.now(),
     });
   }

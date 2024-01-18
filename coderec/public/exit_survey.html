@@ -19,30 +19,35 @@
 
 <body style=" max-width: 100%; overflow-x: hidden;  height: auto;  ">
 
-    <div id="puzzle" style="display: block; margin-right: 3%; margin-left: 3%; margin-bottom: 3%;  margin-top: 3%;" >
 
-        <h2>
-            Press Proceed
-            <!-- The following is a puzzle task that you will be asked to complete before the study.
-            Once you complete it, please enter the code given below. <br> -->
-        </h2>
 
-        <iframe style="display: none;" id="puzzle_frame" src="https://www.google.com"></iframe>
+    <div id="puzzle" style="display: block; margin-right: 3%; margin-left: 3%; margin-bottom: 3%;  margin-top: 3%;">
+
+        <h3>
+            The following is a puzzle task that you have to complete.
+            Once you complete it, please enter the code given in it. <br>
+        </h3>
+        <br>
+        <iframe style="display: flex;" id="puzzle_frame" src="https://www.google.com"></iframe>
         <br>
         <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
 
             <label for="puzzle_token"> Please enter the code:</label>
             </br> </br>
-            <input style="display: none;" id="puzzle_token" name="puzzle_token" value="puzzle" />
+            <input style="width: 50vw;" id="puzzle_token" name="puzzle_token" placeholder="enter code after puzzle finish" />
             <br>
             <p style="color:red" id="message_highlighted_puzzle"> </p>
-
             <button id="puzzleSubmitButton">
                 Proceed
             </button>
-
+            <br>
+            <button id="puzzleSkipButton" style="background-color: rgb(70, 69, 69); color: white;padding-left: 5px;">
+                Puzzle Website not loading? Click Here
+            </button>
         </div>
     </div>
+
+
 
 
     <!-- <div id="puzzle" style="display: block; margin-right: 3%; margin-left: 3%; margin-bottom: 3%;  margin-top: 3%; ">
@@ -93,15 +98,7 @@
                         <option value="5">Strongly Agree</option>
                     </select>
                 </div>
-                <br>
 
-                <div class="form-control">
-                    <label for="aiToolFreeForm">
-                        Additional comments (Optional):
-                    </label>
-                    <br>
-                    <textarea name="aiToolFreeForm" style="width: 100%;" id="aiToolFreeForm" rows="4"></textarea>
-                </div>
                 <br>
 
                 <!-- NASA Task Load Index Questions
@@ -112,7 +109,7 @@
                     <label for="mentalDemand">How mentally demanding was the study?</label>
                     <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                         <span>Low</span>
-                        <input type="range" style="flex-grow: 1;" id="mentalDemand" name="mentalDemand" min="1" max="20"
+                        <input type="range" style="flex-grow: 1;" id="mentalDemand" value="1" name="mentalDemand" min="1" max="20"
                             oninput="updateSliderValue(this)">
                         <span>High</span>
                         <output class="slider-value" for="mentalDemand" id="mentalDemandValue">10</output>
@@ -125,7 +122,7 @@
                     <label for="physicalDemand">How physically demanding was the study?</label>
                     <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                         <span>Low</span>
-                        <input type="range" style="flex-grow: 1;" id="physicalDemand" name="physicalDemand" min="1"
+                        <input type="range" style="flex-grow: 1;" id="physicalDemand" name="physicalDemand" value="1" min="1"
                             max="20" oninput="updateSliderValue(this)">
                         <span>High</span>
                         <output class="slider-value" for="physicalDemand" id="physicalDemandValue">10</output>
@@ -138,7 +135,7 @@
                     <label for="temporalDemand">How hurried or rushed was the pace of the study?</label>
                     <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                         <span>Low</span>
-                        <input type="range" style="flex-grow: 1;" id="temporalDemand" name="temporalDemand" min="1"
+                        <input type="range" style="flex-grow: 1;" id="temporalDemand" name="temporalDemand" value="1" min="1"
                             max="20" oninput="updateSliderValue(this)">
                         <span>High</span>
                         <output class="slider-value" for="temporalDemand" id="temporalDemandValue">10</output>
@@ -151,7 +148,7 @@
                     <label for="performance">How successful were you in accomplishing what you were asked to do?</label>
                     <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                         <span>Low</span>
-                        <input type="range" style="flex-grow: 1;" id="performance" name="performance" min="1" max="20"
+                        <input type="range" style="flex-grow: 1;" id="performance" name="performance" value="1" min="1" max="20"
                             oninput="updateSliderValue(this)">
                         <span>High</span>
                         <output class="slider-value" for="performance" id="performanceValue">10</output>
@@ -164,7 +161,7 @@
                     <label for="effort">How hard did you have to work to accomplish your level of performance?</label>
                     <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                         <span>Low</span>
-                        <input type="range" style="flex-grow: 1;" id="effort" name="effort" min="1" max="20"
+                        <input type="range" style="flex-grow: 1;" id="effort" name="effort" value="1" min="1" max="20"
                             oninput="updateSliderValue(this)">
                         <span>High</span>
                         <label class="slider-value" for="effort" id="effortValue">10</label>
@@ -179,11 +176,20 @@
                         you?</label>
                     <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                         <span>Low</span>
-                        <input type="range" style="flex-grow: 1;" id="frustration" name="frustration" min="1" max="20"
+                        <input type="range" style="flex-grow: 1;" id="frustration" name="frustration" value="1" min="1" max="20"
                             oninput="updateSliderValue(this)">
                         <span>High</span>
                         <label class="slider-value" for="frustration" id="frustrationValue">10</label>
                     </div>
+                </div>
+                <br>
+
+                <div class="form-control">
+                    <label for="aiToolFreeForm">
+                        Additional comments (Optional): anything went wrong? any feedback?
+                    </label>
+                    <br>
+                    <textarea name="aiToolFreeForm" style="width: 100%;" id="aiToolFreeForm" rows="4"></textarea>
                 </div>
                 <br>
 

@@ -7,7 +7,7 @@ var tutorial_task_description = "";
 
 // defaults
 var model = "togethercomputer/CodeLlama-7b";
-var max_tokens = 20;
+var max_tokens_task = 20;
 const timeout_time_skip = 600000; // 10 minutes
 const interval_time_savecode = 15000; // 15 seconds
 var db = firebase.firestore();
@@ -21,6 +21,12 @@ let hideButtonTimeout; // used for skip button
 // loged data
 // var telemetry_data = [];
 // var task_index = -1;
+
+
+function handleChange() {
+ // THIS IS A TEMP THAT WILL BE OVERWRITTEN BY THE INTERFACE LOGIC
+}
+
 
 function writeUserData() {
   db.collection("responses")
@@ -62,7 +68,7 @@ function loadTaskData() {
       tutorial_task_description =
         query_snapshot.data().tutorial_task_description;
       model = query_snapshot.data().model;
-      max_tokens = query_snapshot.data().max_tokens;
+      max_tokens_task = query_snapshot.data().max_tokens;
       loadCurrentTask();
       initializeProgressBar();
       if (model != "none") {
@@ -70,11 +76,18 @@ function loadTaskData() {
         script.src = "./scripts/interface/interface_logic.js";
         document.head.appendChild(script);
       }
+      else {
+        removeAIinterface();
+      }
     })
     .catch(function (error) {
       console.log("Error getting documents: ", error);
     });
 }
+
+
+
+
 
 function loadCurrentTask() {
   updateProgress();
@@ -133,14 +146,15 @@ function repeatFunction() {
       timestamp: Date.now(),
     });
     last_code_saved = editor.getValue();
-  } else {
+  } /* else {
+    // no changes
     telemetry_data.push({
       event_type: "save_code",
       task_index: task_index,
       code: "!nochanges!",
       timestamp: Date.now(),
     });
-  }
+  } */
   writeUserData();
 }
 
