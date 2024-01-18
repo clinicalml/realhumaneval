@@ -755,7 +755,7 @@ print(transform_df(df))
 Testing code:
 
 ```python
-
+import numpy as np
 data = """
 age,color,dates,height
 1,blue,2019-03-06,2.72656

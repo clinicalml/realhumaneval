@@ -80,7 +80,7 @@ async function runCodeTest() {
     // Step 1: Extract Code from Editor
     var editorCode = editor.getValue();
 
-    // Step 2: Analyze the Code
+/*     // Step 2: Analyze the Code
     if (!isValidFunction(editorCode)) {
       telemetry_data.push({
         event_type: "submit_code",
@@ -94,7 +94,7 @@ async function runCodeTest() {
         "The code does not follow the required function signature or contains extra code."
       );
       return;
-    }
+    } */
     // Step 3: Append Unit Tests
     // Fetch the unit tests for the current task
     if (task_index == -1) {
@@ -170,11 +170,14 @@ function displayResult(result) {
     }
   } else {
     log =
-      "Code is incorrect.\n"; +
+      "Code is incorrect.\n" +
       "Error:" +
       result.data.data.stderr +
       "\n" +
-      result.data.data.stdout;
+      result.data.data.stdout +
+      "\n" +
+      result.data.data.exception
+      ;
 
 
       telemetry_data.push({

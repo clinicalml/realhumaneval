@@ -141,6 +141,15 @@ function submit(event) {
       frustration: frustration,
     })
     .then(() => {
+        // in db.collection("tasks") set task_completed to 1
+        db.collection("tasks")
+        .doc(task_id)
+        .update({
+          task_completed: 1,
+        })
+        .then(() => {
+          console.log("Document successfully written!");
+
       document.getElementById("survey").style.display = "none";
       document.getElementById("puzzle").style.display = "none";
       document.getElementById("end_task").style.display = "block";
@@ -155,6 +164,10 @@ function submit(event) {
       });
     // clear all local storage
     localStorage.clear();
+        })
+        .catch((error) => {
+          console.error("Error writing document: ", error);
+        } );    
 
     })
     .catch((error) => {
