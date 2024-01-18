@@ -306,9 +306,12 @@ function restoreAfterRefresh() {
   else{
     telemetry_data = [];
   }
-  if (progressbar_initialized){
-  updateProgress(); // progress bar
-  }
+  // check if task_descriptions is defined and not empty
+  // check if an object by the name of task_descriptions exists
+  if (typeof task_descriptions !== "undefined" && task_descriptions.length > 0) {
+    updateProgress();
+  } 
+
 }
 
 // REMOVE AI from interface

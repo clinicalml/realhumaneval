@@ -22,11 +22,9 @@ let hideButtonTimeout; // used for skip button
 // var telemetry_data = [];
 // var task_index = -1;
 
-
 function handleChange() {
- // THIS IS A TEMP THAT WILL BE OVERWRITTEN BY THE INTERFACE LOGIC
+  // THIS IS A TEMP THAT WILL BE OVERWRITTEN BY THE INTERFACE LOGIC
 }
-
 
 function writeUserData() {
   db.collection("responses")
@@ -75,8 +73,7 @@ function loadTaskData() {
         var script = document.createElement("script");
         script.src = "./scripts/interface/interface_logic.js";
         document.head.appendChild(script);
-      }
-      else {
+      } else {
         removeAIinterface();
       }
     })
@@ -85,16 +82,42 @@ function loadTaskData() {
     });
 }
 
-
-
-
-
 function loadCurrentTask() {
   updateProgress();
   times_pressed_submit_task = 0;
   // Hide the skip button
   document.getElementById("skipTaskButton").style.display = "none";
   editor.session.off("change", handleChange);
+
+  // check if task_index is more than the length of the function signatures
+  if (task_index >= function_signatures.length) {
+    writeUserData();
+    disableBeforeUnload();
+    var myData = [response_id, task_id, exp_condition, worker_id];
+    localStorage.setItem("objectToPass", JSON.stringify(myData));
+    localStorage.setItem("code", "");
+    var time_completed = new Date();
+    var time_completed_string = time_completed.toString();
+    db.collection("responses")
+      .doc(response_id)
+      .update({
+        skipped_time: time_completed_string,
+        task_index: task_index,
+      })
+      .then(() => {
+        console.log("Document successfully written!");
+        // show popup timeout_popup
+        alert(
+          "Time's Up! You have reached the end of the coding part of the studys. "
+        );
+        window.location.href = "exit_survey.html";
+
+        //document.getElementById("timeout_popup").style.display = "block";
+      })
+      .catch((error) => {
+        console.error("Error writing document: ", error);
+      });
+  }
 
   if (task_index == -1) {
     document.getElementById("taskDescription").innerText =
@@ -116,12 +139,11 @@ function loadCurrentTask() {
     if (hideButtonTimeout) {
       clearTimeout(hideButtonTimeout);
     }
-  
+
     // Set a new timeout
     hideButtonTimeout = setTimeout(function () {
       document.getElementById("skipTaskButton").style.display = "block";
     }, timeout_time_skip);
-
   }
   editor.session.on("change", handleChange);
 
@@ -131,8 +153,6 @@ function loadCurrentTask() {
     task_index: task_index,
     timestamp: Date.now(),
   });
-
- 
 
   writeUserData();
 }

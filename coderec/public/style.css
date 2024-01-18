@@ -77,7 +77,7 @@ body {
 
 
 #editor {
-  resize: horizontal;
+  resize: both;
   overflow: auto;
   max-width: 95vw;
   max-height: 150vh;
