@@ -25,7 +25,6 @@ console.log("user logged in", firebase.auth().currentUser);
 localStorage.removeItem("endTime");
 localStorage.removeItem("code");
 
-
 var response_id;
 var task_id;
 var exp_condition;
@@ -44,7 +43,6 @@ function loadlocalstorage() {
 }
 loadlocalstorage();
 
-
 var db = firebase.firestore();
 
 // when puzzleSubmitButton is clicked
@@ -54,24 +52,21 @@ puzzleSubmitButton.addEventListener("click", puzzleSubmit);
 function puzzleSubmit(event) {
   var puzzle_code = document.getElementById("puzzle_token").value;
   if (puzzle_code == "PSTQY3RE7") {
-    
     var time_now = new Date();
     var time_now_string = time_now.toString();
     db.collection("responses")
-    .doc(response_id)
-    .update({
-      completed_post_puzzle: time_now_string,
-    })
-    .then(() => {
-      console.log("Document successfully written!");
-      document.getElementById("survey").style.display = "block";
-      document.getElementById("puzzle").style.display = "none";
-    })
-    .catch((error) => {
-      console.error("Error writing document: ", error);
-    });
-
-
+      .doc(response_id)
+      .update({
+        completed_post_puzzle: time_now_string,
+      })
+      .then(() => {
+        console.log("Document successfully written!");
+        document.getElementById("survey").style.display = "block";
+        document.getElementById("puzzle").style.display = "none";
+      })
+      .catch((error) => {
+        console.error("Error writing document: ", error);
+      });
   } else {
     var error_answer = document.getElementById("message_highlighted_puzzle");
     error_answer.innerHTML = "incorrect puzzle code";
@@ -100,10 +95,8 @@ function puzzleSkip(event) {
   return false;
 }
 
-
 var form = document.getElementById("form");
 form.addEventListener("submit", submit);
-
 
 function submit(event) {
   // add post survey
@@ -141,8 +134,8 @@ function submit(event) {
       frustration: frustration,
     })
     .then(() => {
-        // in db.collection("tasks") set task_completed to 1
-        db.collection("tasks")
+      // in db.collection("tasks") set task_completed to 1
+      db.collection("tasks")
         .doc(task_id)
         .update({
           task_completed: 1,
@@ -150,35 +143,29 @@ function submit(event) {
         .then(() => {
           console.log("Document successfully written!");
 
-      document.getElementById("survey").style.display = "none";
-      document.getElementById("puzzle").style.display = "none";
-      document.getElementById("end_task").style.display = "block";
-      firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        console.log("signed out");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    // clear all local storage
-    localStorage.clear();
+          document.getElementById("survey").style.display = "none";
+          document.getElementById("puzzle").style.display = "none";
+          document.getElementById("end_task").style.display = "block";
+          firebase
+            .auth()
+            .signOut()
+            .then(() => {
+              console.log("signed out");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          // clear all local storage
+          localStorage.clear();
         })
         .catch((error) => {
           console.error("Error writing document: ", error);
-        } );    
-
+        });
     })
     .catch((error) => {
       console.error("Error writing document: ", error);
     });
-  
 }
-
-
-
-
 
 // FOR THE SLIDERS
 document.addEventListener("DOMContentLoaded", function () {
