@@ -2,6 +2,9 @@
 client side:
 
 
+- task alocation: give them one that is not completed, if they were there before and not completed, give them old task, if they completed give them anything
+
+- fix pasting
 
 - pre registration https://aspredicted.org/
 

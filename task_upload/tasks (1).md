@@ -53,6 +53,8 @@ For max_tokens, we are using 64 per https://huggingface.co/blog/personal-copilot
 https://github.com/LucienShui/huggingface-vscode-endpoint-server 64
 
 https://thakkarparth007.github.io/copilot-explorer/codeviz/templates/code-viz.html#m9334&pos=1:1 - single line 
+
+https://github.com/facebookresearch/codellama/issues/89 - codellama doesnt know when to stop
 # STUDY TASKS
 
 
@@ -82,7 +84,6 @@ For example:
 function signature:
 ```python
 def is_bored(S):
-    """
 ```
 
 tests
@@ -111,7 +112,8 @@ def is_bored(S):
     0
     >>> is_bored("The sky is blue. The sun is shining. I love this weather")
     1
-    """import re
+    """
+    import re
     sentences = re.split(r'[.?!]\s*', S)
     return sum(sentence[0:2] == 'I ' for sentence in sentences)
 ```
@@ -166,7 +168,8 @@ def is_multiply_prime(a):
     Example:
     is_multiply_prime(30) == True
     30 = 2 * 3 * 5
-    """def is_prime(n):
+    """
+    def is_prime(n):
         for j in range(2,n):
             if n%j == 0:
                 return False
@@ -240,7 +243,8 @@ def encode(message):
     'TGST'
     >>> encode('This is a message')
     'tHKS KS C MGSSCGG'
-    """vowels = "aeiouAEIOU"
+    """
+    vowels = "aeiouAEIOU"
     vowels_replace = dict([(i, chr(ord(i) + 2)) for i in vowels])
     message = message.swapcase()
     return ''.join([vowels_replace[i] if i in vowels else i for i in message])
@@ -293,21 +297,22 @@ solution
     
 ```python
 def count_nums(arr):
-"""
-Write a function count_nums which takes an array of integers and returns
-the number of elements which has a sum of digits > 0.
-If a number is negative, then its first signed digit will be negative:
-e.g. -123 has signed digits -1, 2, and 3.
->>> count_nums([]) == 0
->>> count_nums([-1, 11, -11]) == 1
->>> count_nums([1, 1, 2]) == 3
-"""def digits_sum(n):
-    neg = 1
-    if n < 0: n, neg = -1 * n, -1 
-    n = [int(i) for i in str(n)]
-    n[0] = n[0] * neg
-    return sum(n)
-return len(list(filter(lambda x: x > 0, [digits_sum(i) for i in arr])))
+    """
+    Write a function count_nums which takes an array of integers and returns
+    the number of elements which has a sum of digits > 0.
+    If a number is negative, then its first signed digit will be negative:
+    e.g. -123 has signed digits -1, 2, and 3.
+    >>> count_nums([]) == 0
+    >>> count_nums([-1, 11, -11]) == 1
+    >>> count_nums([1, 1, 2]) == 3
+    """
+    def digits_sum(n):
+        neg = 1
+        if n < 0: n, neg = -1 * n, -1 
+        n = [int(i) for i in str(n)]
+        n[0] = n[0] * neg
+        return sum(n)
+    return len(list(filter(lambda x: x > 0, [digits_sum(i) for i in arr])))
 ```
 
 
@@ -318,14 +323,7 @@ name: order_by_points
 task description:
 
 ```
-Write a function which sorts the given list of integers
-in ascending order according to the sum of their digits.
-Note: if there are several items with similar sum of their digits,
-order them based on their index in original list.
-
-For example:
->>> order_by_points([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]
->>> order_by_points([]) == []
+Write a function which sorts the given list of integers in ascending order according to the sum of their digits. Note: if there are several items with similar sum of their digits, order them based on their index in original list. \n For example: \n >>> order_by_points([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]\n >>> order_by_points([]) == []
 
 ```
 
@@ -342,33 +340,12 @@ unit tests:
 ```python
 
 # Check some simple cases
-assert order_by_points([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]
-assert order_by_points([1234,423,463,145,2,423,423,53,6,37,3457,3,56,0,46]) == [0, 2, 3, 6, 53, 423, 423, 423, 1234, 145, 37, 46, 56, 463, 3457]
-assert order_by_points([]) == []
-assert order_by_points([1, -11, -32, 43, 54, -98, 2, -3]) == [-3, -32, -98, -11, 1, 2, 43, 54]
-assert order_by_points([1,2,3,4,5,6,7,8,9,10,11]) == [1, 10, 2, 11, 3, 4, 5, 6, 7, 8, 9]
-assert order_by_points([0,6,6,-76,-21,23,4]) == [-76, -21, 0, 4, 23, 6, 6]
+assert order_by_points([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]\nassert order_by_points([1234,423,463,145,2,423,423,53,6,37,3457,3,56,0,46]) == [0, 2, 3, 6, 53, 423, 423, 423, 1234, 145, 37, 46, 56, 463, 3457]\nassert order_by_points([]) == []\nassert order_by_points([1, -11, -32, 43, 54, -98, 2, -3]) == [-3, -32, -98, -11, 1, 2, 43, 54]\nassert order_by_points([1,2,3,4,5,6,7,8,9,10,11]) == [1, 10, 2, 11, 3, 4, 5, 6, 7, 8, 9]\nassert order_by_points([0,6,6,-76,-21,23,4]) == [-76, -21, 0, 4, 23, 6, 6]
 
 ```
 
 ```python
-def order_by_points(nums):
-    """
-    Write a function which sorts the given list of integers
-    in ascending order according to the sum of their digits.
-    Note: if there are several items with similar sum of their digits,
-    order them based on their index in original list.
-
-    For example:
-    >>> order_by_points([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]
-    >>> order_by_points([]) == []
-    """def digits_sum(n):
-        neg = 1
-        if n < 0: n, neg = -1 * n, -1 
-        n = [int(i) for i in str(n)]
-        n[0] = n[0] * neg
-        return sum(n)
-    return sorted(nums, key=digits_sum)
+def order_by_points(nums):\n    """\n    Write a function which sorts the given list of integers\n    in ascending order according to the sum of their digits.\n    Note: if there are several items with similar sum of their digits,\n    order them based on their index in original list.\n\n    For example:\n    >>> order_by_points([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]\n    >>> order_by_points([]) == []\n    """\n    def digits_sum(n):\n        neg = 1\n        if n < 0: n, neg = -1 * n, -1 \n        n = [int(i) for i in str(n)]\n        n[0] = n[0] * neg\n        return sum(n)\n    return sorted(nums, key=digits_sum)
 ```
 
 ### HumanEval/155 https://github.com/jamesmurdza/humaneval-results/blob/main/gpt-3.5-turbo/155.md
@@ -381,8 +358,7 @@ task description:
 ```
 Given an integer. return a tuple that has the number of even and odd digits respectively.
 Example:
-even_odd_count(-12) ==> (1, 1)
-even_odd_count(123) ==> (1, 2)
+even_odd_count(-12) ==> (1, 1) , even_odd_count(123) ==> (1, 2)
 ```
 
 
@@ -413,7 +389,8 @@ def even_odd_count(num):
      Example:
         even_odd_count(-12) ==> (1, 1)
         even_odd_count(123) ==> (1, 2)
-    """even_count = 0
+    """
+    even_count = 0
     odd_count = 0
     for i in str(abs(num)):
         if int(i)%2==0:
@@ -468,7 +445,8 @@ def sum_product(numbers: List[int]) -> Tuple[int, int]:
     (0, 1)
     >>> sum_product([1, 2, 3, 4])
     (10, 24)
-    """sum_value = 0
+    """
+    sum_value = 0
     prod_value = 1
 
     for n in numbers:
@@ -538,7 +516,8 @@ def triples_sum_to_zero(l: list):
     True
     >>> triples_sum_to_zero([1])
     False
-    """for i in range(len(l)):
+    """
+    for i in range(len(l)):
         for j in range(i + 1, len(l)):
             for k in range(j + 1, len(l)):
                 if l[i] + l[j] + l[k] == 0:
@@ -546,7 +525,66 @@ def triples_sum_to_zero(l: list):
     return False
 ```
 
-## Data manipulation tasks → LLM would be helpful in remembering syntax
+### event scheduler
+
+name: event_scheduler
+
+Task description:
+```
+Problem Description:\n\nInput:\n\nYou have a list of events.\nEach event is represented as a tuple (start, end, score).\nstart: The starting hour of the event (an integer between 0 and 10).\nend: The ending hour of the event (an integer between start and 10).\nscore: The importance score of the event (a positive integer).\nConstraints:\n\nThe events can only be scheduled between the hours of 0:00 and 10:00.\nNo two events can overlap. An event with an end time of X cannot overlap with another event with a start time of X.\nEach event can be scheduled only once.\nObjective:\n\nYour goal is to schedule the events in such a way that the total importance score is maximized.\nThe algorithm should return the maximum total importance score that can be achieved with the given set of events.\n\nExample:\n\nSuppose you have the following list of events:\n\nEvent 1: (1, 3, 5)\nEvent 2: (1, 2, 3)\nEvent 3: (2, 3, 4)\n\nBest schedule would be to pick Event 2 and Event 3, which would give a total importance score of 7.\n\nThe algorithm should determine the best way to schedule these events between 0:00 and 10:00 to achieve the highest total importance score, without any overlapping of events.\n\nOutput: The algorithm should return a single integer, which is the highest total importance score achievable under the given constraints.
+```
+
+
+function signature:
+```python
+test_events = [(1, 2, 10), (2,3,5), (1,3,14)]\n\ndef schedule_events(events):\n    '''\n    events is a list of tuples of the form (start_time, end_time, score)\n    '''\n    score = 0\n    # write your code here\n\n    return score\n\nprint(schedule_events(test_events))
+```
+
+unit tests:
+```python
+# Test Case 1: Single event\nevents = [(0, 2, 10)]\nassert schedule_events(events) == 10, "Test Case 1 Failed"\n\n# Test Case 2: Two non-overlapping events\nevents = [(0, 2, 10), (2, 4, 15)]\nassert schedule_events(events) == 25, "Test Case 2 Failed"\n\n# Test Case 3: Two overlapping events, one with higher score\nevents = [(0, 3, 10), (2, 5, 20)]\nassert schedule_events(events) == 20, "Test Case 3 Failed"\n\n# Test Case 4: Multiple events, some overlapping\nevents = [(0, 3, 10), (2, 5, 15), (5, 7, 20)]\nassert schedule_events(events) == 35, "Test Case 4 Failed"\n\n# Test Case 5: Events with the same time\nevents = [(1, 4, 10), (1, 4, 15)]\nassert schedule_events(events) == 15, "Test Case 5 Failed"\n\n# Test Case 6: Events spread throughout the day\nevents = [(0, 2, 10), (3, 5, 15), (6, 8, 20), (9, 10, 25)]\nassert schedule_events(events) == 70, "Test Case 6 Failed"\n\n# Test Case 7: Non-overlapping events with equal score\nevents = [(0, 2, 10), (2, 4, 10), (4, 6, 10)]\nassert schedule_events(events) == 30, "Test Case 7 Failed"\n\n# Test Case 8: Overlapping events with varying scores\nevents = [(0, 4, 20), (3, 5, 30), (5, 7, 25)]\nassert schedule_events(events) == 55, "Test Case 8 Failed"\n\n# Test Case 9: All events overlapping\nevents = [(1, 3, 10), (2, 4, 15), (2, 5, 20)]\nassert schedule_events(events) == 20, "Test Case 9 Failed"
+```
+
+solution:
+```python
+#event scheduler
+
+def binary_search(events, index):
+    lo, hi = 0, index - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if events[mid][1] <= events[index][0]:
+            if events[mid + 1][1] <= events[index][0]:
+                lo = mid + 1
+            else:
+                return mid
+        else:
+            hi = mid - 1
+    return -1
+
+def schedule_events(events):
+    # Sort the events based on their end time
+    events.sort(key=lambda x: x[1])
+
+    n = len(events)
+    dp = [0] * n
+    dp[0] = events[0][2]
+
+    for i in range(1, n):
+        incl_prof = events[i][2]
+        l = binary_search(events, i)
+        if l != -1:
+            incl_prof += dp[l]
+
+        dp[i] = max(incl_prof, dp[i - 1])
+
+    return dp[n-1]
+
+```
+
+
+
+## Data manipulation tasks → LLM would be helpful in remembering syntax and ideation
 
 ### Transform input pandas dataframe to output dataframe (Valerie problem, solved by gpt-4)
 
@@ -938,6 +976,90 @@ def transform_df(df):
 ```
 
 
+### T test
+
+name: t_test
+
+Task description:
+```
+Your goal is to complete the function simplified_t_test. This function takes as input two arrays of numbers and will return a float value called t_test. 
+
+The simplified_t_test is a statistical test that is used to compare the means of two populations. The value is computed as follows:
+
+t_test =  abs ( (mean1 - mean2) / sqrt((variance1 / n1) + (variance2 / n2))  )
+
+where mean1 and mean2 are the means of the two populations, variance1 and variance2 are the variances of the two populations with a modified denominator:
+variance1 = sum((x - mean1)^2) / (n1 - 2)
+variance2 = sum((x - mean2)^2) / (n2 - 2)
+
+, and n1 and n2 are the number of samples in each population. Note this is not the ordinary t-test, but a simplified version of it.
+```
+
+function signature:
+```python
+
+# function signature
+def simplified_t_test(sample1, sample2):
+    """
+    :param sample1: List or array of sample data (sample 1)
+    :param sample2: List or array of sample data (sample 2)
+    :return: simplified t-test statistic
+    """
+    t_test = 0
+    # write your code here
+    return t_test
+```
+
+unit tests:
+```python
+import numpy as np
+
+# Test with known values
+sample1 = [10, 20, 30, 40, 50]
+sample2 = [30, 40, 50, 60, 70]
+expected_t_stat = 1.7320508075688774  # This value should be pre-calculated
+print(simplified_t_test(sample1, sample2))
+assert np.isclose(simplified_t_test(sample1, sample2), expected_t_stat, atol=1e-3), "Test with known values failed"
+
+# Test with identical samples
+identical_sample = [1, 2, 3, 4, 5]
+assert simplified_t_test(identical_sample, identical_sample) == 0, "Test with identical samples failed"
+
+
+sample1 = [1,2,-1,3,4]
+sample2 = [2,3,-2,4,5]
+expected_t_stat = 0.35032452487268523
+print(simplified_t_test(sample1, sample2))
+assert np.isclose(simplified_t_test(sample1, sample2), expected_t_stat, atol=1e-3), "Test with known values failed"
+```
+
+solution:
+```python
+
+# function signature
+import numpy as np
+
+def simplified_t_test(sample1, sample2):
+    """
+    :param sample1: List or array of sample data (sample 1)
+    :param sample2: List or array of sample data (sample 2)
+    :return: simplified t-test statistic
+    """
+    t_test = 0
+    # write your code here
+    mean1 = np.mean(sample1)
+    mean2 = np.mean(sample2)
+    # variance with modified denominator
+    variance1 = np.var(sample1, ddof=2)
+    variance2 = np.var(sample2, ddof=2)
+    n1 = len(sample1)
+    n2 = len(sample2)
+    t_test = (mean1 - mean2) / np.sqrt(variance1/n1 + variance2/n2)
+    return abs(t_test)
+```
+
+
+
 ## Editing and Augmenting Existing Code → LLM would be helpful as it can quickly digest existing code 
 
 
@@ -1250,6 +1372,8 @@ class Tokenizer:
 ```
 
 
+## Lengthy Code → LLM would be helpful as it can quickly digest existing code and faster writing speed
+
 ### Login Authentication
 
 name: login_authenticator
@@ -1401,85 +1525,6 @@ class LoginAuthenticator:
         return False
 ```
 
-### T test
-
-name: t_test
-
-Task description:
-```
-Your goal is to complete the function simplified_t_test. The simplified_t_test is a statistical test that is used to compare the means of two populations. This function takes as input two arrays of numbers and will return a float value called t_test, which is computed as follows:
-
-t_test =  abs ( (mean1 - mean2) / sqrt((variance1 / n1) + (variance2 / n2))  )
-
-where mean1 and mean2 are the means of the two populations, variance1 and variance2 are the variances of the two populations with a modified denominator:
-variance1 = sum((x - mean1)^2) / (n1 - 2)
-variance2 = sum((x - mean2)^2) / (n2 - 2)
-
-, and n1 and n2 are the number of samples in each population. Note this is not the ordinary t-test, but a simplified version of it.
-```
-
-function signature:
-```python
-
-# function signature
-def simplified_t_test(sample1, sample2):
-    """
-    :param sample1: List or array of sample data (sample 1)
-    :param sample2: List or array of sample data (sample 2)
-    :return: simplified t-test statistic
-    """
-    t_test = 0
-    # write your code here
-    return t_test
-```
-
-unit tests:
-```python
-import numpy as np
-
-# Test with known values
-sample1 = [10, 20, 30, 40, 50]
-sample2 = [30, 40, 50, 60, 70]
-expected_t_stat = 1.7320508075688774  # This value should be pre-calculated
-print(simplified_t_test(sample1, sample2))
-assert np.isclose(simplified_t_test(sample1, sample2), expected_t_stat, atol=1e-3), "Test with known values failed"
-
-# Test with identical samples
-identical_sample = [1, 2, 3, 4, 5]
-assert simplified_t_test(identical_sample, identical_sample) == 0, "Test with identical samples failed"
-
-
-sample1 = [1,2,-1,3,4]
-sample2 = [2,3,-2,4,5]
-expected_t_stat = 0.35032452487268523
-print(simplified_t_test(sample1, sample2))
-assert np.isclose(simplified_t_test(sample1, sample2), expected_t_stat, atol=1e-3), "Test with known values failed"
-```
-
-solution:
-```python
-
-# function signature
-import numpy as np
-
-def simplified_t_test(sample1, sample2):
-    """
-    :param sample1: List or array of sample data (sample 1)
-    :param sample2: List or array of sample data (sample 2)
-    :return: simplified t-test statistic
-    """
-    t_test = 0
-    # write your code here
-    mean1 = np.mean(sample1)
-    mean2 = np.mean(sample2)
-    # variance with modified denominator
-    variance1 = np.var(sample1, ddof=2)
-    variance2 = np.var(sample2, ddof=2)
-    n1 = len(sample1)
-    n2 = len(sample2)
-    t_test = (mean1 - mean2) / np.sqrt(variance1/n1 + variance2/n2)
-    return abs(t_test)
-```
 
 ### Retriever
 
@@ -1647,139 +1692,3 @@ class Retriever:
 ```
 
 
-### event scheduler
-
-name: event_scheduler
-
-Task description:
-```
-Problem Description:
-
-Input:
-
-You have a list of events.
-Each event is represented as a tuple (start, end, score).
-start: The starting hour of the event (an integer between 0 and 10).
-end: The ending hour of the event (an integer between start and 10).
-score: The importance score of the event (a positive integer).
-Constraints:
-
-The events can only be scheduled between the hours of 0:00 and 10:00.
-No two events can overlap. An event with an end time of X cannot overlap with another event with a start time of X.
-Each event can be scheduled only once.
-Objective:
-
-Your goal is to schedule the events in such a way that the total importance score is maximized.
-The algorithm should return the maximum total importance score that can be achieved with the given set of events.
-
-Example:
-
-Suppose you have the following list of events:
-
-Event 1: (1, 3, 5)
-Event 2: (1, 2, 3)
-Event 3: (2, 3, 4)
-
-Best schedule would be to pick Event 2 and Event 3, which would give a total importance score of 7.
-
-The algorithm should determine the best way to schedule these events between 0:00 and 10:00 to achieve the highest total importance score, without any overlapping of events.
-
-Output: The algorithm should return a single integer, which is the highest total importance score achievable under the given constraints.
-```
-
-
-function signature:
-```python
-test_events = [(1, 2, 10), (2,3,5), (1,3,14)]
-
-def schedule_events(events):
-    '''
-    events is a list of tuples of the form (start_time, end_time, score)
-    '''
-    score = 0
-    # write your code here
-
-    return score
-
-print(schedule_events(test_events))
-```
-
-unit tests:
-```python
-
-# Test Case 1: Single event
-events = [(0, 2, 10)]
-assert schedule_events(events) == 10, "Test Case 1 Failed"
-
-# Test Case 2: Two non-overlapping events
-events = [(0, 2, 10), (2, 4, 15)]
-assert schedule_events(events) == 25, "Test Case 2 Failed"
-
-# Test Case 3: Two overlapping events, one with higher score
-events = [(0, 3, 10), (2, 5, 20)]
-assert schedule_events(events) == 20, "Test Case 3 Failed"
-
-# Test Case 4: Multiple events, some overlapping
-events = [(0, 3, 10), (2, 5, 15), (5, 7, 20)]
-assert schedule_events(events) == 35, "Test Case 4 Failed"
-
-# Test Case 5: Events with the same time
-events = [(1, 4, 10), (1, 4, 15)]
-assert schedule_events(events) == 15, "Test Case 5 Failed"
-
-# Test Case 6: Events spread throughout the day
-events = [(0, 2, 10), (3, 5, 15), (6, 8, 20), (9, 10, 25)]
-assert schedule_events(events) == 70, "Test Case 6 Failed"
-
-# Test Case 7: Non-overlapping events with equal score
-events = [(0, 2, 10), (2, 4, 10), (4, 6, 10)]
-assert schedule_events(events) == 30, "Test Case 7 Failed"
-
-# Test Case 8: Overlapping events with varying scores
-events = [(0, 4, 20), (3, 5, 30), (5, 7, 25)]
-assert schedule_events(events) == 55, "Test Case 8 Failed"
-
-# Test Case 9: All events overlapping
-events = [(1, 3, 10), (2, 4, 15), (2, 5, 20)]
-assert schedule_events(events) == 20, "Test Case 9 Failed"
-
-
-print("All test cases passed!")
-```
-
-solution:
-```python
-#event scheduler
-
-def binary_search(events, index):
-    lo, hi = 0, index - 1
-    while lo <= hi:
-        mid = (lo + hi) // 2
-        if events[mid][1] <= events[index][0]:
-            if events[mid + 1][1] <= events[index][0]:
-                lo = mid + 1
-            else:
-                return mid
-        else:
-            hi = mid - 1
-    return -1
-
-def schedule_events(events):
-    # Sort the events based on their end time
-    events.sort(key=lambda x: x[1])
-
-    n = len(events)
-    dp = [0] * n
-    dp[0] = events[0][2]
-
-    for i in range(1, n):
-        incl_prof = events[i][2]
-        l = binary_search(events, i)
-        if l != -1:
-            incl_prof += dp[l]
-
-        dp[i] = max(incl_prof, dp[i - 1])
-
-    return dp[n-1]
-
-```

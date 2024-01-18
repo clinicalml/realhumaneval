@@ -71,6 +71,11 @@ function submit(event) {
     .signInWithEmailAndPassword(email_signin, token_user)
     .then((userCredential) => {
       // we retreive task from database here add conditions
+      // check if email exists in responses and whether completed_task is 0 or 1
+  
+
+
+
       db.collection("tasks")
         //.where("exp_condition", "==", exp_condition)
         .get()

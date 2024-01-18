@@ -106,13 +106,15 @@ editor.on("copy", function (e) {
 // Event listener for paste event
 editor.on("paste", function (e) {
   if (e.text !== lastCopiedText) {
+    // prevent pasting
+    
     e.event.preventDefault(); // Prevent the default paste event
     // If the pasted text is not the same as the last copied text from the editor
     setTimeout(function () {
       alert("Pasting is only allowed from content copied within this editor.");
     }, 10);
-    //e.cancel(); // Cancel the paste event
-    e.event.preventDefault(); // Prevent the default paste event
+    // throw an error
+    throw new Error("Pasting is only allowed from content copied within this editor.");
   }
 });
 
