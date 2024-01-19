@@ -19,9 +19,12 @@ keep track of chat history in array with each element 'sender' agent/user and 'm
 any bugs and visual fixes?
 make sure horizontal resizing works
  */
-const chatHistory = [];
+var chatHistory = [];
 
 var chatBox = document.getElementById("chat-box");
+
+
+
 
 document.getElementById("send-button").addEventListener("click", function () {
   // TODO: MOVE SCROLL TO THE BOTTOM ON SUBMIT
@@ -41,47 +44,48 @@ document.getElementById("send-button").addEventListener("click", function () {
 
     // Track asking question
     telemetry_data.push({
-      event_type: "ask_question",
+      event_type: "user_message",
       task_index: task_index,
-      question: message,
+      message: message,
       timestamp: Date.now(),
     });
 
 
-    chatHistory.push({ sender: "user", message: message });
+    chatHistory.push({ role: "user", content: message });
     // scroll to end of chat-box
     chatBox.scrollTop = chatBox.scrollHeight;
     // Display typing indicator
     displayAgentTyping();
     button.textContent = "✖";
-    get_completion_together("togethercomputer/CodeLlama-34b-Instruct", message, 258)
+    get_chat_together("togethercomputer/CodeLlama-34b-Instruct", chatHistory, 100)
     .then((response_string) => {
       if (button.textContent === "📤") {
         // user pressed cancel
         removeAgentTyping();
         button.textContent = '📤';
-        
         // Track cancel
         telemetry_data.push({
-          event_type: "cancel_question",
+          event_type: "cancel_request",
           task_index: task_index,
-          question: message,
+          message: message,
           timestamp: Date.now(),
         });
 
         return;
       }
       displayAgentMessage(response_string);
+      chatHistory.push({ role: "assistant", content: response_string });
 
       // Track displaying/receiving msg
       telemetry_data.push({
-        event_type: "receive_answer",
+        event_type: "assistant_response",
         task_index: task_index,
-        answer: response_string,
+        chatHistory: chatHistory,
+        response: response_string,
+        logprobs: chat_logprobs,
         timestamp: Date.now(),
       });
 
-      chatHistory.push({ sender: "agent", message: response_string });
       removeAgentTyping();
       button.textContent = '📤';
     })
@@ -101,6 +105,7 @@ document.getElementById("clear-chat").addEventListener("click", function () {
     task_index: task_index,
     timestamp: Date.now(),
   });
+  chatHistory = [];
 
   chatBox.innerHTML = "";
 });
@@ -283,12 +288,13 @@ function addCopyButton(preElement) {
       .writeText(preElement.querySelector("code").textContent)
       .then(() => {
         copyButton.textContent = "Copied!";
-
+        lastCopiedText = preElement.querySelector("code").textContent;
         // Track copy and what was copied
         telemetry_data.push({
           event_type: "copy_code",
           task_index: task_index,
-          code: preElement.querySelector("code").textContent,
+          copied_text: preElement.querySelector("code").textContent,
+          response: preElement.textContent,
           timestamp: Date.now(),
         });
 
@@ -309,13 +315,18 @@ userInput.addEventListener("keydown", function (e) {
   }
 });
 
-userInput.addEventListener("paste", (e) => {
-  var clipboardData = e.clipboardData || window.clipboardData;
-  var pastedData = clipboardData.getData('Text');
-/*   if (pastedData.slice(-1) != "​") {
-    alert("Do not paste data from outside of the application.");
-    e.preventDefault();
-  } */
-})
 
 
+const chatContainer = document.getElementById('chat-container');
+chatContainer.addEventListener('copy', (event) => {
+    const selectedText = document.getSelection().toString();
+    if (selectedText) {
+        lastCopiedText = selectedText;
+        telemetry_data.push({
+          event_type: "copy_from_chat",
+          task_index: task_index,
+          copied_text: selectedText,
+          timestamp: Date.now(),
+        });
+    }
+});
