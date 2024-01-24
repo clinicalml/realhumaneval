@@ -37,12 +37,9 @@ function get_openai_chat_response(model, messages, max_tokens) {
   return new Promise((resolve, reject) => {
     get_openai_chat({ model: model, messages: messages, max_tokens: max_tokens })
       .then((result) => {
-        console.log(result.data);
-        console.log(result.data.data);
-
-        const text_response = result.data.data.choices[0].text;
+        const text_response = result.data.data.choices[0].message.content;
         chat_response = text_response;
-        chat_logprobs = result.data.data.choices[0].logprobs.token_logprobs;
+        chat_logprobs = result.data.data.choices[0].logprobs.content.map(item => item.logprob);
         chat_logprobs = get_summary_statistics(chat_logprobs);
         resolve(text_response);
       })

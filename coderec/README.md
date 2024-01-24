@@ -1,10 +1,27 @@
 
 client side:
+- remove puzzles
+- assign to chat or regular interface based on task
+- push new tasks to firebase
+- add new subjective eval at exit survey
+
+
+autocomplete side:
+- if possible to allow completing suggestions
+
+
+CHAT: 
+- copy paste in chat
+
+- swith models basd on input
+
+- fix python in openai code copy
 
 
 
 
-- fix pasting
+
+
 
 - pre registration https://aspredicted.org/
 

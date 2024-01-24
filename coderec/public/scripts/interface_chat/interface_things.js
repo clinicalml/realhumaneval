@@ -102,7 +102,7 @@ var lastCopiedText = "";
 editor.on("copy", function (e) {
   lastCopiedText = e.text; // Store the copied text
 });
-
+/* 
 // Event listener for paste event
 editor.on("paste", function (e) {
   if (e.text !== lastCopiedText) {
@@ -116,7 +116,7 @@ editor.on("paste", function (e) {
     // throw an error
     throw new Error("Pasting is only allowed from content copied within this editor.");
   }
-});
+}); */
 
 /////////////////////////////////////////
 // end of diabling copy pasting
