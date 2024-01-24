@@ -87,6 +87,7 @@ function closePopup() {
 
 // POPUP for end
 function proceed_timeout() {
+  // NOT USED ANYMORE
   document.getElementById("timeout_popup").style.display = "none";
   window.location.href = "exit_survey.html";
 }
@@ -218,13 +219,13 @@ function updateTimer(endTime) {
       db.collection("responses")
         .doc(response_id)
         .update({
-          timeout_time: time_completed_string,
+          time_completed: time_completed_string,
           task_index: task_index,
         })
         .then(() => {
           console.log("Document successfully written!");
           // show popup timeout_popup
-          alert("Time's Up! You have reached the end of the coding part of the studys. ");
+          alert("Time's Up! You have reached the end of the coding part of the study. ");
           window.location.href = "exit_survey.html";
 
           //document.getElementById("timeout_popup").style.display = "block";

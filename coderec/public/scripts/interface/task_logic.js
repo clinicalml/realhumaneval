@@ -101,14 +101,14 @@ function loadCurrentTask() {
     db.collection("responses")
       .doc(response_id)
       .update({
-        skipped_time: time_completed_string,
+        time_completed: time_completed_string,
         task_index: task_index,
       })
       .then(() => {
         console.log("Document successfully written!");
         // show popup timeout_popup
         alert(
-          "Time's Up! You have reached the end of the coding part of the studys. "
+          "You have reached the end of the coding part of the study. "
         );
         window.location.href = "exit_survey.html";
 

@@ -29,6 +29,29 @@ var response_id;
 var task_id;
 var exp_condition;
 var worker_id;
+
+function hideAIQuestions() {
+  document.getElementById("aihelpful").style.display = "none";
+  document.getElementById("howaihelpful").style.display = "none";
+  document.getElementById("howaiimproved").style.display = "none";
+  document.getElementById("aiToolTypicalUsage").style.display = "none";
+  // div form_control has _label hide and disable
+  document.getElementById("aihelpful_label").style.display = "none";
+  document.getElementById("howaihelpful_label").style.display = "none";
+  document.getElementById("howaiimproved_label").style.display = "none";
+  document.getElementById("aiToolTypicalUsage_label").style.display = "none";
+  document.getElementById("aihelpful").disabled = true;
+  document.getElementById("howaihelpful").disabled = true;
+  document.getElementById("howaiimproved").disabled = true;
+  document.getElementById("aiToolTypicalUsage").disabled = true;
+
+  // change the values to defaults
+  document.getElementById("aihelpful").value = 1;
+  document.getElementById("howaihelpful").value = "none";
+  document.getElementById("howaiimproved").value = "none";
+  document.getElementById("aiToolTypicalUsage").value = "none";
+}
+
 function loadlocalstorage() {
   var myData = localStorage["objectToPass"];
   myData = JSON.parse(myData);
@@ -37,15 +60,19 @@ function loadlocalstorage() {
   exp_condition = myData[2];
   worker_id = myData[3];
   // set next puzzle location
-  var puzzle_frame = document.getElementById("puzzle_frame");
-  puzzle_frame.src = "https://ccl-post.meteorapp.com/?workerId=" + worker_id;
+  /*   var puzzle_frame = document.getElementById("puzzle_frame");
+  puzzle_frame.src = "https://ccl-post.meteorapp.com/?workerId=" + worker_id; */
   //showlocalstorage();
+  // if task_id includes a substring nomodel then call hideAIQuestions
+  if (task_id.includes("nomodel")) {
+    hideAIQuestions();
+  }
 }
 loadlocalstorage();
-
+//hideAIQuestions();
 var db = firebase.firestore();
 
-// when puzzleSubmitButton is clicked
+/* // when puzzleSubmitButton is clicked
 var puzzleSubmitButton = document.getElementById("puzzleSubmitButton");
 puzzleSubmitButton.addEventListener("click", puzzleSubmit);
 
@@ -94,7 +121,7 @@ function puzzleSkip(event) {
     });
   return false;
 }
-
+ */
 var form = document.getElementById("form");
 form.addEventListener("submit", submit);
 
@@ -104,7 +131,10 @@ function submit(event) {
   // Retrieve the value for the AI Tool Typical Usage
   var aiToolTypicalUsage = document.getElementById("aiToolTypicalUsage").value;
   // Retrieve the value for the Additional Comments
-  var aiToolFreeForm = document.getElementById("aiToolFreeForm").value;
+  var finalcomments = document.getElementById("finalcomments").value;
+  var howaiimproved = document.getElementById("howaiimproved").value;
+  var howaihelpful = document.getElementById("howaihelpful").value;
+  var aihelpful = document.getElementById("aihelpful").value;
   // Retrieve the value for the Mental Demand
   var mentalDemand = document.getElementById("mentalDemand").value;
   // Retrieve the value for the Physical Demand
@@ -125,7 +155,10 @@ function submit(event) {
       completed_task: 1,
       completed_task_time: time_now_string,
       aiToolTypicalUsage: aiToolTypicalUsage,
-      aiToolFreeForm: aiToolFreeForm,
+      finalcomments: finalcomments,
+      howaiimproved: howaiimproved,
+      howaihelpful: howaihelpful,
+      aihelpful: aihelpful,
       mentalDemand: mentalDemand,
       physicalDemand: physicalDemand,
       temporalDemand: temporalDemand,
@@ -144,7 +177,6 @@ function submit(event) {
           console.log("Document successfully written!");
 
           document.getElementById("survey").style.display = "none";
-          document.getElementById("puzzle").style.display = "none";
           document.getElementById("end_task").style.display = "block";
           firebase
             .auth()
@@ -176,6 +208,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize interactedRanges with false for each range input
   ranges.forEach(function (range) {
     interactedRanges[range.id] = false;
+    // check if not disabled
+    if (range.disabled == true) {
+      interactedRanges[range.id] = true;
+    }
   });
 
   ranges.forEach(function (range) {

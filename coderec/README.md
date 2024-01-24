@@ -1,13 +1,11 @@
 
 client side:
-- remove puzzles
 - assign to chat or regular interface based on task
-- push new tasks to firebase
-- add new subjective eval at exit survey
-
 
 autocomplete side:
 - if possible to allow completing suggestions
+
+AUTOCOMPLETE+CHAT INTERFACE:
 
 
 CHAT: 
@@ -20,6 +18,9 @@ CHAT:
 
 
 
+
+
+- push new tasks to firebase
 
 
 

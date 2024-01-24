@@ -21,7 +21,7 @@
 
 
 
-    <div id="puzzle" style="display: block; margin-right: 3%; margin-left: 3%; margin-bottom: 3%;  margin-top: 3%;">
+<!--     <div id="puzzle" style="display: block; margin-right: 3%; margin-left: 3%; margin-bottom: 3%;  margin-top: 3%;">
 
         <h3>
             The following is a puzzle task that you have to complete.
@@ -49,32 +49,11 @@
 
 
 
-
-    <!-- <div id="puzzle" style="display: block; margin-right: 3%; margin-left: 3%; margin-bottom: 3%;  margin-top: 3%; ">
-
-        <h2>
-            The following is a puzzle task that you will be asked to complete after you've finished the coding.
-            Once you complete it, please enter the code given below. <br>
-        </h2>
-    
-        <iframe id="puzzle_frame" src="https://www.google.com"></iframe>
-        <br>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;" <label
-            for="puzzle_token"> Please enter the code:</label>
-            </br></br>
-            <input id="puzzle_token" name="puzzle_token" required />
-            <br>
-            <p style="color:red" id="message_highlighted_puzzle"> </p>
-
-            <button  id="puzzleSubmitButton">
-                Submit
-            </button>
-        </div>
-    </div> -->
+ -->
 
 
         <div id="survey"
-            style="display: none; margin-right: 20%; margin-left: 20%; margin-bottom: 3%;  margin-top: 3%; ">
+            style="display: block; margin-right: 20%; margin-left: 20%; margin-bottom: 3%;  margin-top: 3%; ">
 
 
             <h2 id="header">You're almost done! <br> Please answer these final questions to finish the study and press
@@ -82,8 +61,8 @@
             <form id="form">
 
                 <!-- Thinking of your experience using AI tools -->
-                <div class="form-control">
-                    <label for="aiToolTypicalUsage">
+                <div class="form-control" id="aiToolTypicalUsage_label">
+                    <label for="aiToolTypicalUsage" >
                         Thinking of your experience using AI tools outside of today’s session, do you think that your
                         session
                         today reflects your typical usage of AI tools?
@@ -184,12 +163,46 @@
                 </div>
                 <br>
 
+                <!-- AI Helpful -->
+                <div class="form-control" id="aihelpful_label">
+                    <label for="aihelpful" >Overall, how useful/helpful was the AI assistant?</label>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <span>Low</span>
+                        <input type="range" style="flex-grow: 1;" id="aihelpful" name="aihelpful" value="1" min="1" max="10"
+                            oninput="updateSliderValue(this)">
+                        <span>High</span>
+                        <label class="slider-value" for="aihelpful" id="aihelpfulValue">10</label>
+                    </div>
+                </div>
+                <br>
+
+                <div class="form-control" id="howaihelpful_label">
+                    <label for="howaihelpful" >
+                        In which ways was the AI assistant helpful? What did it allow you to accomplish?
+                    </label>
+                    <br>
+                    <textarea name="howaihelpful" style="width: 100%;" id="howaihelpful" rows="4"></textarea>
+                </div>
+                <br>
+
+
+
+                <div class="form-control" id="howaiimproved_label">
+                    <label for="howaiimproved" >
+                      How could the AI suggestions be improved?
+
+                    </label>
+                    <br>
+                    <textarea name="howaiimproved" style="width: 100%;" id="howaiimproved" rows="4"></textarea>
+                </div>
+                <br>
+
                 <div class="form-control">
-                    <label for="aiToolFreeForm">
+                    <label for="finalcomments">
                         Additional comments (Optional): anything went wrong? any feedback?
                     </label>
                     <br>
-                    <textarea name="aiToolFreeForm" style="width: 100%;" id="aiToolFreeForm" rows="4"></textarea>
+                    <textarea name="finalcomments" style="width: 100%;" id="finalcomments" rows="4"></textarea>
                 </div>
                 <br>
 

@@ -79,16 +79,16 @@ function submit(event) {
         .then((querySnapshot) => {
           if (!querySnapshot.empty) {
             // Email exists in responses
-              let doc = querySnapshot.docs[0];
-              let response = doc.data();
-              if (response.completed_task === 0) {
-                // User has an incomplete task
-                task_id_rand = response.task_id;
-                assignTask(task_id_rand);
-              } else {
-                // User has completed their task, assign new task
-                assignRandomTask();
-              }
+            let doc = querySnapshot.docs[0];
+            let response = doc.data();
+            if (response.completed_task === 0) {
+              // User has an incomplete task
+              task_id_rand = response.task_id;
+              assignTask(task_id_rand);
+            } else {
+              // User has completed their task, assign new task
+              assignRandomTask();
+            }
           } else {
             // Email does not exist, assign new task
             assignRandomTask();
@@ -106,103 +106,95 @@ function submit(event) {
   return false;
 }
 
-
-
 function assignRandomTask() {
-  db.collection("tasks").where("task_completed", "==", 0).get()
-  .then((querySnapshot) => {
+  db.collection("tasks")
+    .where("task_completed", "==", 0)
+    .get()
+    .then((querySnapshot) => {
       let tasks = [];
       querySnapshot.forEach((doc) => {
-          tasks.push(doc);
+        tasks.push(doc);
       });
 
       if (tasks.length > 0) {
-          // Select a random task where task_completed is 0
-          let randomTask = tasks[Math.floor(Math.random() * tasks.length)];
-          task_id_rand = randomTask.id;
-          moveToPuzzle();
-        } else {
-          // No tasks where task_completed is 0, select any random task
-          db.collection("tasks").get()
+        // Select a random task where task_completed is 0
+        let randomTask = tasks[Math.floor(Math.random() * tasks.length)];
+        task_id_rand = randomTask.id;
+        moveToPuzzle();
+      } else {
+        // No tasks where task_completed is 0, select any random task
+        db.collection("tasks")
+          .get()
           .then((allTasksSnapshot) => {
-              allTasksSnapshot.forEach((doc) => {
-                  tasks.push(doc);
-              });
-              let randomTask = tasks[Math.floor(Math.random() * tasks.length)];
-              task_id_rand = randomTask.id;
-              exp_condition = randomTask.data().exp_condition;
-              moveToPuzzle();
+            allTasksSnapshot.forEach((doc) => {
+              tasks.push(doc);
+            });
+            let randomTask = tasks[Math.floor(Math.random() * tasks.length)];
+            task_id_rand = randomTask.id;
+            exp_condition = randomTask.data().exp_condition;
+            moveToTask();
           });
       }
-  })
-  .catch((error) => {
+    })
+    .catch((error) => {
       console.log("Error getting documents: ", error);
-  });
+    });
 }
-
-
 
 function assignTask(taskId) {
   // Fetch the task details based on taskId
-  db.collection("tasks").doc(taskId).get()
-  .then((doc) => {
+  db.collection("tasks")
+    .doc(taskId)
+    .get()
+    .then((doc) => {
       if (doc.exists) {
-          let task = doc.data();
-          task_id_rand = doc.id;
-          exp_condition = task.exp_condition;
-          moveToPuzzle();
+        let task = doc.data();
+        task_id_rand = doc.id;
+        exp_condition = task.exp_condition;
+        moveToTask();
       } else {
-          console.log("No such document!");
-          alert("No such document! Please contact study administrator.");
-
+        console.log("No such document!");
+        alert("No such document! Please contact study administrator.");
       }
-  })
-  .catch((error) => {
+    })
+    .catch((error) => {
       console.log("Error getting document:", error);
-  });
+    });
 }
 
-
-function moveToPuzzle() {
+function moveToTask() {
   response_id = task_id_rand.concat("-").concat(worker_id_rand.toString());
   var time_now = new Date();
   var time_now_string = time_now.toString();
   db.collection("responses")
-  .doc(response_id)
-  .set({
-    worker_id: worker_id_rand,
-    task_id: task_id_rand,
-    name: name_worker,
-    email: email,
-    date_performed: time_now_string,
-    completed_task: 0,
-    exp_condition: exp_condition,
-  })
-  .then(() => {
-    console.log("Document successfully written!");
-    var myData = [
-      response_id,
-      task_id_rand,
-      exp_condition,
-      worker_id_rand,
-    ];
-    localStorage.setItem("objectToPass", JSON.stringify(myData));
-    // change src of iframe puzzle_frame
+    .doc(response_id)
+    .set({
+      worker_id: worker_id_rand,
+      task_id: task_id_rand,
+      name: name_worker,
+      email: email,
+      date_performed: time_now_string,
+      completed_task: 0,
+      exp_condition: exp_condition,
+    })
+    .then(() => {
+      console.log("Document successfully written!");
+      var myData = [response_id, task_id_rand, exp_condition, worker_id_rand];
+      localStorage.setItem("objectToPass", JSON.stringify(myData));
+      /*     // change src of iframe puzzle_frame
     var puzzle_frame = document.getElementById("puzzle_frame");
     puzzle_frame.src = "https://ccl.meteorapp.com/?workerId=" + worker_id_rand;
     // make div id survey hidden and div id puzzle visible
     document.getElementById("survey").style.display = "none";
-    document.getElementById("puzzle").style.display = "block";
-  })
-  .catch((error) => {
-    console.error("Error writing document: ", error);
-  });
+    document.getElementById("puzzle").style.display = "block"; */
+      location.href = "./interface.html";
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
+    });
 }
 
-
-
-
-
+/* 
 // when puzzleSubmitButton is clicked
 var puzzleSubmitButton = document.getElementById("puzzleSubmitButton");
 puzzleSubmitButton.addEventListener("click", puzzleSubmit);
@@ -248,7 +240,7 @@ function puzzleSkip(event) {
       console.error("Error writing document: ", error);
     });
   return false;
-}
+} */
 
 // remove endTime and code from local storage to reset
 localStorage.removeItem("endTime");
