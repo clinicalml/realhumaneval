@@ -100,7 +100,7 @@ exports.get_together_completion = onCall(
         temperature: 1,
         max_tokens: request.data.max_tokens,
         logprobs: 1,
-        stop: ["\n\n"],
+        //stop: ["\n\n"],
         },
     };
 
@@ -147,7 +147,7 @@ exports.get_together_chat = onCall(
         temperature: 1,
         max_tokens: request.data.max_tokens,
         logprobs: 1,
-        stop: ["\n\n","</s>","[/INST]"],
+        //stop: ["\n\n","</s>","[/INST]"],
       },
     };
 

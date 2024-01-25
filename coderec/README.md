@@ -1,20 +1,14 @@
 
 client side:
 - assign to chat or regular interface based on task
+- chat add all functionality of regular interface
+
 
 autocomplete side:
 - if possible to allow completing suggestions
 
 AUTOCOMPLETE+CHAT INTERFACE:
-
-
-CHAT: 
-- copy paste in chat
-
-- swith models basd on input
-
-- fix python in openai code copy
-
+- implement
 
 
 

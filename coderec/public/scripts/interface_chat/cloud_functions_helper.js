@@ -91,7 +91,6 @@ async function submitCode() {
   console.log("submitting code");
   // check if suggestion is currently displayed
 
-  rejectSuggestion();
   document.getElementById("output").innerText = "Running...";
   var editor_value = editor.getValue();
   var editor_value_string = editor_value.toString();

@@ -1,27 +1,21 @@
-/* TODO:
-cancel button doesnt work right now
-add telemetry tracking
-- when send is pressed: track what got sent
-- when message is received: track what got received
-- when clear chat is pressed: track that
-- when copy is pressed: track that
-example of telemetry tracking:
-    telemetry_data.push({
-      event_type: "suggestion_shown",
-      task_index: task_index,
-      suggestion_id: suggestion_id,
-      suggestion: response_string,
-      timestamp: Date.now(),
-    });
-
-keep track of chat history in array with each element 'sender' agent/user and 'message'
-
-any bugs and visual fixes?
-make sure horizontal resizing works
- */
 var chatHistory = [];
-
 var chatBox = document.getElementById("chat-box");
+var messageAIindex = 0;
+
+
+function getAIResponse(model, chatHistory, max_tokens_task) {
+  switch (model) {
+      case "gpt-3.5-turbo":
+          return get_openai_chat_response("gpt-3.5-turbo", chatHistory, max_tokens_task);
+      case "CodeLlama-34b-Instruct":
+          return get_chat_together("togethercomputer/CodeLlama-34b-Instruct", chatHistory, max_tokens_task);
+      case "CodeLlama-7b-Instruct":
+        return get_chat_together("togethercomputer/CodeLlama-7b-Instruct", chatHistory, max_tokens_task);
+      default:
+        return get_chat_together("togethercomputer/CodeLlama-34b-Instruct", chatHistory, max_tokens_task);
+      }
+}
+
 
 document.getElementById("send-button").addEventListener("click", function () {
   // TODO: MOVE SCROLL TO THE BOTTOM ON SUBMIT
@@ -53,16 +47,11 @@ document.getElementById("send-button").addEventListener("click", function () {
     // Display typing indicator
     displayAgentTyping();
     button.textContent = "✖";
-/*     get_chat_together(
-      "togethercomputer/CodeLlama-34b-Instruct",
-      chatHistory,
-      100
-    ) */
-    get_openai_chat_response(
-      "gpt-3.5-turbo",
-      chatHistory,
-      100
-    )
+    // REMOVE THESE TWO LINES LATER
+    model = "CodeLlama-34b-Instruct";
+    max_tokens_task = 200;
+
+    getAIResponse(model, chatHistory, max_tokens_task)
       .then((response_string) => {
         if (button.textContent === "📤") {
           // user pressed cancel
@@ -89,8 +78,9 @@ document.getElementById("send-button").addEventListener("click", function () {
           response: response_string,
           logprobs: chat_logprobs,
           timestamp: Date.now(),
+          messageAIindex: messageAIindex,
         });
-
+        messageAIindex += 1;
         removeAgentTyping();
         button.textContent = "📤";
       })
@@ -263,6 +253,15 @@ function displayAgentMessage(message) {
       // Inside a code block
       var codeContent = document.createElement("code");
       codeContent.style.backgroundColor = "white";
+      // remove first line for gpt because it is the language of the segment
+      if (model === "gpt-3.5-turbo") {
+        var lines = segment.split('\n');
+        lines.shift(); // Remove the first line
+        segment = lines.join('\n');
+      }
+  
+
+    
       codeContent.textContent = segment;
       hljs.highlightElement(codeContent);
       textElement.lastChild.appendChild(codeContent);
@@ -296,15 +295,18 @@ function addCopyButton(preElement) {
       .writeText(preElement.querySelector("code").textContent)
       .then(() => {
         copyButton.textContent = "Copied!";
-        console.log("Copied to clipboard: ", preElement.querySelector("code").textContent);
+        // console.log(
+        //   "Copied to clipboard: ",
+        //   preElement.querySelector("code").textContent
+        // );
         lastCopiedText = preElement.querySelector("code").textContent;
-        copiedFromPage = true;
         // Track copy and what was copied
         telemetry_data.push({
           event_type: "copy_code",
           task_index: task_index,
           copied_text: preElement.querySelector("code").textContent,
           response: preElement.textContent,
+          messageAIindex: messageAIindex,
           timestamp: Date.now(),
         });
 
@@ -325,35 +327,50 @@ userInput.addEventListener("keydown", function (e) {
   }
 });
 
+
 const chatContainer = document.getElementById("chat-container");
-chatContainer.addEventListener("copy", (event) => {
-  console.log("copy event" + event.target.textContent);
-  copiedFromPage = true;
-  lastCopiedText = event.target.textContent;
-    telemetry_data.push({
-      event_type: "copy_from_chat",
-      task_index: task_index,
-      copied_text: lastCopiedText,
-      timestamp: Date.now(),
-    });
-  
+
+chatContainer.addEventListener('copy', (event) => {
+  const selection = window.getSelection();
+  const selectedText = selection.toString();
+
+  if (selectedText) {
+      // Text is selected and copied
+      // Push the data to telemetry
+      telemetry_data.push({
+          event_type: "copy_from_chat",
+          task_index: task_index,
+          messageAIindex: messageAIindex,
+          copied_text: selectedText,
+          timestamp: Date.now(),
+      });
+  }
 });
 
-let copiedFromPage = false;
 
-document.addEventListener('copy', (event) => {
-    // Set the flag to true when something is copied from the page
-    copiedFromPage = true;
-});
 
-document.addEventListener('paste', (event) => {
-    // Check if the content was copied from the page
-    if (!copiedFromPage) {
-        // If not, prevent the paste action
-        event.preventDefault();
-        alert('Pasting is allowed only for content copied from this page.');
-        throw new Error("Pasting is only allowed from content copied within this editor.");
-    }
-    // Reset the flag after checking
-    copiedFromPage = false;
+/* chatContainer.addEventListener("copy", (event) => {
+  // get the exact thing copied
+  console.log(event);
+  lastCopiedText =  event.target.textContent;
+  console.log("Copied: ", lastCopiedText);
+  telemetry_data.push({
+    event_type: "copy_from_chat",
+    task_index: task_index,
+    messageAIindex: messageAIindex,
+    copied_text: lastCopiedText,
+    timestamp: Date.now(),
+  });
 });
+ */
+// on paste into editor log what was pasted
+editor.on('paste', function(text) {
+  telemetry_data.push({
+    event_type: "paste_into_editor",
+    task_index: task_index,
+    messageAIindex: messageAIindex,
+    copied_text: text.text,
+    timestamp: Date.now(),
+  });
+}
+);

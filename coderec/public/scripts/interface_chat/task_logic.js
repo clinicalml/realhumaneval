@@ -6,8 +6,8 @@ var tutorial_unit_test = "";
 var tutorial_task_description = "";
 
 // defaults
-var model = "togethercomputer/CodeLlama-7b";
-var max_tokens_task = 20;
+var model = "gpt-3.5-turbo";
+var max_tokens_task = 64;
 const timeout_time_skip = 600000; // 10 minutes
 const interval_time_savecode = 15000; // 15 seconds
 var db = firebase.firestore();
