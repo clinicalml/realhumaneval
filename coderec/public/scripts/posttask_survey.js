@@ -65,6 +65,7 @@ function loadlocalstorage() {
   //showlocalstorage();
   // if task_id includes a substring nomodel then call hideAIQuestions
   if (task_id.includes("nomodel")) {
+    console.log(task_id);
     hideAIQuestions();
   }
 }

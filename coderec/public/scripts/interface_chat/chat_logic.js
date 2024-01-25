@@ -180,7 +180,7 @@ function displayAgentTyping() {
   var chatBox = document.getElementById("chat-box");
   var typingElement = document.createElement("div");
   typingElement.classList.add("typing-indicator");
-  typingElement.textContent = "Agent is typing...";
+  typingElement.textContent = "AI Chatbot is typing...";
   typingElement.id = "typing-indicator";
   chatBox.appendChild(typingElement);
   // scroll to beginning of typingElement in chat-box

@@ -278,7 +278,6 @@ window.onload = function () {
 
 // make sure editor on refresh is saved and reloaded
 window.onbeforeunload = function () {
-  rejectSuggestion();
   localStorage.setItem("code", editor.getValue());
   // save task index
   localStorage.setItem("task_index", task_index);

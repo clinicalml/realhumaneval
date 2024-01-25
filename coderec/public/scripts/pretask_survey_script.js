@@ -120,7 +120,7 @@ function assignRandomTask() {
         // Select a random task where task_completed is 0
         let randomTask = tasks[Math.floor(Math.random() * tasks.length)];
         task_id_rand = randomTask.id;
-        moveToPuzzle();
+        moveToTask();
       } else {
         // No tasks where task_completed is 0, select any random task
         db.collection("tasks")

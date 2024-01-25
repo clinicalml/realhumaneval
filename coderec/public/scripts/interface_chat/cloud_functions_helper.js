@@ -161,6 +161,7 @@ async function runCodeTest() {
 }
 
 function isValidFunction(code) {
+  // not used
   // Check if the code contains the required function signature
   if (task_index == -1) {
     if (!code.includes(tutorial_function_signature)) {

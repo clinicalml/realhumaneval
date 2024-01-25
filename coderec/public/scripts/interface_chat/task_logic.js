@@ -109,7 +109,7 @@ function loadCurrentTask() {
         console.log("Document successfully written!");
         // show popup timeout_popup
         alert(
-          "Time's Up! You have reached the end of the coding part of the studys. "
+          "You have reached the end of the coding part of the study. "
         );
         window.location.href = "exit_survey.html";
 
