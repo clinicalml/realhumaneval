@@ -132,7 +132,7 @@ function appendCustomString() {
         timestamp: Date.now(),
       });
 
-      let mean = max_tokens_task, stdDev = 25, min = 10, max = 120;
+      let mean = 64, stdDev = 25, min = 10, max = 120;
       var actual_max_tokens = sampleGaussianTruncated(mean, stdDev, min, max);
       
 

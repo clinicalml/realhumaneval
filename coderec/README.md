@@ -1,15 +1,7 @@
 
-client side:
-- assign to chat or regular interface based on task
-- chat add all functionality of regular interface
-
 
 autocomplete side:
 - if possible to allow completing suggestions
-
-AUTOCOMPLETE+CHAT INTERFACE:
-- implement
-
 
 
 

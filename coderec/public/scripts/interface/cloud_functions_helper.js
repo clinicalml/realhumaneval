@@ -107,7 +107,11 @@ async function runCodeTest() {
     var formattedUnitTests = currentUnitTests.replace(/\\n/g, "\n");
 
     // Step 3: Append Unit Tests
-    var testCode = editorCode + "\n\n" + formattedUnitTests;
+    // add these two lines to ignore warnings
+    //import warnings
+    //warnings.filterwarnings("ignore")
+    var python_ignore_warnings = "import warnings\nwarnings.filterwarnings('ignore')\n";
+    var testCode =  python_ignore_warnings + "\n\n" + editorCode + "\n\n" + formattedUnitTests;
     // Step 4: Call the API
     var result = await runcode({ prompt: testCode });
     // Step 5: Display Results
