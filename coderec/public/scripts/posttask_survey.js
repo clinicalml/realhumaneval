@@ -12,6 +12,8 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
+var db = firebase.firestore();
+
 const appCheck = firebase.appCheck();
 appCheck.activate(
   new firebase.appCheck.ReCaptchaEnterpriseProvider(
@@ -68,10 +70,28 @@ function loadlocalstorage() {
     console.log(task_id);
     hideAIQuestions();
   }
+  // mark user entered
+  mark_user_entered();
 }
+
+function mark_user_entered(){
+  var time_now_string = new Date().toString();
+  db.collection("responses")
+    .doc(response_id)
+    .update({
+      entered_exit_survey: time_now_string,
+    })
+    .then(() => {
+      console.log("Document successfully written!");
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
+    });
+}
+
 loadlocalstorage();
+
 //hideAIQuestions();
-var db = firebase.firestore();
 
 /* // when puzzleSubmitButton is clicked
 var puzzleSubmitButton = document.getElementById("puzzleSubmitButton");

@@ -47,7 +47,9 @@ async function submitCode() {
   console.log("submitting code");
   // check if suggestion is currently displayed
 
+  if (model != "none"){
   rejectSuggestion();
+  }
   document.getElementById("output").innerText = "Running...";
   var editor_value = editor.getValue();
   var editor_value_string = editor_value.toString();
@@ -79,8 +81,9 @@ async function runCodeTest() {
   try {
     // Step 1: Extract Code from Editor
     var editorCode = editor.getValue();
-    rejectSuggestion();
-
+    if (model != "none"){
+      rejectSuggestion();
+      }
 /*     // Step 2: Analyze the Code
     if (!isValidFunction(editorCode)) {
       telemetry_data.push({
