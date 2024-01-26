@@ -6,6 +6,9 @@
     <link rel="icon" type="image/x-icon" href="static/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI4PYTHON Study </title>
@@ -16,7 +19,7 @@
 
     <div id="timeout_popup" class="popup" style="display: none;">
         <h2>Time's Up!</h2>
-        <p> You have reached the end of the coding part of the studys. 
+        <p> You have reached the end of the coding part of the studys.
         </p>
         <br>
         <button onclick="proceed_timeout()">Proceed</button>
@@ -28,10 +31,11 @@
         <div class="popup-page" id="page1">
             <h2>Study Introduction</h2>
             <p>Welcome to the user study! You will first complete a tutorial task to make you familiar with the study.
-                <ul>
-              <li>  After the tutorial task, you will have 30 minutes total where you will try to solve as many
-                coding tasks as possible one at a time. </li>
-                <li>  It is NOT allowed to use any outside ressources to solve the coding questions (e.g. Google, StackOverflow, ChatGPT), your compensation is tied to effort only. </li> 
+            <ul>
+                <li> After the tutorial task, you will have 30 minutes total where you will try to solve as many
+                    coding tasks as possible one at a time. </li>
+                <li> It is NOT allowed to use any outside ressources to solve the coding questions (e.g. Google,
+                    StackOverflow, ChatGPT), your compensation is tied to effort only. </li>
             </ul>
             </p>
             <br>
@@ -41,27 +45,35 @@
         <!-- Second Page: Image of Code Editor -->
         <div class="popup-page" id="page2" style="display:none;">
             <h2>Code Editor Information:</h2>
-            <img src="static/interface_pic.JPG" style="width: 39vw; height: 30vh ;" alt="Code Editor">
+            <img src="static/interface_chat_pic.JPG" style="width: 39vw; height: 30vh ;" alt="Code Editor">
             <br>
-            <span id="page2_tutorial_text"> You will write code in the interface above: a code editor equipped with an AI assistant that provides
-                suggestion inline is applied.
-            <ul>
-                <li> The AI automatically provides a suggestion whenever you stop typing for more than 2 seconds.</li>
-                <li> You can accept a suggestion by pressing [TAB] or reject a suggestion by pressing [ESC]. </li>
-                <li> You can also request a suggestion at any time by pressing [CTRL+ENTER] (Windows) or [CMD+ENTER] (Mac). </li>
-                <li> You can run your code by pressing the "▶️" button and the output will be in the output box at the bottom in grey. </li>
-                <li> You can submit your final code for evaluation by pressing the "📤" button.  </li>
-            </ul>
-            Note: please be aware that the AI assistant is not perfect and may provide incorrect suggestions. Moreover,
-            the AI may generate potentially offensive suggestions especially if prompted with language that is
-            offensive.
-        </span>
-        <span id="page2_tutorial_text_nomodel" style="display: none;"> You will write code in the interface above: a code editor.
-        <ul>
-            <li> You can run your code by pressing the "▶️" button and the output will be in the output box below </li>
-            <li> You can submit your final code for evaluation by pressing the "📤" button.  </li>
-        </ul>
-        </span>
+            <span id="page2_tutorial_text"> You will write code in the interface above: a code editor equipped with an
+                AI assistant chatbot in the right panel.
+                <ul>
+                    <li> The AI chatbot will respond to messages you send and incorporate previous messages in it's
+                        response. The AI does not know what the task is or the code in the editor.</li>
+                    <li> When the AI generates code in it's response, there is a COPY button that will show up above the
+                        code segment to allow you to copy.</li>
+                    <li> The AI automatically provides a suggestion whenever you stop typing for more than 2 seconds.</li>
+                    <li> You can accept a suggestion by pressing [TAB] or reject a suggestion by pressing [ESC]. </li>
+                    <li> You can also request a suggestion at any time by pressing [CTRL+ENTER] (Windows) or [CMD+ENTER] (Mac). </li>
+                    <li> You can test your code by pressing the "▶️" button and the output will be in the output box at
+                        the bottom in grey. </li>
+                    <li> Press the submit  "📤" button to evaluate your code for corectness. You can submit your code as many times as you wish until the code is correct. </li>
+                </ul>
+                Note: please be aware that the AI assistant is not perfect and may provide incorrect suggestions.
+                Moreover,
+                the AI may generate potentially offensive suggestions especially if prompted with language that is
+                offensive.
+            </span>
+            <span id="page2_tutorial_text_nomodel" style="display: none;"> You will write code in the interface above: a
+                code editor.
+                <ul>
+                    <li> You can run your code by pressing the "▶️" button and the output will be in the output box
+                        below </li>
+                    <li> You can submit your final code for evaluation by pressing the "📤" button. </li>
+                </ul>
+            </span>
             <br>
             <button onclick="closePopup()">Close</button>
         </div>
@@ -85,7 +97,7 @@
 
         <!-- Button to open the popup -->
         <button onclick="showPopup()" style="background-color:darkblue">Show Shortcuts and Button Info</button>
-        <button onclick="showInstructions()" style="background-color:darkblue">Show Instructions</button>
+        <button onclick="showInstructions()">Show Instructions</button>
 
         <!-- Overlay for the popup -->
         <div class="overlay" id="overlay" onclick="hidePopup()"></div>
@@ -94,25 +106,15 @@
         <div class="popup" id="popup">
             <h2> Button Information</h2>
             <p>
-                <!-- <b>Start Recording</b> - Starts recording your screen. <br />
-                <b>Stop Recording</b> - Stops recording screen <br />
-                <b>Model Selector</b> - Selects the model to use for suggestions. <br />
-                <b>Max Tokens Suggestion</b> - Sets the maximum number of tokens to use for suggestions. <br /> -->
                 <b>Show Shortcuts and Button Info</b> - Shows this popup. <br />
                 <b>Show Instructions</b> - Shows the instructions for the study. <br />
                 <b>Reset Code</b> - Resets the code in the editor to the original code. <br />
                 <b>Change Theme</b> - Changes the theme of the editor. <br />
-                <img id="ai_icon" src="static/ai_icon.png" style="height: 1em; width: 1em;" /> - (if AI enabled) When this icon spins,
-                the AI is generating a suggestion <br />
                 <b> Timer </b> - Displays the time remaining in the task. <br />
                 <b> Progress Bar </b> - Displays the progress of the task. <br />
                 <b> Run </b> - Runs the code in the editor and displays output in box below code. <br />
                 <b> Submit </b> - Evaluates the code in the editor with unit tests given task. <br />
             </p>
-            <h2>Keyboard Shortcuts</h2>
-            <p>[TAB] to accept a suggestion<br />
-                [ESC] to reject suggestion<br />
-                [CTRL+ENTER] (Windows) and [CMD+ENTER] (Mac) to request a suggestion</p>
             <button onclick="hidePopup()">Close</button>
         </div>
         <div id="timer">30:00</div>
@@ -125,23 +127,38 @@
 
 
     <div class="container">
-        <div style="margin-right: 5px; width: 40vw;" id="taskDescription">
+        <div style="margin-right: 5px;  height: 70vh; width: 30vw;"  id="taskDescription">
             <p>
-            </p>
+                test
+        </p>
         </div>
-        <div id="editor" style="height: 70vh; width: 60vw;"></div>
+        <div id="editor" style="height: 70vh; width: 40vw;"></div>
+        <div id="chat-container" style="height: 70vh; width: 40vw; margin-left: 5px;">
+            <button id="clear-chat">Clear Chat</button>
+            <div id="chat-box"></div>
+            <div id="input-area">
+              <textarea id="user-input" placeholder="Type your message..."></textarea>
+              <button id="send-button">📤</button>
+            </div>
+        </div>
     </div>
+
+
+
+
+
     <div class="container" style=" justify-content: center; align-items: center;">
         <button onclick="submitCode()" style="font-size: large;">▶️</i>Run</button>
         <button id="runCodeTest" style="background-color: rgb(130, 14, 14); font-size: large;"
             onclick="runCodeTest()">📤</i>Submit</button>
-        <button id="skipTaskButton"  style="display: none; background-color: rgb(54, 54, 54); font-size: large;">Can't solve it? Skip Task</button>
+        <button id="skipTaskButton" style="display: none; background-color: rgb(54, 54, 54); font-size: large;">Can't
+            solve it? Skip Task</button>
     </div>
     <div class="container" style=" justify-content: center; align-items: center ;">
-       <span>Output of Run:   </span> 
+        <span>Output of Run: </span>
         <div id="output" style="height: 5vh; width: 80vw;"></div>
     </div>
-    
+
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
@@ -170,10 +187,13 @@
         //  enableLiveAutocompletion: true
         //});
     </script>
-    <script src="./scripts/interface/cloud_functions_helper.js"></script>
-    <script src="./scripts/interface//interface_things.js"></script>
-    <script src="./scripts/interface/task_logic.js"></script>
-    <!-- <script src="./scripts/interface/interface_logic.js"></script> -->
+    <script src="./scripts/interface_both/cloud_functions_helper.js"></script>
+    <script src="./scripts/interface_both/interface_things.js"></script>
+    <script src="./scripts/interface_both/task_logic.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="./scripts/interface_both/chat_logic.js"></script>
+    <script src="./scripts/interface_both/interface_logic.js"></script>
 
 </body>
 

@@ -51,12 +51,12 @@
                 AI assistant chatbot in the right panel.
                 <ul>
                     <li> The AI chatbot will respond to messages you send and incorporate previous messages in it's
-                        response.</li>
+                        response. The AI does not know what the task is or the code in the editor.</li>
                     <li> When the AI generates code in it's response, there is a COPY button that will show up above the
                         code segment to allow you to copy.</li>
-                    <li> You can run your code by pressing the "▶️" button and the output will be in the output box at
+                    <li> You can test your code by pressing the "▶️" button and the output will be in the output box at
                         the bottom in grey. </li>
-                    <li> You can submit your final code for evaluation by pressing the "📤" button. </li>
+                    <li> Press the submit  "📤" button to evaluate your code for corectness. You can submit your code as many times as you wish until the code is correct. </li>
                 </ul>
                 Note: please be aware that the AI assistant is not perfect and may provide incorrect suggestions.
                 Moreover,
@@ -94,6 +94,8 @@
 
         <!-- Button to open the popup -->
         <button onclick="showPopup()" style="background-color:darkblue">Show Shortcuts and Button Info</button>
+        <button onclick="showInstructions()">Show Instructions</button>
+
         <!-- Overlay for the popup -->
         <div class="overlay" id="overlay" onclick="hidePopup()"></div>
 
@@ -101,8 +103,8 @@
         <div class="popup" id="popup">
             <h2> Button Information</h2>
             <p>
-
                 <b>Show Shortcuts and Button Info</b> - Shows this popup. <br />
+                <b>Show Instructions</b> - Shows the instructions for the study. <br />
                 <b>Reset Code</b> - Resets the code in the editor to the original code. <br />
                 <b>Change Theme</b> - Changes the theme of the editor. <br />
                 <b> Timer </b> - Displays the time remaining in the task. <br />

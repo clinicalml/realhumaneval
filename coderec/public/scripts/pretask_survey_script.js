@@ -27,6 +27,7 @@ var worker_id_rand = Math.floor(Math.random() * 10000000); // to pass to other p
 var rand_task;
 var response_id;
 var exp_condition = 0;
+var interface_type = "autocomplete";
 var name_worker;
 var email;
 
@@ -84,6 +85,7 @@ function submit(event) {
             if (response.completed_task === 0) {
               // User has an incomplete task
               task_id_rand = response.task_id;
+
               assignTask(task_id_rand);
             } else {
               // User has completed their task, assign new task
@@ -119,7 +121,10 @@ function assignRandomTask() {
       if (tasks.length > 0) {
         // Select a random task where task_completed is 0
         let randomTask = tasks[Math.floor(Math.random() * tasks.length)];
+        var task = randomTask.data();
         task_id_rand = randomTask.id;
+        exp_condition = task.exp_condition;
+        interface_type = task.interface_type
         moveToTask();
       } else {
         // No tasks where task_completed is 0, select any random task
@@ -130,8 +135,10 @@ function assignRandomTask() {
               tasks.push(doc);
             });
             let randomTask = tasks[Math.floor(Math.random() * tasks.length)];
+            var task = randomTask.data();
             task_id_rand = randomTask.id;
-            exp_condition = randomTask.data().exp_condition;
+            exp_condition = task.exp_condition;
+            interface_type = task.interface_type;
             moveToTask();
           });
       }
@@ -151,11 +158,12 @@ function assignTask(taskId) {
         let task = doc.data();
         task_id_rand = doc.id;
         exp_condition = task.exp_condition;
+        interface_type = task.interface_type;
         moveToTask();
       } else {
         console.log("No such document!");
-        alert("No such document! Please contact study administrator.");
-      }
+        assignRandomTask();
+            }
     })
     .catch((error) => {
       console.log("Error getting document:", error);
@@ -187,7 +195,20 @@ function moveToTask() {
     // make div id survey hidden and div id puzzle visible
     document.getElementById("survey").style.display = "none";
     document.getElementById("puzzle").style.display = "block"; */
+
+
+      if (interface_type == "autocomplete") {
       location.href = "./interface.html";
+      }
+      else if (interface_type == "chat") {
+      location.href = "./interface_chat.html";
+      }
+      else if (interface_type == "both") {
+      location.href = "./interface_both.html";
+      }
+      else {
+      location.href = "./interface.html";
+      }
     })
     .catch((error) => {
       console.error("Error writing document: ", error);

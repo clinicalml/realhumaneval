@@ -83,6 +83,11 @@ function showPage(pageNumber) {
 function closePopup() {
   document.getElementById("popup_tutorial").style.display = "none";
 }
+function showInstructions() {
+  document.getElementById("popup_tutorial").style.display = "block";
+  document.getElementById("page1").style.display = "none";
+  document.getElementById("page2").style.display = "block";
+}
 
 
 // POPUP for end

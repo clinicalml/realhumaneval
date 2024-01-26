@@ -28,6 +28,50 @@ const get_together_chat = firebase.functions().httpsCallable("get_together_chat"
 /////////////////////////////////////////
 // CLOUD FUNCTIONS CALLS
 /////////////////////////////////////////
+
+
+var chat_response = "";
+var chat_logprobs;
+
+function get_openai_chat_response(model, messages, max_tokens) {
+  return new Promise((resolve, reject) => {
+    get_openai_chat({ model: model, messages: messages, max_tokens: max_tokens })
+      .then((result) => {
+        const text_response = result.data.data.choices[0].message.content;
+        chat_response = text_response;
+        chat_logprobs = result.data.data.choices[0].logprobs.content.map(item => item.logprob);
+        chat_logprobs = get_summary_statistics(chat_logprobs);
+        resolve(text_response);
+      })
+      .catch((error) => {
+        console.error("Error calling the getcompletion function:", error);
+      });
+  });
+}
+
+
+function get_chat_together(model, messages, max_tokens) {
+  return new Promise((resolve, reject) => {
+    get_together_chat({
+      model: model,
+      messages: messages,
+      max_tokens: max_tokens,
+    })
+      .then((result) => {
+        const text_response = result.data.data.choices[0].message.content;
+        chat_response = text_response;
+        chat_logprobs = result.data.data.choices[0].logprobs.token_logprobs;
+        chat_logprobs = get_summary_statistics(chat_logprobs);
+        resolve(text_response);
+      })
+      .catch((error) => {
+        console.error("Error calling the get_chat_together function:", error);
+      });
+  });
+}
+
+
+
 function get_openai_response(prefix, suffix, max_tokens) {
   return new Promise((resolve, reject) => {
     getcompletion({ prefix: prefix, suffix: suffix, max_tokens: max_tokens })
@@ -46,8 +90,8 @@ function get_openai_response(prefix, suffix, max_tokens) {
 async function submitCode() {
   console.log("submitting code");
   // check if suggestion is currently displayed
-
   rejectSuggestion();
+
   document.getElementById("output").innerText = "Running...";
   var editor_value = editor.getValue();
   var editor_value_string = editor_value.toString();
@@ -119,6 +163,7 @@ async function runCodeTest() {
 }
 
 function isValidFunction(code) {
+  // not used
   // Check if the code contains the required function signature
   if (task_index == -1) {
     if (!code.includes(tutorial_function_signature)) {

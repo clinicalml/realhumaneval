@@ -83,15 +83,11 @@ function showPage(pageNumber) {
 function closePopup() {
   document.getElementById("popup_tutorial").style.display = "none";
 }
-
 function showInstructions() {
-    document.getElementById("popup_tutorial").style.display = "block";
-    document.getElementById("page1").style.display = "none";
-    document.getElementById("page2").style.display = "block";
+  document.getElementById("popup_tutorial").style.display = "block";
+  document.getElementById("page1").style.display = "none";
+  document.getElementById("page2").style.display = "block";
 }
-
-  
-
 
 
 // POPUP for end
@@ -112,7 +108,7 @@ var lastCopiedText = "";
 editor.on("copy", function (e) {
   lastCopiedText = e.text; // Store the copied text
 });
-
+/* 
 // Event listener for paste event
 editor.on("paste", function (e) {
   if (e.text !== lastCopiedText) {
@@ -126,7 +122,7 @@ editor.on("paste", function (e) {
     // throw an error
     throw new Error("Pasting is only allowed from content copied within this editor.");
   }
-});
+}); */
 
 /////////////////////////////////////////
 // end of diabling copy pasting
@@ -288,6 +284,7 @@ window.onload = function () {
 // make sure editor on refresh is saved and reloaded
 window.onbeforeunload = function () {
   rejectSuggestion();
+
   localStorage.setItem("code", editor.getValue());
   // save task index
   localStorage.setItem("task_index", task_index);

@@ -7,9 +7,9 @@ function getAIResponse(model, chatHistory, max_tokens_task) {
   switch (model) {
       case "gpt-3.5-turbo":
           return get_openai_chat_response("gpt-3.5-turbo", chatHistory, max_tokens_task);
-      case "CodeLlama-34b-Instruct":
+      case "CodeLlama-34b":
           return get_chat_together("togethercomputer/CodeLlama-34b-Instruct", chatHistory, max_tokens_task);
-      case "CodeLlama-7b-Instruct":
+      case "CodeLlama-7b":
         return get_chat_together("togethercomputer/CodeLlama-7b-Instruct", chatHistory, max_tokens_task);
       default:
         return get_chat_together("togethercomputer/CodeLlama-34b-Instruct", chatHistory, max_tokens_task);
