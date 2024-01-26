@@ -107,9 +107,11 @@ function appendCustomString() {
         timestamp: Date.now(),
       });
 
-      let mean = max_tokens_task, stdDev = 25, min = 10, max = 120;
+      let mean = max_tokens_task,
+        stdDev = 25,
+        min = 10,
+        max = 120;
       var actual_max_tokens = sampleGaussianTruncated(mean, stdDev, min, max);
-      
 
       //max_tokens = parseInt(document.getElementById("maxTokens").value);
       //model = document.getElementById("modelSelector").value;
@@ -241,7 +243,7 @@ editor.commands.on("exec", function (e) {
   } else if (e.command.name == "insertstring" && e.command.name != "indent") {
     rejectSuggestion();
 
-/*     currentlyGenerating = true;
+    /*     currentlyGenerating = true;
     const key_pressed = e.args;
     // REMOVE SUGGESTION - reject suggestion
     editor.session.removeMarker(customStringMarkerId);
@@ -306,7 +308,6 @@ editor.commands.on("exec", function (e) {
         timestamp: Date.now(),
       });
       codeAtlastReject = editor.getValue(); */
-    
   } else if (e.command.name == "indent") {
     // Programmer Accepted Suggestion by pressing tab
     acceptSuggestion();

@@ -12,18 +12,24 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 const appCheck = firebase.appCheck();
 appCheck.activate(
-  new firebase.appCheck.ReCaptchaEnterpriseProvider("6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"  ),
+  new firebase.appCheck.ReCaptchaEnterpriseProvider(
+    "6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"
+  ),
   true // Set to true to allow auto-refresh.
 );
 
 // check if user is logged in
-console.log('user logged in', firebase.auth().currentUser);
+console.log("user logged in", firebase.auth().currentUser);
 
 const runcode = firebase.functions().httpsCallable("runcode");
 const getcompletion = firebase.functions().httpsCallable("getcompletion");
-const get_together_completion = firebase.functions().httpsCallable("get_together_completion");
+const get_together_completion = firebase
+  .functions()
+  .httpsCallable("get_together_completion");
 const get_openai_chat = firebase.functions().httpsCallable("get_openai_chat");
-const get_together_chat = firebase.functions().httpsCallable("get_together_chat");
+const get_together_chat = firebase
+  .functions()
+  .httpsCallable("get_together_chat");
 
 /////////////////////////////////////////
 // CLOUD FUNCTIONS CALLS
@@ -47,8 +53,8 @@ async function submitCode() {
   console.log("submitting code");
   // check if suggestion is currently displayed
 
-  if (model != "none"){
-  rejectSuggestion();
+  if (model != "none") {
+    rejectSuggestion();
   }
   document.getElementById("output").innerText = "Running...";
   var editor_value = editor.getValue();
@@ -57,11 +63,19 @@ async function submitCode() {
     .then((result) => {
       // check if stderr is null, if so, hide the error message
       var log = "";
-      if (result.data.data.stderr == null && result.data.data.exception == null) {
+      if (
+        result.data.data.stderr == null &&
+        result.data.data.exception == null
+      ) {
         log = result.data.data.stdout;
       } else {
         log =
-          "Errors:" + result.data.data.stderr + "\n" + result.data.data.stdout + "\n" + result.data.data.exception;
+          "Errors:" +
+          result.data.data.stderr +
+          "\n" +
+          result.data.data.stdout +
+          "\n" +
+          result.data.data.exception;
       }
       telemetry_data.push({
         event_type: "run_code",
@@ -81,10 +95,10 @@ async function runCodeTest() {
   try {
     // Step 1: Extract Code from Editor
     var editorCode = editor.getValue();
-    if (model != "none"){
+    if (model != "none") {
       rejectSuggestion();
-      }
-/*     // Step 2: Analyze the Code
+    }
+    /*     // Step 2: Analyze the Code
     if (!isValidFunction(editorCode)) {
       telemetry_data.push({
         event_type: "submit_code",
@@ -113,8 +127,14 @@ async function runCodeTest() {
     // add these two lines to ignore warnings
     //import warnings
     //warnings.filterwarnings("ignore")
-    var python_ignore_warnings = "import warnings\nwarnings.filterwarnings('ignore')\n";
-    var testCode =  python_ignore_warnings + "\n\n" + editorCode + "\n\n" + formattedUnitTests;
+    var python_ignore_warnings =
+      "import warnings\nwarnings.filterwarnings('ignore')\n";
+    var testCode =
+      python_ignore_warnings +
+      "\n\n" +
+      editorCode +
+      "\n\n" +
+      formattedUnitTests;
     // Step 4: Call the API
     var result = await runcode({ prompt: testCode });
     // Step 5: Display Results
@@ -184,21 +204,17 @@ function displayResult(result) {
       "\n" +
       result.data.data.stdout +
       "\n" +
-      result.data.data.exception
-      ;
+      result.data.data.exception;
 
-
-      telemetry_data.push({
-        event_type: "submit_code",
-        task_index: task_index,
-        completed_task: 0,
-        log: log,
-        timestamp: Date.now(),
-      });
+    telemetry_data.push({
+      event_type: "submit_code",
+      task_index: task_index,
+      completed_task: 0,
+      log: log,
+      timestamp: Date.now(),
+    });
 
     alert(log);
-
-
   }
 }
 
@@ -250,12 +266,11 @@ function calltogether() {
 // END CLOUD FUNCTIONS CALLS
 /////////////////////////////////////////
 
-
 // util
 
 function get_summary_statistics(data) {
   if (!Array.isArray(data) || data.length === 0) {
-      return {};
+    return {};
   }
 
   // Sorting the array for median calculation
@@ -268,20 +283,26 @@ function get_summary_statistics(data) {
   const mean = sum / n;
 
   // Calculating median
-  const median = n % 2 === 0 ? (sortedData[middleIndex - 1] + sortedData[middleIndex]) / 2 : sortedData[middleIndex];
+  const median =
+    n % 2 === 0
+      ? (sortedData[middleIndex - 1] + sortedData[middleIndex]) / 2
+      : sortedData[middleIndex];
 
   // Calculating standard deviation
-  const meanDiffSquaredSum = sortedData.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0);
+  const meanDiffSquaredSum = sortedData.reduce(
+    (acc, val) => acc + Math.pow(val - mean, 2),
+    0
+  );
   const std = Math.sqrt(meanDiffSquaredSum / n);
 
   return {
-      min: sortedData[0],
-      max: sortedData[n - 1],
-      mean: mean,
-      median: median,
-      std: std,
-      firstElement: data[0],
-      middleElement: sortedData[middleIndex],
-      lastElement: data[n - 1]
+    min: sortedData[0],
+    max: sortedData[n - 1],
+    mean: mean,
+    median: median,
+    std: std,
+    firstElement: data[0],
+    middleElement: sortedData[middleIndex],
+    lastElement: data[n - 1],
   };
 }

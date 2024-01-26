@@ -71,7 +71,7 @@ function loadTaskData() {
       loadCurrentTask();
       initializeProgressBar();
       // COMMENTED DIFF FROM AUTOCOMPLETE
-/*       if (model != "none") {
+      /*       if (model != "none") {
         var script = document.createElement("script");
         script.src = "./scripts/interface/interface_logic.js";
         document.head.appendChild(script);
@@ -109,9 +109,7 @@ function loadCurrentTask() {
       .then(() => {
         console.log("Document successfully written!");
         // show popup timeout_popup
-        alert(
-          "You have reached the end of the coding part of the study. "
-        );
+        alert("You have reached the end of the coding part of the study. ");
         window.location.href = "exit_survey.html";
 
         //document.getElementById("timeout_popup").style.display = "block";
@@ -168,15 +166,7 @@ function repeatFunction() {
       timestamp: Date.now(),
     });
     last_code_saved = editor.getValue();
-  } /* else {
-    // no changes
-    telemetry_data.push({
-      event_type: "save_code",
-      task_index: task_index,
-      code: "!nochanges!",
-      timestamp: Date.now(),
-    });
-  } */
+  } 
   writeUserData();
 }
 

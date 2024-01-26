@@ -54,12 +54,17 @@
                         response. The AI does not know what the task is or the code in the editor.</li>
                     <li> When the AI generates code in it's response, there is a COPY button that will show up above the
                         code segment to allow you to copy.</li>
-                    <li> The AI automatically provides a suggestion whenever you stop typing for more than 2 seconds.</li>
+                    <li> The AI automatically provides a suggestion whenever you stop typing for more than 2 seconds.
+                    </li>
                     <li> You can accept a suggestion by pressing [TAB] or reject a suggestion by pressing [ESC]. </li>
-                    <li> You can also request a suggestion at any time by pressing [CTRL+ENTER] (Windows) or [CMD+ENTER] (Mac). </li>
+                    <li> You can also request a suggestion at any time by pressing [CTRL+ENTER] (Windows) or [CMD+ENTER]
+                        (Mac). </li>
                     <li> You can test your code by pressing the "▶️" button and the output will be in the output box at
                         the bottom in grey. </li>
-                    <li> Press the submit  "📤" button to evaluate your code for corectness. You can submit your code as many times as you wish until the code is correct. </li>
+                    <li> Press the submit "📤" button to evaluate your code for corectness. You can submit your code as
+                        many times as you wish until the code is correct. </li>
+                    <li> If you cannot solve one of the tasks in 10 minutes, a button "Skip Task" will appear which is optional to press, you have to do your best to solve the task before it appears.</li>
+
                 </ul>
                 Note: please be aware that the AI assistant is not perfect and may provide incorrect suggestions.
                 Moreover,
@@ -127,18 +132,18 @@
 
 
     <div class="container">
-        <div style="margin-right: 5px;  height: 70vh; width: 30vw;"  id="taskDescription">
+        <div style="margin-right: 5px;  height: 70vh; width: 30vw;" id="taskDescription">
             <p>
                 test
-        </p>
+            </p>
         </div>
         <div id="editor" style="height: 70vh; width: 40vw;"></div>
         <div id="chat-container" style="height: 70vh; width: 40vw; margin-left: 5px;">
             <button id="clear-chat">Clear Chat</button>
             <div id="chat-box"></div>
             <div id="input-area">
-              <textarea id="user-input" placeholder="Type your message..."></textarea>
-              <button id="send-button">📤</button>
+                <textarea id="user-input" placeholder="Type your message..."></textarea>
+                <button id="send-button">📤</button>
             </div>
         </div>
     </div>

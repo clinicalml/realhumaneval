@@ -16,7 +16,7 @@
 
     <div id="timeout_popup" class="popup" style="display: none;">
         <h2>Time's Up!</h2>
-        <p> You have reached the end of the coding part of the studys. 
+        <p> You have reached the end of the coding part of the studys.
         </p>
         <br>
         <button onclick="proceed_timeout()">Proceed</button>
@@ -28,10 +28,11 @@
         <div class="popup-page" id="page1">
             <h2>Study Introduction</h2>
             <p>Welcome to the user study! You will first complete a tutorial task to make you familiar with the study.
-                <ul>
-              <li>  After the tutorial task, you will have 30 minutes total where you will try to solve as many
-                coding tasks as possible one at a time. </li>
-                <li>  It is NOT allowed to use any outside ressources to solve the coding questions (e.g. Google, StackOverflow, ChatGPT), your compensation is tied to effort only. </li> 
+            <ul>
+                <li> After the tutorial task, you will have 30 minutes total where you will try to solve as many
+                    coding tasks as possible one at a time. </li>
+                <li> It is NOT allowed to use any outside ressources to solve the coding questions (e.g. Google,
+                    StackOverflow, ChatGPT), your compensation is tied to effort only. </li>
             </ul>
             </p>
             <br>
@@ -43,25 +44,35 @@
             <h2>Code Editor Information:</h2>
             <img src="static/interface_pic.JPG" style="width: 39vw; height: 30vh ;" alt="Code Editor">
             <br>
-            <span id="page2_tutorial_text"> You will write code in the interface above: a code editor equipped with an AI assistant that provides
+            <span id="page2_tutorial_text"> You will write code in the interface above: a code editor equipped with an
+                AI assistant that provides
                 suggestion inline is applied.
-            <ul>
-                <li> The AI automatically provides a suggestion whenever you stop typing for more than 2 seconds.</li>
-                <li> You can accept a suggestion by pressing [TAB] or reject a suggestion by pressing [ESC]. </li>
-                <li> You can also request a suggestion at any time by pressing [CTRL+ENTER] (Windows) or [CMD+ENTER] (Mac). </li>
-                <li> You can run your code by pressing the "▶️" button and the output will be in the output box at the bottom in grey. </li>
-                <li> You can submit your final code for evaluation by pressing the "📤" button.  </li>
-            </ul>
-            Note: please be aware that the AI assistant is not perfect and may provide incorrect suggestions. Moreover,
-            the AI may generate potentially offensive suggestions especially if prompted with language that is
-            offensive.
-        </span>
-        <span id="page2_tutorial_text_nomodel" style="display: none;"> You will write code in the interface above: a code editor.
-        <ul>
-            <li> You can run your code by pressing the "▶️" button and the output will be in the output box below </li>
-            <li> You can submit your final code for evaluation by pressing the "📤" button.  </li>
-        </ul>
-        </span>
+                <ul>
+                    <li> The AI automatically provides a suggestion whenever you stop typing for more than 2 seconds.
+                    </li>
+                    <li> You can accept a suggestion by pressing [TAB] or reject a suggestion by pressing [ESC]. </li>
+                    <li> You can also request a suggestion at any time by pressing [CTRL+ENTER] (Windows) or [CMD+ENTER]
+                        (Mac). </li>
+                    <li> You can run your code by pressing the "▶️" button and the output will be in the output box at
+                        the bottom in grey. </li>
+                    <li> Press the submit "📤" button to evaluate your code for corectness. You can submit your code as
+                        many times as you wish until the code is correct. </li>
+                    <li> If you cannot solve one of the tasks in 10 minutes, a button "Skip Task" will appear which is
+                        optional to press, you have to do your best to solve the task before it appears.</li>
+                </ul>
+                Note: please be aware that the AI assistant is not perfect and may provide incorrect suggestions.
+                Moreover,
+                the AI may generate potentially offensive suggestions especially if prompted with language that is
+                offensive.
+            </span>
+            <span id="page2_tutorial_text_nomodel" style="display: none;"> You will write code in the interface above: a
+                code editor.
+                <ul>
+                    <li> You can run your code by pressing the "▶️" button and the output will be in the output box
+                        below </li>
+                    <li> You can submit your final code for evaluation by pressing the "📤" button. </li>
+                </ul>
+            </span>
             <br>
             <button onclick="closePopup()">Close</button>
         </div>
@@ -102,7 +113,8 @@
                 <b>Show Instructions</b> - Shows the instructions for the study. <br />
                 <b>Reset Code</b> - Resets the code in the editor to the original code. <br />
                 <b>Change Theme</b> - Changes the theme of the editor. <br />
-                <img id="ai_icon" src="static/ai_icon.png" style="height: 1em; width: 1em;" /> - (if AI enabled) When this icon spins,
+                <img id="ai_icon" src="static/ai_icon.png" style="height: 1em; width: 1em;" /> - (if AI enabled) When
+                this icon spins,
                 the AI is generating a suggestion <br />
                 <b> Timer </b> - Displays the time remaining in the task. <br />
                 <b> Progress Bar </b> - Displays the progress of the task. <br />
@@ -135,13 +147,14 @@
         <button onclick="submitCode()" style="font-size: large;">▶️</i>Run</button>
         <button id="runCodeTest" style="background-color: rgb(130, 14, 14); font-size: large;"
             onclick="runCodeTest()">📤</i>Submit</button>
-        <button id="skipTaskButton"  style="display: none; background-color: rgb(54, 54, 54); font-size: large;">Can't solve it? Skip Task</button>
+        <button id="skipTaskButton" style="display: none; background-color: rgb(54, 54, 54); font-size: large;">Can't
+            solve it? Skip Task</button>
     </div>
     <div class="container" style=" justify-content: center; align-items: center ;">
-       <span>Output of Run:   </span> 
+        <span>Output of Run: </span>
         <div id="output" style="height: 5vh; width: 80vw;"></div>
     </div>
-    
+
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>

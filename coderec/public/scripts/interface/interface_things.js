@@ -1,56 +1,58 @@
 var currentTheme = "monokai";
 var timer_minutes = 30;
-document.getElementById("changeThemeButton").addEventListener("click", function() {
+document
+  .getElementById("changeThemeButton")
+  .addEventListener("click", function () {
     // Switch between themes
     if (currentTheme === "monokai") {
-        editor.setTheme("ace/theme/github");
-        currentTheme = "github";
+      editor.setTheme("ace/theme/github");
+      currentTheme = "github";
     } else {
-        editor.setTheme("ace/theme/monokai");
-        currentTheme = "monokai";
+      editor.setTheme("ace/theme/monokai");
+      currentTheme = "monokai";
     }
-});
+  });
 
+document
+  .getElementById("resetCodeButton")
+  .addEventListener("click", function () {
+    // Show confirmation dialog
+    var isConfirmed = confirm(
+      "Are you sure you want to reset your code to when the task was loaded? This deletes your current code."
+    );
 
-document.getElementById('resetCodeButton').addEventListener('click', function() {
-  // Show confirmation dialog
-  var isConfirmed = confirm("Are you sure you want to reset your code to when the task was loaded? This deletes your current code.");
+    if (isConfirmed) {
+      telemetry_data.push({
+        event_type: "code_reset",
+        code: editor.getValue(),
+        task_id: task_id,
+        task_index: task_index,
+        timestamp: Date.now(),
+      });
+      // User clicked 'OK', reset the editor's content
+      editor.session.off("change", handleChange);
+      if (task_index == -1) {
+        editor.setValue(tutorial_function_signature.replace(/\\n/g, "\n"));
+      } else {
+        var newCode = function_signatures[task_index].replace(/\\n/g, "\n");
+        editor.setValue(newCode);
+      }
+      editor.session.on("change", handleChange);
+    }
+  });
 
-  if (isConfirmed) {
+document
+  .getElementById("skipTaskButton")
+  .addEventListener("click", function () {
     telemetry_data.push({
-      event_type: "code_reset",
-      code: editor.getValue(),
+      event_type: "skip_task",
       task_id: task_id,
       task_index: task_index,
       timestamp: Date.now(),
     });
-    // User clicked 'OK', reset the editor's content
-    editor.session.off("change", handleChange);
-    if (task_index == -1) {
-      editor.setValue(tutorial_function_signature.replace(/\\n/g, "\n"));
-    } else {
-    var newCode = function_signatures[task_index].replace(/\\n/g, "\n");
-    editor.setValue(newCode);
-    }
-    editor.session.on("change", handleChange);
-  }
-});
-
-
-document.getElementById("skipTaskButton").addEventListener("click", function() {
-  telemetry_data.push({
-    event_type: "skip_task",
-    task_id: task_id,
-    task_index: task_index,
-    timestamp: Date.now(),
+    task_index++;
+    loadCurrentTask();
   });
-  task_index++;
-  loadCurrentTask();
-});
-
-
-
-
 
 /////////////////////////////////////////
 // Popup
@@ -85,14 +87,10 @@ function closePopup() {
 }
 
 function showInstructions() {
-    document.getElementById("popup_tutorial").style.display = "block";
-    document.getElementById("page1").style.display = "none";
-    document.getElementById("page2").style.display = "block";
+  document.getElementById("popup_tutorial").style.display = "block";
+  document.getElementById("page1").style.display = "none";
+  document.getElementById("page2").style.display = "block";
 }
-
-  
-
-
 
 // POPUP for end
 function proceed_timeout() {
@@ -117,14 +115,16 @@ editor.on("copy", function (e) {
 editor.on("paste", function (e) {
   if (e.text !== lastCopiedText) {
     // prevent pasting
-    
+
     e.event.preventDefault(); // Prevent the default paste event
     // If the pasted text is not the same as the last copied text from the editor
     setTimeout(function () {
       alert("Pasting is only allowed from content copied within this editor.");
     }, 10);
     // throw an error
-    throw new Error("Pasting is only allowed from content copied within this editor.");
+    throw new Error(
+      "Pasting is only allowed from content copied within this editor."
+    );
   }
 });
 
@@ -234,14 +234,16 @@ function updateTimer(endTime) {
         .then(() => {
           console.log("Document successfully written!");
           // show popup timeout_popup
-          alert("Time's Up! You have reached the end of the coding part of the study. ");
+          alert(
+            "Time's Up! You have reached the end of the coding part of the study. "
+          );
           window.location.href = "exit_survey.html";
 
           //document.getElementById("timeout_popup").style.display = "block";
         })
         .catch((error) => {
           console.error("Error writing document: ", error);
-        }); 
+        });
     }
   }, 1000);
 }
@@ -287,9 +289,9 @@ window.onload = function () {
 
 // make sure editor on refresh is saved and reloaded
 window.onbeforeunload = function () {
-  if (model != "none"){
+  if (model != "none") {
     rejectSuggestion();
-    }
+  }
   localStorage.setItem("code", editor.getValue());
   // save task index
   localStorage.setItem("task_index", task_index);
@@ -307,23 +309,23 @@ function restoreAfterRefresh() {
   task_index = localStorage.getItem("task_index");
   if (task_index) {
     task_index = parseInt(task_index);
-  }
-  else{
+  } else {
     task_index = -1;
   }
   telemetry_data = localStorage.getItem("telemetry_data");
   if (telemetry_data) {
     telemetry_data = JSON.parse(telemetry_data);
-  }
-  else{
+  } else {
     telemetry_data = [];
   }
   // check if task_descriptions is defined and not empty
   // check if an object by the name of task_descriptions exists
-  if (typeof task_descriptions !== "undefined" && task_descriptions.length > 0) {
+  if (
+    typeof task_descriptions !== "undefined" &&
+    task_descriptions.length > 0
+  ) {
     updateProgress();
-  } 
-
+  }
 }
 
 // REMOVE AI from interface
@@ -333,15 +335,15 @@ function removeAIinterface() {
   document.getElementById("thinkingIcon").style.display = "none";
   // hide page2_tutorial_text and show page2_tutorial_text_nomodel
   document.getElementById("page2_tutorial_text").style.display = "none";
-  document.getElementById("page2_tutorial_text_nomodel").style.display = "block";
-
+  document.getElementById("page2_tutorial_text_nomodel").style.display =
+    "block";
 }
-
 
 // utilities
 
 function randomGaussian(mean, stdDev) {
-  let u = 0, v = 0;
+  let u = 0,
+    v = 0;
   while (u === 0) u = Math.random(); // Converting [0,1) to (0,1)
   while (v === 0) v = Math.random();
   let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
@@ -352,12 +354,10 @@ function randomGaussian(mean, stdDev) {
 function sampleGaussianTruncated(mean, stdDev, min, max) {
   let sample;
   do {
-      sample = randomGaussian(mean, stdDev);
+    sample = randomGaussian(mean, stdDev);
   } while (sample < min || sample > max);
   return Math.round(sample);
 }
-
-
 
 startTimer();
 restoreAfterRefresh();

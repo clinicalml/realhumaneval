@@ -61,11 +61,7 @@ function loadlocalstorage() {
   task_id = myData[1];
   exp_condition = myData[2];
   worker_id = myData[3];
-  // set next puzzle location
-  /*   var puzzle_frame = document.getElementById("puzzle_frame");
-  puzzle_frame.src = "https://ccl-post.meteorapp.com/?workerId=" + worker_id; */
-  //showlocalstorage();
-  // if task_id includes a substring nomodel then call hideAIQuestions
+
   if (task_id.includes("nomodel")) {
     console.log(task_id);
     hideAIQuestions();
@@ -91,58 +87,6 @@ function mark_user_entered(){
 
 loadlocalstorage();
 
-//hideAIQuestions();
-
-/* // when puzzleSubmitButton is clicked
-var puzzleSubmitButton = document.getElementById("puzzleSubmitButton");
-puzzleSubmitButton.addEventListener("click", puzzleSubmit);
-
-function puzzleSubmit(event) {
-  var puzzle_code = document.getElementById("puzzle_token").value;
-  if (puzzle_code == "PSTQY3RE7") {
-    var time_now = new Date();
-    var time_now_string = time_now.toString();
-    db.collection("responses")
-      .doc(response_id)
-      .update({
-        completed_post_puzzle: time_now_string,
-      })
-      .then(() => {
-        console.log("Document successfully written!");
-        document.getElementById("survey").style.display = "block";
-        document.getElementById("puzzle").style.display = "none";
-      })
-      .catch((error) => {
-        console.error("Error writing document: ", error);
-      });
-  } else {
-    var error_answer = document.getElementById("message_highlighted_puzzle");
-    error_answer.innerHTML = "incorrect puzzle code";
-  }
-  return false;
-}
-// puzzleSkipButton on click
-var puzzleSkipButton = document.getElementById("puzzleSkipButton");
-puzzleSkipButton.addEventListener("click", puzzleSkip);
-function puzzleSkip(event) {
-  var time_now = new Date();
-  var time_now_string = time_now.toString();
-  db.collection("responses")
-    .doc(response_id)
-    .update({
-      skipped_post_puzzle: time_now_string,
-    })
-    .then(() => {
-      console.log("Document successfully written!");
-      document.getElementById("survey").style.display = "block";
-      document.getElementById("puzzle").style.display = "none";
-    })
-    .catch((error) => {
-      console.error("Error writing document: ", error);
-    });
-  return false;
-}
- */
 var form = document.getElementById("form");
 form.addEventListener("submit", submit);
 

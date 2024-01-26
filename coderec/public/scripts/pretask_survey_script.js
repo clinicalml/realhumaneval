@@ -124,7 +124,7 @@ function assignRandomTask() {
         var task = randomTask.data();
         task_id_rand = randomTask.id;
         exp_condition = task.exp_condition;
-        interface_type = task.interface_type
+        interface_type = task.interface_type;
         moveToTask();
       } else {
         // No tasks where task_completed is 0, select any random task
@@ -163,7 +163,7 @@ function assignTask(taskId) {
       } else {
         console.log("No such document!");
         assignRandomTask();
-            }
+      }
     })
     .catch((error) => {
       console.log("Error getting document:", error);
@@ -189,79 +189,21 @@ function moveToTask() {
       console.log("Document successfully written!");
       var myData = [response_id, task_id_rand, exp_condition, worker_id_rand];
       localStorage.setItem("objectToPass", JSON.stringify(myData));
-      /*     // change src of iframe puzzle_frame
-    var puzzle_frame = document.getElementById("puzzle_frame");
-    puzzle_frame.src = "https://ccl.meteorapp.com/?workerId=" + worker_id_rand;
-    // make div id survey hidden and div id puzzle visible
-    document.getElementById("survey").style.display = "none";
-    document.getElementById("puzzle").style.display = "block"; */
-
 
       if (interface_type == "autocomplete") {
-      location.href = "./interface.html";
-      }
-      else if (interface_type == "chat") {
-      location.href = "./interface_chat.html";
-      }
-      else if (interface_type == "both") {
-      location.href = "./interface_both.html";
-      }
-      else {
-      location.href = "./interface.html";
-      }
-    })
-    .catch((error) => {
-      console.error("Error writing document: ", error);
-    });
-}
-
-/* 
-// when puzzleSubmitButton is clicked
-var puzzleSubmitButton = document.getElementById("puzzleSubmitButton");
-puzzleSubmitButton.addEventListener("click", puzzleSubmit);
-
-function puzzleSubmit(event) {
-  var puzzle_code = document.getElementById("puzzle_token").value;
-  if (puzzle_code == "PRE0NXYU1") {
-    var time_now = new Date();
-    var time_now_string = time_now.toString();
-    db.collection("responses")
-      .doc(response_id)
-      .update({
-        completed_pre_puzzle: time_now_string,
-      })
-      .then(() => {
         location.href = "./interface.html";
-      })
-      .catch((error) => {
-        console.error("Error writing document: ", error);
-      });
-  } else {
-    var error_answer = document.getElementById("message_highlighted_puzzle");
-    error_answer.innerHTML = "incorrect puzzle code";
-  }
-  return false;
-}
-
-// when puzzleSkipButton is clicked
-var puzzleSkipButton = document.getElementById("puzzleSkipButton");
-puzzleSkipButton.addEventListener("click", puzzleSkip);
-function puzzleSkip(event) {
-  var time_now = new Date();
-  var time_now_string = time_now.toString();
-  db.collection("responses")
-    .doc(response_id)
-    .update({
-      skipped_pre_puzzle: time_now_string,
-    })
-    .then(() => {
-      location.href = "./interface.html";
+      } else if (interface_type == "chat") {
+        location.href = "./interface_chat.html";
+      } else if (interface_type == "both") {
+        location.href = "./interface_both.html";
+      } else {
+        location.href = "./interface.html";
+      }
     })
     .catch((error) => {
       console.error("Error writing document: ", error);
     });
-  return false;
-} */
+}
 
 // remove endTime and code from local storage to reset
 localStorage.removeItem("endTime");

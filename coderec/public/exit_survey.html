@@ -2,7 +2,6 @@
 <html>
 
 <head>
-    <!-- https://www.geeksforgeeks.org/build-a-survey-form-using-html-and-css/ -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,220 +20,187 @@
 
 
 
-<!--     <div id="puzzle" style="display: block; margin-right: 3%; margin-left: 3%; margin-bottom: 3%;  margin-top: 3%;">
 
-        <h3>
-            The following is a puzzle task that you have to complete.
-            Once you complete it, please enter the code given in it (scroll down). <br>
-        </h3>
-        <br>
-        <iframe style="display: flex;" id="puzzle_frame" src="https://www.google.com"></iframe>
-        <br>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-
-            <label for="puzzle_token"> Please enter the code:</label>
-            </br> </br>
-            <input style="width: 50vw;" id="puzzle_token" name="puzzle_token" placeholder="enter code after puzzle finish" />
-            <br>
-            <p style="color:red" id="message_highlighted_puzzle"> </p>
-            <button id="puzzleSubmitButton">
-                Proceed
-            </button>
-            <br>
-            <button id="puzzleSkipButton" style="background-color: rgb(70, 69, 69); color: white;padding-left: 5px;">
-                Puzzle Website not loading? Click Here
-            </button>
-        </div>
-    </div>
+    <div id="survey" style="display: block; margin-right: 20%; margin-left: 20%; margin-bottom: 3%;  margin-top: 3%; ">
 
 
+        <h2 id="header">You're almost done! <br> Please answer these final questions to finish the study and press
+            the End Experiment button at the end of page when you're done </h2>
+        <form id="form">
 
- -->
-
-
-        <div id="survey"
-            style="display: block; margin-right: 20%; margin-left: 20%; margin-bottom: 3%;  margin-top: 3%; ">
-
-
-            <h2 id="header">You're almost done! <br> Please answer these final questions to finish the study and press
-                the End Experiment button at the end of page when you're done </h2>
-            <form id="form">
-
-                <!-- Thinking of your experience using AI tools -->
-                <div class="form-control" id="aiToolTypicalUsage_label">
-                    <label for="aiToolTypicalUsage" >
-                        Thinking of your experience using AI tools outside of today’s session, do you think that your
-                        session
-                        today reflects your typical usage of AI tools?
-                    </label>
-                    <br>
-                    <select name="aiToolTypicalUsage" id="aiToolTypicalUsage" required>
-                        <option value="" disabled selected hidden></option>
-                        <option value="1">Strongly Disagree</option>
-                        <option value="2">Disagree</option>
-                        <option value="3">Neutral</option>
-                        <option value="4">Agree</option>
-                        <option value="5">Strongly Agree</option>
-                    </select>
-                </div>
-
+            <!-- Thinking of your experience using AI tools -->
+            <div class="form-control" id="aiToolTypicalUsage_label">
+                <label for="aiToolTypicalUsage">
+                    Thinking of your experience using AI tools outside of today’s session, do you think that your
+                    session
+                    today reflects your typical usage of AI tools?
+                </label>
                 <br>
+                <select name="aiToolTypicalUsage" id="aiToolTypicalUsage" required>
+                    <option value="" disabled selected hidden></option>
+                    <option value="1">Strongly Disagree</option>
+                    <option value="2">Disagree</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Agree</option>
+                    <option value="5">Strongly Agree</option>
+                </select>
+            </div>
 
-                <!-- NASA Task Load Index Questions
+            <br>
+
+            <!-- NASA Task Load Index Questions
         https://humansystems.arc.nasa.gov/groups/tlx/downloads/TLXScale.pdf
         -->
-                <!-- Mental Demand Question -->
-                <div class="form-control">
-                    <label for="mentalDemand">How mentally demanding was the study?</label>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                        <span>Low</span>
-                        <input type="range" style="flex-grow: 1;" id="mentalDemand" value="1" name="mentalDemand" min="1" max="20"
-                            oninput="updateSliderValue(this)">
-                        <span>High</span>
-                        <output class="slider-value" for="mentalDemand" id="mentalDemandValue">10</output>
-                    </div>
+            <!-- Mental Demand Question -->
+            <div class="form-control">
+                <label for="mentalDemand">How mentally demanding was the study?</label>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>Low</span>
+                    <input type="range" style="flex-grow: 1;" id="mentalDemand" value="1" name="mentalDemand" min="1"
+                        max="20" oninput="updateSliderValue(this)">
+                    <span>High</span>
+                    <output class="slider-value" for="mentalDemand" id="mentalDemandValue">10</output>
                 </div>
-                <br>
+            </div>
+            <br>
 
-                <!-- Physical Demand Question -->
-                <div class="form-control">
-                    <label for="physicalDemand">How physically demanding was the study?</label>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                        <span>Low</span>
-                        <input type="range" style="flex-grow: 1;" id="physicalDemand" name="physicalDemand" value="1" min="1"
-                            max="20" oninput="updateSliderValue(this)">
-                        <span>High</span>
-                        <output class="slider-value" for="physicalDemand" id="physicalDemandValue">10</output>
-                    </div>
+            <!-- Physical Demand Question -->
+            <div class="form-control">
+                <label for="physicalDemand">How physically demanding was the study?</label>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>Low</span>
+                    <input type="range" style="flex-grow: 1;" id="physicalDemand" name="physicalDemand" value="1"
+                        min="1" max="20" oninput="updateSliderValue(this)">
+                    <span>High</span>
+                    <output class="slider-value" for="physicalDemand" id="physicalDemandValue">10</output>
                 </div>
-                <br>
+            </div>
+            <br>
 
-                <!-- Temporal Demand Question -->
-                <div class="form-control">
-                    <label for="temporalDemand">How hurried or rushed was the pace of the study?</label>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                        <span>Low</span>
-                        <input type="range" style="flex-grow: 1;" id="temporalDemand" name="temporalDemand" value="1" min="1"
-                            max="20" oninput="updateSliderValue(this)">
-                        <span>High</span>
-                        <output class="slider-value" for="temporalDemand" id="temporalDemandValue">10</output>
-                    </div>
+            <!-- Temporal Demand Question -->
+            <div class="form-control">
+                <label for="temporalDemand">How hurried or rushed was the pace of the study?</label>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>Low</span>
+                    <input type="range" style="flex-grow: 1;" id="temporalDemand" name="temporalDemand" value="1"
+                        min="1" max="20" oninput="updateSliderValue(this)">
+                    <span>High</span>
+                    <output class="slider-value" for="temporalDemand" id="temporalDemandValue">10</output>
                 </div>
-                <br>
+            </div>
+            <br>
 
-                <!-- Performance Question -->
-                <div class="form-control">
-                    <label for="performance">How successful were you in accomplishing what you were asked to do?</label>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                        <span>Low</span>
-                        <input type="range" style="flex-grow: 1;" id="performance" name="performance" value="1" min="1" max="20"
-                            oninput="updateSliderValue(this)">
-                        <span>High</span>
-                        <output class="slider-value" for="performance" id="performanceValue">10</output>
-                    </div>
+            <!-- Performance Question -->
+            <div class="form-control">
+                <label for="performance">How successful were you in accomplishing what you were asked to do?</label>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>Low</span>
+                    <input type="range" style="flex-grow: 1;" id="performance" name="performance" value="1" min="1"
+                        max="20" oninput="updateSliderValue(this)">
+                    <span>High</span>
+                    <output class="slider-value" for="performance" id="performanceValue">10</output>
                 </div>
-                <br>
+            </div>
+            <br>
 
-                <!-- Effort Question -->
-                <div class="form-control">
-                    <label for="effort">How hard did you have to work to accomplish your level of performance?</label>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                        <span>Low</span>
-                        <input type="range" style="flex-grow: 1;" id="effort" name="effort" value="1" min="1" max="20"
-                            oninput="updateSliderValue(this)">
-                        <span>High</span>
-                        <label class="slider-value" for="effort" id="effortValue">10</label>
-                    </div>
+            <!-- Effort Question -->
+            <div class="form-control">
+                <label for="effort">How hard did you have to work to accomplish your level of performance?</label>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>Low</span>
+                    <input type="range" style="flex-grow: 1;" id="effort" name="effort" value="1" min="1" max="20"
+                        oninput="updateSliderValue(this)">
+                    <span>High</span>
+                    <label class="slider-value" for="effort" id="effortValue">10</label>
                 </div>
+            </div>
 
-                <br>
+            <br>
 
-                <!-- Frustration Question -->
-                <div class="form-control">
-                    <label for="frustration">How insecure, discouraged, irritated, stressed, and annoyed were
-                        you?</label>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                        <span>Low</span>
-                        <input type="range" style="flex-grow: 1;" id="frustration" name="frustration" value="1" min="1" max="20"
-                            oninput="updateSliderValue(this)">
-                        <span>High</span>
-                        <label class="slider-value" for="frustration" id="frustrationValue">10</label>
-                    </div>
+            <!-- Frustration Question -->
+            <div class="form-control">
+                <label for="frustration">How insecure, discouraged, irritated, stressed, and annoyed were
+                    you?</label>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>Low</span>
+                    <input type="range" style="flex-grow: 1;" id="frustration" name="frustration" value="1" min="1"
+                        max="20" oninput="updateSliderValue(this)">
+                    <span>High</span>
+                    <label class="slider-value" for="frustration" id="frustrationValue">10</label>
                 </div>
-                <br>
+            </div>
+            <br>
 
-                <!-- AI Helpful -->
-                <div class="form-control" id="aihelpful_label">
-                    <label for="aihelpful" >Overall, how useful/helpful was the AI assistant?</label>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                        <span>Low</span>
-                        <input type="range" style="flex-grow: 1;" id="aihelpful" name="aihelpful" value="1" min="1" max="10"
-                            oninput="updateSliderValue(this)">
-                        <span>High</span>
-                        <label class="slider-value" for="aihelpful" id="aihelpfulValue">10</label>
-                    </div>
+            <!-- AI Helpful -->
+            <div class="form-control" id="aihelpful_label">
+                <label for="aihelpful">Overall, how useful/helpful was the AI assistant?</label>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>Low</span>
+                    <input type="range" style="flex-grow: 1;" id="aihelpful" name="aihelpful" value="1" min="1" max="10"
+                        oninput="updateSliderValue(this)">
+                    <span>High</span>
+                    <label class="slider-value" for="aihelpful" id="aihelpfulValue">10</label>
                 </div>
+            </div>
+            <br>
+
+            <div class="form-control" id="howaihelpful_label">
+                <label for="howaihelpful">
+                    In which ways was the AI assistant helpful? What did it allow you to accomplish?
+                </label>
                 <br>
+                <textarea name="howaihelpful" style="width: 100%;" id="howaihelpful" rows="4"></textarea>
+            </div>
+            <br>
 
-                <div class="form-control" id="howaihelpful_label">
-                    <label for="howaihelpful" >
-                        In which ways was the AI assistant helpful? What did it allow you to accomplish?
-                    </label>
-                    <br>
-                    <textarea name="howaihelpful" style="width: 100%;" id="howaihelpful" rows="4"></textarea>
-                </div>
+
+
+            <div class="form-control" id="howaiimproved_label">
+                <label for="howaiimproved">
+                    How could the AI suggestions be improved?
+
+                </label>
                 <br>
+                <textarea name="howaiimproved" style="width: 100%;" id="howaiimproved" rows="4"></textarea>
+            </div>
+            <br>
 
-
-
-                <div class="form-control" id="howaiimproved_label">
-                    <label for="howaiimproved" >
-                      How could the AI suggestions be improved?
-
-                    </label>
-                    <br>
-                    <textarea name="howaiimproved" style="width: 100%;" id="howaiimproved" rows="4"></textarea>
-                </div>
+            <div class="form-control">
+                <label for="finalcomments">
+                    Additional comments (Optional): anything went wrong? any feedback?
+                </label>
                 <br>
+                <textarea name="finalcomments" style="width: 100%;" id="finalcomments" rows="4"></textarea>
+            </div>
+            <br>
 
-                <div class="form-control">
-                    <label for="finalcomments">
-                        Additional comments (Optional): anything went wrong? any feedback?
-                    </label>
-                    <br>
-                    <textarea name="finalcomments" style="width: 100%;" id="finalcomments" rows="4"></textarea>
-                </div>
-                <br>
+            Make to sure to have answered all questions before submitting including all sliders.
+            <br>
+            <button type="submit" style="background-color: grey;" value="submit" id="submitButton" disabled>
+                End Experiment
+            </button>
 
-                Make to sure to have answered all questions before submitting including all sliders.
-                <br>
-                <button type="submit" style="background-color: grey;" value="submit" id="submitButton" disabled>
-                    End Experiment
-                </button>
+        </form>
+    </div>
 
-            </form>
-        </div>
+    <div id="end_task" style="display: none; margin-right: 3%; margin-left: 3%; margin-bottom: 3%;  margin-top: 3%; ">
 
-        <div id="end_task"
-            style="display: none; margin-right: 3%; margin-left: 3%; margin-bottom: 3%;  margin-top: 3%; ">
+        <h2>
+            Thank you for participating in our study! You may now close this tab. <br>
+        </h2>
+    </div>
 
-            <h2>
-                Thank you for participating in our study! You may now close this tab. <br>
-            </h2>
-        </div>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-functions-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check-compat.js"></script>
 
-        <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-functions-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check-compat.js"></script>
+    <script
+        src="https://www.google.com/recaptcha/enterprise.js?render=6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"></script>
 
-        <script
-            src="https://www.google.com/recaptcha/enterprise.js?render=6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"></script>
-        <!-- Replace the variables below. -->
-
-        <script src="./scripts/posttask_survey.js"></script>
+    <script src="./scripts/posttask_survey.js"></script>
 
 </body>
 

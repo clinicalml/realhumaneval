@@ -2,23 +2,36 @@ var chatHistory = [];
 var chatBox = document.getElementById("chat-box");
 var messageAIindex = 0;
 
-
 function getAIResponse(model, chatHistory, max_tokens_task) {
   switch (model) {
-      case "gpt-3.5-turbo":
-          return get_openai_chat_response("gpt-3.5-turbo", chatHistory, max_tokens_task);
-      case "CodeLlama-34b-Instruct":
-          return get_chat_together("togethercomputer/CodeLlama-34b-Instruct", chatHistory, max_tokens_task);
-      case "CodeLlama-7b-Instruct":
-        return get_chat_together("togethercomputer/CodeLlama-7b-Instruct", chatHistory, max_tokens_task);
-      default:
-        return get_chat_together("togethercomputer/CodeLlama-34b-Instruct", chatHistory, max_tokens_task);
-      }
+    case "gpt-3.5-turbo":
+      return get_openai_chat_response(
+        "gpt-3.5-turbo",
+        chatHistory,
+        max_tokens_task
+      );
+    case "CodeLlama-34b-Instruct":
+      return get_chat_together(
+        "togethercomputer/CodeLlama-34b-Instruct",
+        chatHistory,
+        max_tokens_task
+      );
+    case "CodeLlama-7b-Instruct":
+      return get_chat_together(
+        "togethercomputer/CodeLlama-7b-Instruct",
+        chatHistory,
+        max_tokens_task
+      );
+    default:
+      return get_chat_together(
+        "togethercomputer/CodeLlama-34b-Instruct",
+        chatHistory,
+        max_tokens_task
+      );
+  }
 }
 
-
 document.getElementById("send-button").addEventListener("click", function () {
-  // TODO: MOVE SCROLL TO THE BOTTOM ON SUBMIT
   var button = document.getElementById("send-button");
   var userInput = document.getElementById("user-input");
   var message = userInput.value.trim();
@@ -47,9 +60,7 @@ document.getElementById("send-button").addEventListener("click", function () {
     // Display typing indicator
     displayAgentTyping();
     button.textContent = "✖";
-    // REMOVE THESE TWO LINES LATER
-    //model = "CodeLlama-34b-Instruct";
-    //max_tokens_task = 200;
+
 
     getAIResponse(model, chatHistory, max_tokens_task)
       .then((response_string) => {
@@ -255,13 +266,11 @@ function displayAgentMessage(message) {
       codeContent.style.backgroundColor = "white";
       // remove first line for gpt because it is the language of the segment
       if (model === "gpt-3.5-turbo") {
-        var lines = segment.split('\n');
+        var lines = segment.split("\n");
         lines.shift(); // Remove the first line
-        segment = lines.join('\n');
+        segment = lines.join("\n");
       }
-  
 
-    
       codeContent.textContent = segment;
       hljs.highlightElement(codeContent);
       textElement.lastChild.appendChild(codeContent);
@@ -327,44 +336,27 @@ userInput.addEventListener("keydown", function (e) {
   }
 });
 
-
 const chatContainer = document.getElementById("chat-container");
 
-chatContainer.addEventListener('copy', (event) => {
+chatContainer.addEventListener("copy", (event) => {
   const selection = window.getSelection();
   const selectedText = selection.toString();
 
   if (selectedText) {
-      // Text is selected and copied
-      // Push the data to telemetry
-      telemetry_data.push({
-          event_type: "copy_from_chat",
-          task_index: task_index,
-          messageAIindex: messageAIindex,
-          copied_text: selectedText,
-          timestamp: Date.now(),
-      });
+    // Text is selected and copied
+    // Push the data to telemetry
+    telemetry_data.push({
+      event_type: "copy_from_chat",
+      task_index: task_index,
+      messageAIindex: messageAIindex,
+      copied_text: selectedText,
+      timestamp: Date.now(),
+    });
   }
 });
 
 
-
-/* chatContainer.addEventListener("copy", (event) => {
-  // get the exact thing copied
-  console.log(event);
-  lastCopiedText =  event.target.textContent;
-  console.log("Copied: ", lastCopiedText);
-  telemetry_data.push({
-    event_type: "copy_from_chat",
-    task_index: task_index,
-    messageAIindex: messageAIindex,
-    copied_text: lastCopiedText,
-    timestamp: Date.now(),
-  });
-});
- */
-// on paste into editor log what was pasted
-editor.on('paste', function(text) {
+editor.on("paste", function (text) {
   telemetry_data.push({
     event_type: "paste_into_editor",
     task_index: task_index,
@@ -372,5 +364,4 @@ editor.on('paste', function(text) {
     copied_text: text.text,
     timestamp: Date.now(),
   });
-}
-);
+});

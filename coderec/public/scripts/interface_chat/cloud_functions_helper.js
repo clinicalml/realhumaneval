@@ -12,34 +12,45 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 const appCheck = firebase.appCheck();
 appCheck.activate(
-  new firebase.appCheck.ReCaptchaEnterpriseProvider("6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"  ),
+  new firebase.appCheck.ReCaptchaEnterpriseProvider(
+    "6LcdzREpAAAAAMjdwSczmJAfGXx_ClJOBs9tJHlV"
+  ),
   true // Set to true to allow auto-refresh.
 );
 
 // check if user is logged in
-console.log('user logged in', firebase.auth().currentUser);
+console.log("user logged in", firebase.auth().currentUser);
 
 const runcode = firebase.functions().httpsCallable("runcode");
 const getcompletion = firebase.functions().httpsCallable("getcompletion");
-const get_together_completion = firebase.functions().httpsCallable("get_together_completion");
+const get_together_completion = firebase
+  .functions()
+  .httpsCallable("get_together_completion");
 const get_openai_chat = firebase.functions().httpsCallable("get_openai_chat");
-const get_together_chat = firebase.functions().httpsCallable("get_together_chat");
+const get_together_chat = firebase
+  .functions()
+  .httpsCallable("get_together_chat");
 
 /////////////////////////////////////////
 // CLOUD FUNCTIONS CALLS
 /////////////////////////////////////////
-
 
 var chat_response = "";
 var chat_logprobs;
 
 function get_openai_chat_response(model, messages, max_tokens) {
   return new Promise((resolve, reject) => {
-    get_openai_chat({ model: model, messages: messages, max_tokens: max_tokens })
+    get_openai_chat({
+      model: model,
+      messages: messages,
+      max_tokens: max_tokens,
+    })
       .then((result) => {
         const text_response = result.data.data.choices[0].message.content;
         chat_response = text_response;
-        chat_logprobs = result.data.data.choices[0].logprobs.content.map(item => item.logprob);
+        chat_logprobs = result.data.data.choices[0].logprobs.content.map(
+          (item) => item.logprob
+        );
         chat_logprobs = get_summary_statistics(chat_logprobs);
         resolve(text_response);
       })
@@ -48,7 +59,6 @@ function get_openai_chat_response(model, messages, max_tokens) {
       });
   });
 }
-
 
 function get_chat_together(model, messages, max_tokens) {
   return new Promise((resolve, reject) => {
@@ -69,8 +79,6 @@ function get_chat_together(model, messages, max_tokens) {
       });
   });
 }
-
-
 
 function get_openai_response(prefix, suffix, max_tokens) {
   return new Promise((resolve, reject) => {
@@ -98,11 +106,19 @@ async function submitCode() {
     .then((result) => {
       // check if stderr is null, if so, hide the error message
       var log = "";
-      if (result.data.data.stderr == null && result.data.data.exception == null) {
+      if (
+        result.data.data.stderr == null &&
+        result.data.data.exception == null
+      ) {
         log = result.data.data.stdout;
       } else {
         log =
-          "Errors:" + result.data.data.stderr + "\n" + result.data.data.stdout + "\n" + result.data.data.exception;
+          "Errors:" +
+          result.data.data.stderr +
+          "\n" +
+          result.data.data.stdout +
+          "\n" +
+          result.data.data.exception;
       }
       telemetry_data.push({
         event_type: "run_code",
@@ -123,7 +139,7 @@ async function runCodeTest() {
     // Step 1: Extract Code from Editor
     var editorCode = editor.getValue();
 
-/*     // Step 2: Analyze the Code
+    /*     // Step 2: Analyze the Code
     if (!isValidFunction(editorCode)) {
       telemetry_data.push({
         event_type: "submit_code",
@@ -147,8 +163,14 @@ async function runCodeTest() {
     }
     // Replace '\n' in the unit tests string with actual newlines
     var formattedUnitTests = currentUnitTests.replace(/\\n/g, "\n");
-    var python_ignore_warnings = "import warnings\nwarnings.filterwarnings('ignore')\n";
-    var testCode =  python_ignore_warnings + "\n\n" + editorCode + "\n\n" + formattedUnitTests;
+    var python_ignore_warnings =
+      "import warnings\nwarnings.filterwarnings('ignore')\n";
+    var testCode =
+      python_ignore_warnings +
+      "\n\n" +
+      editorCode +
+      "\n\n" +
+      formattedUnitTests;
     // Step 4: Call the API
     var result = await runcode({ prompt: testCode });
     // Step 5: Display Results
@@ -219,21 +241,17 @@ function displayResult(result) {
       "\n" +
       result.data.data.stdout +
       "\n" +
-      result.data.data.exception
-      ;
+      result.data.data.exception;
 
-
-      telemetry_data.push({
-        event_type: "submit_code",
-        task_index: task_index,
-        completed_task: 0,
-        log: log,
-        timestamp: Date.now(),
-      });
+    telemetry_data.push({
+      event_type: "submit_code",
+      task_index: task_index,
+      completed_task: 0,
+      log: log,
+      timestamp: Date.now(),
+    });
 
     alert(log);
-
-
   }
 }
 
@@ -285,12 +303,11 @@ function calltogether() {
 // END CLOUD FUNCTIONS CALLS
 /////////////////////////////////////////
 
-
 // util
 
 function get_summary_statistics(data) {
   if (!Array.isArray(data) || data.length === 0) {
-      return {};
+    return {};
   }
 
   // Sorting the array for median calculation
@@ -303,20 +320,26 @@ function get_summary_statistics(data) {
   const mean = sum / n;
 
   // Calculating median
-  const median = n % 2 === 0 ? (sortedData[middleIndex - 1] + sortedData[middleIndex]) / 2 : sortedData[middleIndex];
+  const median =
+    n % 2 === 0
+      ? (sortedData[middleIndex - 1] + sortedData[middleIndex]) / 2
+      : sortedData[middleIndex];
 
   // Calculating standard deviation
-  const meanDiffSquaredSum = sortedData.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0);
+  const meanDiffSquaredSum = sortedData.reduce(
+    (acc, val) => acc + Math.pow(val - mean, 2),
+    0
+  );
   const std = Math.sqrt(meanDiffSquaredSum / n);
 
   return {
-      min: sortedData[0],
-      max: sortedData[n - 1],
-      mean: mean,
-      median: median,
-      std: std,
-      firstElement: data[0],
-      middleElement: sortedData[middleIndex],
-      lastElement: data[n - 1]
+    min: sortedData[0],
+    max: sortedData[n - 1],
+    mean: mean,
+    median: median,
+    std: std,
+    firstElement: data[0],
+    middleElement: sortedData[middleIndex],
+    lastElement: data[n - 1],
   };
 }

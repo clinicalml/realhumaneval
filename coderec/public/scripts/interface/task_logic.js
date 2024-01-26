@@ -47,7 +47,6 @@ function loadlocalstorage() {
   task_id = myData[1];
   exp_condition = myData[2];
   worker_id = myData[3];
-  //showlocalstorage();
 }
 
 function loadTaskData() {
@@ -166,15 +165,7 @@ function repeatFunction() {
       timestamp: Date.now(),
     });
     last_code_saved = editor.getValue();
-  } /* else {
-    // no changes
-    telemetry_data.push({
-      event_type: "save_code",
-      task_index: task_index,
-      code: "!nochanges!",
-      timestamp: Date.now(),
-    });
-  } */
+  } 
   writeUserData();
 }
 
