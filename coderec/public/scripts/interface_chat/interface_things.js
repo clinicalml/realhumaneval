@@ -1,5 +1,5 @@
 var currentTheme = "monokai";
-var timer_minutes = 30;
+var timer_minutes = 35;
 document
   .getElementById("changeThemeButton")
   .addEventListener("click", function () {

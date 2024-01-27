@@ -26,6 +26,7 @@ console.log("user logged in", firebase.auth().currentUser);
 // remove endTime and code from local storage to reset
 localStorage.removeItem("endTime");
 localStorage.removeItem("code");
+localStorage.removeItem("telemetry_data");
 
 var response_id;
 var task_id;
