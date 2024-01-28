@@ -90,7 +90,7 @@ document.getElementById("send-button").addEventListener("click", function () {
   }
 });
 
-document.getElementById("clear-chat").addEventListener("click", function () {
+function clearChatFunction() {
   let chatBox = document.getElementById("chat-box");
 
   telemetry_data.push({
@@ -101,7 +101,9 @@ document.getElementById("clear-chat").addEventListener("click", function () {
   chatHistory = [];
 
   chatBox.innerHTML = "";
-});
+}
+document.getElementById("clear-chat").addEventListener("click", clearChatFunction);
+
 
 function displayUserMessage(message) {
   var chatBox = document.getElementById("chat-box");

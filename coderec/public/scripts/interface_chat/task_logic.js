@@ -145,8 +145,9 @@ function loadCurrentTask() {
       document.getElementById("skipTaskButton").style.display = "block";
     }, timeout_time_skip);
   }
-  editor.session.on("change", handleChange);
+  //editor.session.on("change", handleChange);
 
+  clearChatFunction();
   telemetry_data.push({
     event_type: "load_task",
     task_id: task_id,
