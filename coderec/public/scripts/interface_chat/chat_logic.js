@@ -1,7 +1,7 @@
 var chatHistory = [];
 var chatBox = document.getElementById("chat-box");
 var messageAIindex = 0;
-
+var lastCopiedText = "";
 function getAIResponse(model, chatHistory, max_tokens_task) {
   switch (model) {
     case "gpt-3.5-turbo":
@@ -341,14 +341,15 @@ userInput.addEventListener("keydown", function (e) {
 });
 
 const chatContainer = document.getElementById("chat-container");
-
-chatContainer.addEventListener("copy", (event) => {
+const chat_box = document.getElementById("chat-box");
+chat_box.addEventListener("copy", (event) => {
   const selection = window.getSelection();
   const selectedText = selection.toString();
 
   if (selectedText) {
     // Text is selected and copied
     // Push the data to telemetry
+    lastCopiedText = selectedText;
     telemetry_data.push({
       event_type: "copy_from_chat",
       task_index: task_index,
@@ -360,12 +361,57 @@ chatContainer.addEventListener("copy", (event) => {
 });
 
 
+
 editor.on("paste", function (text) {
-  telemetry_data.push({
-    event_type: "paste_into_editor",
-    task_index: task_index,
-    messageAIindex: messageAIindex,
-    copied_text: text.text,
-    timestamp: Date.now(),
-  });
+  // check if text.text is contained in lastCopiedText
+  var are_equal = areStringsEqual(lastCopiedText, text.text);
+  // var editDistance = levenshteinDistance(lastCopiedText, text.text); 
+  if (are_equal) {
+    // Track paste
+    console.log("valid paste");
+    telemetry_data.push({
+      event_type: "paste_into_editor",
+      task_index: task_index,
+      messageAIindex: messageAIindex,
+      copied_text: text.text,
+      timestamp: Date.now(),
+      are_copy_paste_equal: are_equal,
+    });
+  }
+  else {
+    // Track invalid paste
+    console.log("invalid paste");
+    setTimeout(function () {
+      alert("You are not allowed to paste code from outside sources that originate from outside the chat window or the editor.");
+    }, 10);
+    telemetry_data.push({
+      event_type: "paste_into_editor",
+      task_index: task_index,
+      messageAIindex: messageAIindex,
+      copied_text: text.text,
+      timestamp: Date.now(),
+      are_copy_paste_equal: are_equal,
+    });
+    // disalow paste
+    text.event.preventDefault();
+    // raise  or throw error
+    throw new Error("You are not allowed to paste code from outside sources that originate from outside the chat window or the editor.");
+  }
+
 });
+
+
+
+
+
+function normalizeString(str) {
+  return str
+      .replace(/\s+/g, ' ') // Replace all whitespace (tabs, newlines, spaces) with a single space
+      .trim(); // Remove leading and trailing spaces
+}
+
+function areStringsEqual(str1, str2) {
+  return normalizeString(str1) === normalizeString(str2);
+}
+
+
