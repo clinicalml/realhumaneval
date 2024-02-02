@@ -160,9 +160,11 @@
         <button id="skipTaskButton" style="display: none; background-color: rgb(54, 54, 54); font-size: large;">Can't
             solve it? Skip Task</button>
     </div>
-    <div class="container" style=" justify-content: center; align-items: center ;">
-        <span>Output of Run: </span>
-        <div id="output" style="height: 5vh; width: 80vw;"></div>
+    <div class="container" style="display: flex; justify-content: center; align-items: flex-start;">
+        <div class="left-column" style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;">
+            <span>Output of Run/Submit: </span>
+        </div>
+        <div id="output" style="height: 30vh; width: 80vw; background-color: black; color: white">Output will be shown here when Run or Submit is pressed.</div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>

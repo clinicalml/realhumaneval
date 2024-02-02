@@ -177,6 +177,7 @@ function displayResult(result) {
       log: "correct code",
       timestamp: Date.now(),
     });
+    document.getElementById("output").innerText = "Output will be shown here when Run or Submit is pressed.";
 
     // update task index
     if (task_index < function_signatures.length - 1) {
@@ -185,6 +186,7 @@ function displayResult(result) {
       updateProgress(); // update progress bar
       loadCurrentTask();
       alert(log);
+      
     } else {
       writeUserData();
       disableBeforeUnload();
@@ -205,6 +207,7 @@ function displayResult(result) {
       result.data.data.stdout +
       "\n" +
       result.data.data.exception;
+    document.getElementById("output").innerText = log;
 
     telemetry_data.push({
       event_type: "submit_code",

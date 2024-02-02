@@ -1,5 +1,5 @@
 // PARAMETERS
-const wait_time_for_sug = 1500; // in milliseconds
+const wait_time_for_sug = 2000; // in milliseconds
 const context_length = 6000; // in characters, in theory should multiply context token length by 4 to get character limit
 // VARIABLES used
 let currentlyGenerating = false; // Flag to track if appendCustomString is in progress
@@ -132,14 +132,13 @@ function appendCustomString() {
         timestamp: Date.now(),
       });
 
-      let mean = 64, stdDev = 25, min = 10, max = 120;
+      let mean = 64, stdDev = 15, min = 10, max = 120;
       var actual_max_tokens = sampleGaussianTruncated(mean, stdDev, min, max);
       
 
       //max_tokens = parseInt(document.getElementById("maxTokens").value);
       //model = document.getElementById("modelSelector").value;
-      // prepend to prefix code "# this code is in Python" - to tell LLM that the code is in Python
-      prefix_code = "# this code is in Python\n" + prefix_code;
+      prefix_code = "# file is main.py, ONLY CODE IN PYTHON IN THIS FILE\n" + prefix_code;
       var response_string = "";
       // get suggestion according to model
       var model_actual = getModelName(model);

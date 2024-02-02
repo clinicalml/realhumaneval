@@ -1,4 +1,4 @@
-var chatHistory = [];
+var chatHistory = [{role: 'system', content: 'You are an expert Python programmer, be helpful to the user and return code only in Python.'}];
 var chatBox = document.getElementById("chat-box");
 var messageAIindex = 0;
 var lastCopiedText = "";
@@ -110,7 +110,7 @@ function clearChatFunction() {
     task_index: task_index,
     timestamp: Date.now(),
   });
-  chatHistory = [];
+  chatHistory = [{role: 'system', content: 'You are an expert Python programmer, be helpful to the user and return code only in Python.'}];
 
   chatBox.innerHTML = "";
 }
