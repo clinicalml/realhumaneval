@@ -1,6 +1,6 @@
 # The RealHumanEval
 
-Associated code, data and interface for the paper "The Real HumanEval: Evaluating Large Language Models’ Abilities to Support Programmers".
+Associated code, data and interface for the paper ["The Real HumanEval: Evaluating Large Language Models’ Abilities to Support Programmers"](https://arxiv.org/abs/2404.02806), to appear at the CHI TREW 2024 workshop.
 
 
 <img src="./static/fig1.jpg" alt="Overview of RealHumanEval" width="50%"/>
@@ -67,7 +67,14 @@ To reproduce figures and results from the paper, you can run the following noteb
 # Citation
 
 ```
-
+@misc{mozannar2024realhumaneval,
+      title={The RealHumanEval: Evaluating Large Language Models' Abilities to Support Programmers}, 
+      author={Hussein Mozannar and Valerie Chen and Mohammed Alsobay and Subhro Das and Sebastian Zhao and Dennis Wei and Manish Nagireddy and Prasanna Sattigeri and Ameet Talwalkar and David Sontag},
+      year={2024},
+      eprint={2404.02806},
+      archivePrefix={arXiv},
+      primaryClass={cs.SE}
+}
 ```
 
 # Acknowledgements
