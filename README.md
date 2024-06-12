@@ -5,7 +5,7 @@ Associated code, data and interface for the paper "The Real HumanEval: Evaluatin
 Quick Links:
 
 
-- **Data**: [HF Datasets link](https://huggingface.co/datasets/hsseinmz/realhumaneval)
+- **Data**: [HF Datasets link](https://huggingface.co/datasets/hsseinmz/realhumaneval) and local link [data](data/README.md)
 
 - **Online Interface**: [interface link](https://codeonline-ee37b.web.app/)
 
