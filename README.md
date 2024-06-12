@@ -87,6 +87,8 @@ To reproduce figures and results from the paper, you can run the following noteb
 }
 ```
 
+License information is available [here](LICENSE)
+
 # Acknowledgements
 
 This work is partially funded by the MIT-IBM Watson AI Lab.
