@@ -1,0 +1,175 @@
+/* 
+  button {
+    color: #d4d4d4;
+    background-color: #333;
+    border: none;
+    padding: 8px 15px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #454545;
+  } */
+  
+  
+/* Style for the top panel */
+.top-panel {
+    width: 100%;
+    background-color: #edecec;
+    color: rgb(11, 9, 9);
+    text-align: left;
+    height: 7vh;
+    overflow: auto;
+} 
+
+
+    /* Style for the buttons */
+.top-panel button {
+
+     background-color: #edecec;
+    color: rgb(4, 4, 4);
+    text-align: left;
+    border: none;
+    border-radius: 4px;
+    margin: 0 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.top-panel button:hover {
+    background-color: #bcbcbc; /* Modified hover background color */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    }
+    
+    
+
+  .dropdown-menu {
+    position: fixed; /* Changed to fixed to be positioned relative to the viewport */
+    background-color:  #edecec;
+    border: 1px solid #3c3c3c;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    width: 200px;
+    z-index: 10;
+  }
+  
+  .menu-item {
+    background-color: #edecec;
+    position: relative;
+    color: #0e0d0d;
+    margin-bottom: 5px;
+    border: none;
+    border-radius: 4px;
+    margin: 0 5px;
+    padding: 5px 10px;
+  }
+  
+  .submenu {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background-color: #edecec;
+    width: 180px;
+    z-index: 20;
+    color: #080808;
+
+  }
+  
+  
+  .menu-item:hover  {
+    display: block; 
+    background-color: #bcbcbc; /* Modified hover background color */
+
+  }
+
+  .menu-item:hover .submenu {
+    display: block; 
+    background-color: #bcbcbc; /* Modified hover background color */
+  }
+  
+  .submenu button {
+    color: #010000;
+    display: block;
+    background-color: #edecec;
+    width: 100%;
+    text-align: left;
+    border: none;
+    border-radius: 4px;
+    margin: 0 5px;
+    padding: 5px 10px;
+  }
+  
+  .parentprogress {
+    display: inline-flex; /* Inline-flex for the progress bar and its label */
+}
+    
+  #progressContainer {
+    position: relative;
+    width: 30vw;  /* Define a specific width for the container */
+    height: 30px; /* Set a specific height to allow vertical centering */
+    display: flex; /* Use flexbox to center children */
+    align-items: center; /* Center children vertically */
+    justify-content: center; /* Center children horizontally */
+}
+
+#taskProgress {
+    width: 100%; /* Make progress bar fill container */
+    position: absolute; /* Position it absolute to allow the text to overlay */
+    z-index: 1; /* Ensure it is behind the text */
+}
+
+#progressText {
+    position: relative; /* Ensure the text is positioned relative to the flex container */
+    z-index: 2; /* Place the text above the progress bar */
+    font-size: smaller;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+
+/* App.css or a similar CSS file */
+
+.exit-survey-overlay {
+  max-height: 100vh;
+  /* display: none; */
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 10px solid rgb(224, 221, 221);
+  background-color: rgb(224, 221, 221);
+  padding: 10px;
+  box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.exit-survey-popup {
+  max-height: 100vh;
+  background-color: rgb(224, 221, 221);
+  width: 100vw;
+  margin: 10px auto;
+  padding: 20px;
+  text-align: left;
+}
+
+
+
+
