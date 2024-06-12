@@ -1,7 +1,13 @@
 # The RealHumanEval
 
-Associated code, data and interface for the paper ["The Real HumanEval: Evaluating Large Language Models’ Abilities to Support Programmers"](https://arxiv.org/abs/2404.02806), to appear at the CHI TREW 2024 workshop.
+Associated code, data and interface for the paper "The Real HumanEval: Evaluating Large Language Models’ Abilities to Support Programmers”.
 
+Quick Links:
+	•	**Data**: [HF Datasets link](https://huggingface.co/datasets/hsseinmz/realhumaneval)
+	•	**Online Interface**: [interface link](https://codeonline-ee37b.web.app/)
+	•	**Interface Code**:  [interface](interface/README.md)
+	•	**Analysis Code**:  [analysis](analysis/README.md)
+	•	**Paper**: [arxiv link](https://arxiv.org/abs/2404.02806)
 
 <img src="./static/fig1.jpg" alt="Overview of RealHumanEval" width="50%"/>
 
@@ -12,15 +18,13 @@ Associated code, data and interface for the paper ["The Real HumanEval: Evaluati
 This repository introduces an interface for evaluating humans writing code with large language models (LLMs) "RealHumanEval". Users can interact with LLMs integrated into an editor through either autocomplete support, akin to GitHub Copilot, or chat support, akin to ChatGPT.
 
 
-Using this interface, we ran  a user study (N=213) to measure the ability of different LLMs to support programmers in their tasks. 
+Using this interface, we ran  a user study (N=213) to measure the ability of different LLMs to support programmers in their tasks. 
 We measure user performance in terms of the speed and amount of tasks completed, as well as user satisfaction metrics of LLM helpfulness.
 While we find general correspondence between benchmark performance and user performance (i.e., less performant models tended to slow users down and reduce the number of tasks completed), the gaps in benchmark performance are not proportional to gaps in human performance metrics.
 
-In this repository, you can find the data of participants study sessions as well as code to analyze that data.
+In this repository, you can find the data of participants study sessions as well as code to analyze that data and the code for RealHumanEval.
 
 
-
-![Results of RealHumanEval](./static/study_results.JPG)
 
 
 
@@ -53,31 +57,32 @@ This repository is organized as follows:
 
 - [data](data) should contain the raw data used for analysis
 
-- [interface](interface) (COMING SOON)
+- [interface](interface) 
 
 
-# Paper Reproducibility 
+# Paper Reproducibility 
 
 To reproduce figures and results from the paper, you can run the following notebooks:
 
-- Main paper analyses  [./analysis/main_analysis.ipynb](./analysis/main_analysis.ipynb)
+- Main paper analyses  [./analysis/main_analysis.ipynb](./analysis/main_analysis.ipynb)
 
-- Appendix analyses  [./analysis/appendix_analysis.ipynb](./analysis/appendix_analysis.ipynb)
+- Appendix analyses  [./analysis/appendix_analysis.ipynb](./analysis/appendix_analysis.ipynb)
 
 # Citation
 
 ```
 @misc{mozannar2024realhumaneval,
-      title={The RealHumanEval: Evaluating Large Language Models' Abilities to Support Programmers}, 
-      author={Hussein Mozannar and Valerie Chen and Mohammed Alsobay and Subhro Das and Sebastian Zhao and Dennis Wei and Manish Nagireddy and Prasanna Sattigeri and Ameet Talwalkar and David Sontag},
-      year={2024},
-      eprint={2404.02806},
-      archivePrefix={arXiv},
-      primaryClass={cs.SE}
+      title={The RealHumanEval: Evaluating Large Language Models' Abilities to Support Programmers}, 
+      author={Hussein Mozannar and Valerie Chen and Mohammed Alsobay and Subhro Das and Sebastian Zhao and Dennis Wei and Manish Nagireddy and Prasanna Sattigeri and Ameet Talwalkar and David Sontag},
+      year={2024},
+      eprint={2404.02806},
+      archivePrefix={arXiv},
+      primaryClass={cs.SE}
 }
 ```
 
 # Acknowledgements
 
 This work is partially funded by the MIT-IBM Watson AI Lab.
+
 
