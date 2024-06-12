@@ -1,6 +1,3 @@
-
-Detailed Instructions coming soon!
-
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -10,6 +7,8 @@ Installation:
 ```
 npm install next react react-dom
 npm install firebase
+npm install axios
+
 ```
 
 First, run the development server:
@@ -30,18 +29,16 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 # TODO
 
 interface notes:
-- exit survey - do first 
-
-- telemetry logging
-fix rejected, logprobs completion, message and suggestion index 
-
-- Module for when to show suggestion and proactively show chat
 
 - local version
 
-- multiple files
+- if local is set 
 
-- when going to next line: suggestion is rejected , fix
+- enter your own apsi keys
+
+- telemetry logging
+fix rejected, logprobs completion, message and suggestion index 
+s
 
 - tutorials
 
@@ -49,13 +46,11 @@ fix rejected, logprobs completion, message and suggestion index
 
 - fix firebase database
 
-nice to have later:
-- Console / user input in terminal
+- small autocomplete fixes:
+when going to next line in writing, suggestion rejected
+when scrolling, suggestion is regenerated
 
-- Optional: Config file, Autocomplete / chat / both
-
-- on refresh save everything to local storage
-
+- AI stats tab: completions shown, accepted percentage, percentage of messages upvoted, downvoted
 
 # Firebase
 
@@ -73,17 +68,15 @@ firebase functions:secrets:set RAPIDAPI_KEY
 ```
 
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+# Roadmap of Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Adding multiple tabs to editor: currently it is easy to add tabs by setting the "useTabs" variable to true in Editor.tsx, however, you cannot import code from one tab to another. Moreover, you cannot choose which tab to execute. 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Adding a console: currently you can only run the code in the editor, but you cannot use interactive input "input()".
 
-## Deploy on Vercel
+- Moving beyond OneCompiler: it would be good to have a simple python environment as a console to allow for installing different packages and so on.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Adding a file system: it would be good to have a file system to allow for saving and loading files.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Module for when to show suggestion rather than every 2 seconds after pause of writing

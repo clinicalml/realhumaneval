@@ -86,8 +86,6 @@ exports.get_together_completion = onCall(
       );
     }
 
-    console.log("In together completion func");
-    console.log(request.data.model, request.data.prompt, request.data.max_tokens);
 
     const apiUrl = "https://api.together.xyz/v1/completions";
     const options = {
@@ -107,7 +105,6 @@ exports.get_together_completion = onCall(
         },
     };
 
-    console.log("Past making the request header");
 
     // Perform the API request
     return axios(options)
@@ -138,7 +135,6 @@ exports.get_together_chat = onCall(
         "The function must be called while authenticated."
       );
     }
-    console.log(request.data.model, request.data.messages, request.data.max_tokens);
     const apiUrl = "https://api.together.xyz/v1/chat/completions";
     const options = {
       method: "POST",
@@ -236,14 +232,9 @@ exports.get_openai_chat = onCall(
       );
     }
 
-    console.log("MADE IT TO THE ACTUAL CALL\n\n");
-    console.log("Other addition to uncache change");
     const apiUrl = "https://api.openai.com/v1/chat/completions";
 
 
-    console.log("Line below is going to try to get openai_key.value");
-
-    console.log(openai_key.value());
 
     const options = {
       method: "POST",
@@ -262,7 +253,6 @@ exports.get_openai_chat = onCall(
       },
     };
 
-    console.log("Made it to making the openai request");
 
     // Perform the API request
     return axios(options)
