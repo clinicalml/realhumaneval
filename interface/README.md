@@ -3,6 +3,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## Getting Started
 install using 
 
+
+
 Installation:
 ```
 npm install next react react-dom
