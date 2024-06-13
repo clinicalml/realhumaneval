@@ -1,7 +1,7 @@
 
 # Getting Started
 
-RealHumanEval is built as a React app using Google Firebase for hosting, data storage and API calling. However, it can be ran locally by configuring certain flags and inputting the API keys..
+RealHumanEval is built as a React app using Google Firebase for hosting, data storage, and API calling. However, it can be run locally by configuring certain flags and inputting the API keys.
 
 ## Requirements
 
@@ -11,7 +11,6 @@ For the required packages:
 npm install next react react-dom
 npm install firebase
 npm install axios
-
 ```
 You will need API keys for the following services to run the app:
 
