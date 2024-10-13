@@ -22,7 +22,7 @@ Quick Links:
 This repository introduces an interface for evaluating humans writing code with large language models (LLMs) "RealHumanEval". Users can interact with LLMs integrated into an editor through either autocomplete support, akin to GitHub Copilot, or chat support, akin to ChatGPT.
 
 
-Using this interface, we ran  a user study (N=213) to measure the ability of different LLMs to support programmers in their tasks. 
+Using this interface, we ran  a user study (N=243) to measure the ability of different LLMs to support programmers in their tasks. 
 We measure user performance in terms of the speed and amount of tasks completed, as well as user satisfaction metrics of LLM helpfulness.
 While we find general correspondence between benchmark performance and user performance (i.e., less performant models tended to slow users down and reduce the number of tasks completed), the gaps in benchmark performance are not proportional to gaps in human performance metrics.
 
