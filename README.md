@@ -7,8 +7,6 @@ Quick Links:
 
 - **Data**: [HF Datasets link](https://huggingface.co/datasets/hsseinmz/realhumaneval) and local link [data](data/README.md). All dataset documentation, Croissant metadata record, hosting, licensing, and maintenance plan are provided in the HF link.
 
-- **Online Interface**: [interface link](https://codeonline-ee37b.web.app/)
-
 - **Interface Code**:  [interface](interface/README.md)
 
 - **Analysis Code**:  [analysis](analysis/README.md)
