@@ -13,7 +13,7 @@ This dataset contains logs of participants study from the RealHumanEval study [p
 
 The RealHumanEval study was conducted to measure the ability of different LLMs to support programmers in their tasks. We developed an online web app in which users interacted with one of six different LLMs integrated into an editor through either autocomplete support, akin to GitHub Copilot, or chat support, akin to ChatGPT, in addition to a condition with no LLM assistance. We measure user performance in terms of the speed and amount of tasks completed, as well as user satisfaction metrics of LLM helpfulness.
 
-In total, we selected 6 LLMs for our study: 4 from the Code Llama family (CodeLlama-7b, CodeLlama-7b-instruct, CodeLlama-34b, CodeLlama-34b-instruct), along with two models from the GPT series (GPT-3.5-turbo and GPT-3.5-turbo-instruct). To avoid confusion, we refer to the autocomplete conditions by the base name of the model: CodeLlama-7b, CodeLlama-34b and GPT-3.5 (refers to GPT-3.5-turbo-instruct); and the chat conditions by the base name of the model and adding chat: CodeLlama-7b (chat) (refers to CodeLlama-7b-instruct), CodeLlama-34b (chat) (refers to CodeLlama-34b-instruct) and GPT-3.5 (chat) (refers to GPT-3.5-turbo).
+In total, we selected 7 LLMs for our study: 4 from the Code Llama family (CodeLlama-7b, CodeLlama-7b-instruct, CodeLlama-34b, CodeLlama-34b-instruct), along with three models from the GPT series (GPT-3.5-turbo and GPT-3.5-turbo-instruct, GPT-4o). To avoid confusion, we refer to the autocomplete conditions by the base name of the model: CodeLlama-7b, CodeLlama-34b and GPT-3.5 (refers to GPT-3.5-turbo-instruct); and the chat conditions by the base name of the model and adding chat: CodeLlama-7b (chat) (refers to CodeLlama-7b-instruct), CodeLlama-34b (chat) (refers to CodeLlama-34b-instruct), GPT-3.5 (chat) (refers to GPT-3.5-turbo) and GPT-4o (chat).
 
 
 - **Created by:**  Hussein Mozannar, Valerie Chen, Mohammed Alsobay, Subhro Das, Sebastian Zhao, Dennis Wei, Manish Nagireddy, Prasanna Sattigeri, Ameet Talwalkar, and David Sontag
@@ -27,7 +27,6 @@ In total, we selected 6 LLMs for our study: 4 from the Code Llama family (CodeLl
 
 - **Repository:** https://github.com/clinicalml/realhumaneval
 - **Paper [optional]:** https://arxiv.org/abs/2404.02806
-- **Demo [optional]:** https://codeonline-ee37b.web.app/
 
 ## Uses
 
@@ -49,7 +48,7 @@ Due to the size and scope of the dataset, it should not be treated as comprehens
 
 The data released consists of four parts:
 
-- chat (chat_data.csv): contains the 775 chat logs of the conversations between the study participants and the LLMs. Note the programmer_id denotes which participant the chat message was sent from.
+- chat (chat_data.csv): contains the 1055 chat logs of the conversations between the study participants and the LLMs. Note the programmer_id denotes which participant the chat message was sent from.
 
 - autocomplete (autocomplete_data.csv): for all 5207 suggestion shown in the autocomplete conditions, we log whether it was accepted and the prompt of the LLM. Note the programmer_id denotes which participant the autocomplete interaction was from.
 
@@ -73,7 +72,7 @@ Using the RealHumanEval platform, we conducted a user study to evaluate (1) the 
 
 <!-- This section describes the people or systems who originally created the data. It should also include self-reported demographic or identity information for the source data creators if this information is available. -->
 
-We recruited 229 total participants from university mailing lists and social media to capture a range of coding experiences. We verified that participants were above 18 years of age, resided in the United States, and correctly completed a simple Python screening question. Out of the 229 participants, we filtered out those who did not complete any task or did not write code for a period of 15 minutes during the study to arrive at 213 final participants. Participants were provided with a $15 Amazon gift card as compensation.  This study was approved by institutional IRB review.
+We recruited 263 total participants from university mailing lists and social media to capture a range of coding experiences. We verified that participants were above 18 years of age, resided in the United States, and correctly completed a simple Python screening question. Out of the 263 participants, we filtered out those who did not complete any task or did not write code for a period of 15 minutes during the study to arrive at 243 final participants. Participants were provided with a $15 Amazon gift card as compensation.  This study was approved by institutional IRB review.
 
 ## Dataset Preprocessing
 
