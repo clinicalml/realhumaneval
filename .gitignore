@@ -15,8 +15,9 @@ next
 data_processing
 temp
 data/all_participants.csv
-data/final_df.pkl
 tasks_study/final_study_tasks.ipynb
+data/gpt4_all_participants.csv
+data/final_df.pkl
 analysis/.ipynb_checkpoints
 functions_python
 .firebase

@@ -57,32 +57,36 @@ def load_dataset_realhumaneval(subset="all"):
     return dataset_hf
 
 
-def get_dataframe():
-	df = pd.read_csv("../data/study_data.csv")
-	df["model_size"] = [x.split("_")[1] if x != "nomodel" else "nomodel" for x in df["model"]]
+def get_dataframe(use_pickle=True):
+    if use_pickle:
+        df = pd.read_pickle("../data/study_data.pkl")
+    else:
+	    df = pd.read_csv("../data/study_data.csv")
+    df["model_size"] = [x.split("_")[1] if x != "nomodel" else "nomodel" for x in df["model"]]
 
-	df["prog_experience"] = pd.Categorical(df["prog_experience"], ordered=True, categories=ORDERED_LIST_PROG)
-	df["python_experience"] = pd.Categorical(df["python_experience"], ordered=True, categories=ORDERED_LIST_PYTHON)
-	df["ai_experience"] = pd.Categorical(df["ai_experience"], ordered=True, categories=ORDERED_LIST_AI)
+    df["prog_experience"] = pd.Categorical(df["prog_experience"], ordered=True, categories=ORDERED_LIST_PROG)
+    df["python_experience"] = pd.Categorical(df["python_experience"], ordered=True, categories=ORDERED_LIST_PYTHON)
+    df["ai_experience"] = pd.Categorical(df["ai_experience"], ordered=True, categories=ORDERED_LIST_AI)
 
-	outcome_cols = ["n_tasks_completed", "mean_task_duration", "TLX_frustration", "TLX_mental_demand", "TLX_effort"]
+    outcome_cols = ["n_tasks_completed", "mean_task_duration", "TLX_frustration", "TLX_mental_demand", "TLX_effort"]
 
-	mean_values = df[(df["model"] == "nomodel")]["mean_task_duration"].mean(skipna=True)
-	mean_values1 = df[(df["model"] == "nomodel")]["n_tasks_completed"].mean(skipna=True)
-	df["zscore_mean_task_duration"] = df["mean_task_duration"] - mean_values
-	df["zscore_n_tasks_completed"] = df["n_tasks_completed"] - mean_values1
+    mean_values = df[(df["model"] == "nomodel")]["mean_task_duration"].mean(skipna=True)
+    mean_values1 = df[(df["model"] == "nomodel")]["n_tasks_completed"].mean(skipna=True)
+    df["zscore_mean_task_duration"] = df["mean_task_duration"] - mean_values
+    df["zscore_n_tasks_completed"] = df["n_tasks_completed"] - mean_values1
 
-	model_name_mapping = {
+    model_name_mapping = {
 	    'nomodel': 'No LLM',  
 	    'chat_gpt35': 'GPT-3.5 (chat)',
 	    'autocomplete_gpt35': 'GPT-3.5',
 	    'autocomplete_llama34': 'CodeLlama34b',
 	    'chat_llama7': 'CodeLlama7b (chat)',
 	    'autocomplete_llama7': 'CodeLlama7b',
-	    'chat_llama34': 'CodeLlama34b (chat)'
+	    'chat_llama34': 'CodeLlama34b (chat)',
+        'chat_gpt4': 'GPT-4o (chat)',
 	}
 
-	df['model_clean_name'] = df['model'].map(model_name_mapping)
-	return df
+    df['model_clean_name'] = df['model'].map(model_name_mapping)
+    return df
 
 
