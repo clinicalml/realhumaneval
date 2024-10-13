@@ -13,7 +13,7 @@ Quick Links:
 
 - **Paper**: [arxiv link](https://arxiv.org/abs/2404.02806)
 
-<img src="./static/IMG_0005.jpeg" alt="Overview of RealHumanEval" width="80%"/>
+<img src="./static/fig1.png" alt="Overview of RealHumanEval" width="60%"/>
 
 
 # What is it?
