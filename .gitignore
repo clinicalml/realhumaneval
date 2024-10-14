@@ -10,6 +10,7 @@ coderec/functions/node_modules
 # dependencies
 coderec/node_modules
 coderec/.pnp
+analysis/figures/*
 node_modules
 app
 next
