@@ -2,12 +2,16 @@
 
 Associated code, data and interface for the paper "The Real HumanEval: Evaluating Large Language Models’ Abilities to Support Programmers”.
 
+
+The interface in [interface](interface) also includes code from our follow-up work "Need Help? Designing Proactive AI Assistants for Programming" by
+Valerie Chen, Alan Zhu, Sebastian Zhao, Hussein Mozannar, David Sontag, Ameet Talwalkar.
+
 Quick Links:
 
 
 - **Data**: [HF Datasets link](https://huggingface.co/datasets/hsseinmz/realhumaneval) and local link [data](data/README.md). All dataset documentation, Croissant metadata record, hosting, licensing, and maintenance plan are provided in the HF link.
 
-- **Interface Code**:  [interface](interface/README.md) (under development)
+- **Interface Code**:  [interface](interface/README.md) - local version
 
 - **Analysis Code**:  [analysis](analysis/README.md)
 
@@ -80,6 +84,15 @@ To reproduce figures and results from the paper, you can run the following noteb
       eprint={2404.02806},
       archivePrefix={arXiv},
       primaryClass={cs.SE}
+}
+@misc{chen2024needhelpdesigningproactive,
+      title={Need Help? Designing Proactive AI Assistants for Programming}, 
+      author={Valerie Chen and Alan Zhu and Sebastian Zhao and Hussein Mozannar and David Sontag and Ameet Talwalkar},
+      year={2024},
+      eprint={2410.04596},
+      archivePrefix={arXiv},
+      primaryClass={cs.HC},
+      url={https://arxiv.org/abs/2410.04596}, 
 }
 ```
 
