@@ -1,5 +1,19 @@
 {
   "projects": {
     "default": "codeonline-ee37b"
-  }
+  },
+  "targets": {
+    "codeonline-ee37b": {
+      "hosting": {
+        "test": [
+          "proactive-test"
+        ],
+        "proactive": [
+          "code-proactive-chat"
+        ]
+      }
+    }
+  },
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }

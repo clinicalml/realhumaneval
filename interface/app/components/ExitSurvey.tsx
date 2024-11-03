@@ -1,51 +1,79 @@
-import React, { useState } from 'react';
-import { getFirestore, updateDoc, doc } from 'firebase/firestore';
-import { getAuth, signOut } from 'firebase/auth';
+import React, { useState } from "react";
 
-const ExitSurvey = ({ response_id, app }: { response_id: string, app: any }) => {
-    const db = getFirestore(app);
-    const auth = getAuth(app);
+// Mock Firebase functionality
+const mockUpdateDoc = async (data: any) => {
+  // Store in localStorage as fallback
+  localStorage.setItem('exitSurvey', JSON.stringify(data));
+  return Promise.resolve();
+};
 
-    const [formData, setFormData] = useState({
-        aiToolTypicalUsage: '',
-        mentalDemand: 10,
-        aihelpful: 5,
-        howaihelpful: '',
-        howaiimproved: '',
-        finalcomments: ''
-    });
+const mockSignOut = async () => {
+  localStorage.removeItem('user');
+  return Promise.resolve();
+};
 
-    const handleChange = (e: { target: { name: any; value: any; }; }) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+const ExitSurvey = ({
+  response_id,
+  app,
+}: {
+  response_id: string;
+  app: any;
+}) => {
+  // Remove Firebase initialization
+  const [formData, setFormData] = useState({
+    aiToolTypicalUsage: "",
+    mentalDemand: 10,
+    aihelpful: 5,
+    howaihelpful: "",
+    howaiimproved: "",
+    finalcomments: "",
+  });
 
-    const handleSliderChange = (e: { target: { name: any; value: any; }; }) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: Number(value) });
-    };
+  const handleChange = (e: { target: { name: any; value: any } }) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-    const handleSubmit = async (e: { preventDefault: () => void; }) => {
-        e.preventDefault();
-        const time_completed_string = new Date().toISOString();
-        try {
-            await updateDoc(doc(db, "responses", response_id), {
-                ...formData,
-                time_completed_exit_survey: time_completed_string
-            });
-            localStorage.clear();
-            await signOut(auth);
-            alert('Survey submitted successfully!');
-            window.location.reload();
-        } catch (error) {
-            console.error('Error writing document: ', error);
-            alert('There was an error submitting the survey.');
-        }
-    };
+  const handleSliderChange = (e: { target: { name: any; value: any } }) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: Number(value) });
+  };
 
-    return (
-        <div className="exit-survey-popup">
-            <form onSubmit={handleSubmit}>
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const time_completed_string = new Date().toISOString();
+    try {
+      await mockUpdateDoc({
+        ...formData,
+        response_id,
+        time_completed_exit_survey: time_completed_string,
+      });
+      localStorage.clear();
+      await mockSignOut();
+      alert("Survey submitted successfully!");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error writing document: ", error);
+      alert("There was an error submitting the survey.");
+    }
+  };
+
+  return (
+    <div className="exit-survey-popup">
+      Thanks for participating in the study. Please go to the following link to
+      complete the exit survey:{" "}
+      <a
+        href=""
+        target="_blank"
+        rel="noreferrer"
+      >
+        Exit Survey
+      </a>
+      <br />
+      Your compensation is contingent upon completing the exit survey. You can
+      now close the window.
+      <button onClick={handleSubmit}>Submit</button>
+      {/* <form onSubmit={handleSubmit}>
                 <div className="form-control" id="aiToolTypicalUsage_label">
                     <label htmlFor="aiToolTypicalUsage">
                         Thinking of your experience using AI tools outside of today’s session, do you think that your session today reflects your typical usage of AI tools?
@@ -84,7 +112,7 @@ const ExitSurvey = ({ response_id, app }: { response_id: string, app: any }) => 
                 </div>
                 <br />
 
-{/*                 Similar slider controls for other questions
+                Similar slider controls for other questions
                 {['physicalDemand', 'temporalDemand', 'performance', 'effort', 'frustration', 'aihelpful'].map((name) => (
                     <div className="form-control" key={name}>
                         <label htmlFor={name}>{name.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</label>
@@ -96,7 +124,7 @@ const ExitSurvey = ({ response_id, app }: { response_id: string, app: any }) => 
                         </div>
                     </div>
                 ))}
-                <br /> */}
+                <br />
 
                 <div className="form-control" id="howaihelpful_label">
                     <label htmlFor="howaihelpful">
@@ -126,9 +154,9 @@ const ExitSurvey = ({ response_id, app }: { response_id: string, app: any }) => 
                 <br />
 
                 <button type="submit">Submit</button>
-            </form>
-        </div>
-    );
+            </form> */}
+    </div>
+  );
 };
 
 export default ExitSurvey;

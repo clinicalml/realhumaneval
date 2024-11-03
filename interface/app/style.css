@@ -1,11 +1,37 @@
 /* Apply to all elements */
 
+body {
+  background-color: #2b2b2b;
+  /* background-color: #1e1e1e; */
+  /* color: #dadada; */
+  color: #f8f8f2;
+  
+}
+
+:root {
+  --dark-background: #2b2b2b;
+  --text-color: #f8f8f2;
+  --proactive-button-color: #5f5564;
+  --user-message-color: #646464;
+  --button-hover-color: #bcbcbc;
+  --button-text-color: white;
+  --dark-background-2: #302b33;
+  --dark-background-3: #232025;
+  --black-background: #1e1e1e;
+  /* font-family: Arial, sans-serif; */
+  
+}
+
 .login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* margin-top: 30vh;
+  margin-right: 20vh;
+  margin-left: 20vh; */
   height: 100vh;
+  margin-top: -12vh;
 }
 
 .login-container input {
@@ -13,12 +39,15 @@
   padding: 8px;
   width: 30vw;
   border: 1px solid black; /* Add black border */
-  border-radius: 20px;
+  border-radius: 10px;
+  background-color: var(--user-message-color);
+  color: var(--text-color);
 }
 
 .login-container button {
   padding: 10px 20px;
   cursor: pointer;
+  background-color: green;
 }
 
 .error {
@@ -32,26 +61,58 @@
   
 }
 
-body {
-  background-color: #edecec;
-}
-
 
 /* for everything inside editor do not apply border radius */
 #editor * {
-  border-radius: 10px;
+  border-radius: 4px;
 }
 
 /* style for h1 and h2 */
 h1,
-h2 {
+h2,
+h3 {
   text-align: left;
+}
+h3 {
+  font-size: 1.125em;
+  font-weight: 600;
+  line-height: 1.75em;
+  margin-top: 0.5em;
 }
 h2 {
   font-size: 1.5em;
 }
 h1 {
   font-size: 2em;
+}
+
+ul {
+  list-style-type: disc;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
+ol {
+  list-style-type: decimal;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
+li {
+  /* display: inline-flex;
+  align-items: center;
+  flex-direction: column; */
+}
+
+textarea {
+  background-color: #646464;
+  border: none;
+  border-radius: 4px;
+}
+
+select {
+  background-color: #646464;
+  /* border: none; */
 }
 
 #thinkingIcon {
@@ -97,16 +158,16 @@ body {
   max-height: 150vh;
 }
 #taskDescription {
-  border: 1px solid #ccc; /* For visual representation */
+  border: 1px solid #8d8d8d !important; 
   padding: 10px;
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  box-sizing: border-box;
 }
 
 #output {
   font-family: "Courier New", monospace;
   /* color: #333; Dark text color for readability */
   /* background-color: #f9f9f9; Light background */
-  border: 1px solid #ddd; /* Light grey border */
+  border: 1px solid #8d8d8d !important; 
   padding: 5px;
   margin: 10px 0;
   background-color: rgb(75, 75, 75);
@@ -116,16 +177,115 @@ body {
   max-height: 50vh; /* Adjust as needed */
 }
 
-button {
-  margin: 10px 10px;
-  margin-top: 10px;
-  padding: 5px 10px;
-  background-color: #3a9957;
+#new-message{
+  /* border: 1px dashed rgb(251, 0, 255);  */
+  display: flex;
+  /* background-color: rgba(251, 0, 255, 0.1);  */
+  padding: 1px;
+}
+
+#new-message:hover{
+  border: transparent;
+  background-color: transparent;
+  /* padding: 1px; */
+}
+
+#get-suggestion {
+  height: 30px;
+  width: 100px;
+  padding: 0px;
+  margin-left: 0px;
+  /* background-color: rgba(128, 14, 209, 0.98); */
+  background-color: #5f5564;
+}
+#get-suggestion:hover {
+  background-color: #bcbcbc;
+}
+
+.proactive-chat {
+  /* justify-content: stretch; */
+  width: 100%
+}
+
+.proactive-chat span#notif {
+  color: #cd98e6;
+  /* font-weight: 500; */
+  font-style: italic;
+  float: right;
+  padding-right: 5px;
+}
+
+.proactive-chat button#clicked {
+  background-color: rgba(125, 112, 131, 0.4);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.proactive-chat button#unclicked {
+  background-color: #5f5564;
   color: white;
+}
+
+.proactive-chat button#unclicked, .proactive-chat button#clicked{
+  margin: 5px 10px 5px 0px;
+  padding: 5px 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
+  text-align: center;
+  display: block;
+  width: 85%;
+  /* height: 25px; */
+}
+
+
+.proactive-chat button#unclicked:hover, .proactive-chat button#clicked:hover{
+  background-color: #bcbcbc;
+}
+
+.proactive-chat button {
+  /* background-color: #edecec;
+  color: black; */
+  /* top: -100%; */
+  /* padding: 2px 5px; */
+  padding: 4px 8px;
+  margin: 2px 0px 2px 10px;
+  /* margin: 0px; */
+  
+  /* margin: auto; */
+}
+
+/* .proactive-chat button:last-child {
+  margin-right: 0px;
+} */
+
+button {
+  margin: 10px 10px;
+  margin-top: 10px;
+  padding: 5px 10px;
+  /* background-color: #3a9957; */
+  background-color: #929292;
+  /* background-color: #edecec; */
+  color: white;
+  /* color: black; */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.user-message {
+  /* margin: 10px 10px; */
+  /* margin-top: 10px; */
+  /* padding: 5px 5px 5px 10px; */
+  padding: 5px 10px;
+  margin: auto;
+  /* background-color: rgb(100 116 139); */
+  background-color: #646464;
+  /* background-color: #007acc; */
+  border: none;
+  border-radius: 4px;
+  /* cursor: pointer; */
 }
 
 button:hover {
@@ -134,14 +294,14 @@ button:hover {
 
 /* * Popup box style */
 .popup {
-  max-height: 80vh;
+  /* max-height: 80vh; */
   /* display: none; */
   position: fixed;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   border: 1px solid #ccc;
-  background-color: white;
+  background-color: var(--dark-background);
   padding: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
@@ -151,11 +311,11 @@ button:hover {
 
 .popup-page {
   max-height: 80vh;
-  background-color: white;
   width: 50vw;
   margin: 10px auto;
-  padding: 20px;
+  padding: 10px;
   text-align: left;
+  background-color: var(--dark-background);
 }
 
 /* Add additional styling as needed */
@@ -170,13 +330,13 @@ button:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  /* background-color: rgba(0, 0, 0, 0.5); */
   z-index: 999;
 }
 
 #timer {
   font-size: medium;
-  color: black;
+  /* color: black; */
   display: inline-block;
   /* Add more styles as needed */
 }
@@ -255,29 +415,35 @@ iframe {
   margin-right: 5px;
   overflow: auto; /* Enables scrolling if content overflows */
   resize: horizontal; /* Enables horizontal resizing */
-  border: 1px solid black; /* Optional: adds a border for visibility of resize area */
-  background-color: rgb(255, 255, 255);
+  /* background-color: rgb(255, 255, 255); */
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
 }
 
+
+
 /* chat style */
 #chat-container {
-  width: 40vw;
+  /* width: 40vw; */
   /* max-height: 70vh; */
   height: 70vh;
-  border: 1px solid #ccc;
-  border-color: #ccc;
+  border: 1px solid #8d8d8d !important; 
   /* padding: 10px; */
   overflow-wrap: break-word;
-  background-color: white;
+  /* background-color: white; */
   flex-direction: column;
   display: flex;
   overflow-x: auto;
   resize: both;
   box-sizing: border-box;
+  scroll-behavior: smooth !important;
+  
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
 }
 
 .code-suggestion {
@@ -299,6 +465,7 @@ iframe {
 #clear-chat {
   height: 30px;
   width: 100px;
+  padding: 0px;
 }
 
 #text-elem {
@@ -357,10 +524,15 @@ iframe {
 }
 
 .terminal {
-  height: 30vh;
-  width: 100vw;
-  padding-left: 20px;
-  padding-right: 20px;
+  height: 16vh;
+  /* height: auto; */
+  flex-grow: 1;
+  /* width: vw; */
+  width: calc(100vw - 16px) !important;
+  /* margin: 0 5px 0 5px !important; */
+  margin: 0 !important;
+  padding-left: 10px;
+  padding-right: 10px;
   background-color: black;
   color: white;
   display: flex;
@@ -368,7 +540,7 @@ iframe {
   overflow: auto; /* Enables scrolling if content is too long */
   white-space: pre-wrap; /* Keeps the formatting of the output */
   word-break: break-all; /* Ensures long words/lines don't overflow */
-  max-height: 50vh; /* Adjust as needed */
+  /* max-height: 50vh; */
 }
 
 .terminal-label {
@@ -378,6 +550,122 @@ iframe {
 
 .terminal-content {
   flex: 1; /* Take remaining space */
+  flex-grow: 1;
   padding: 10px;
   overflow-y: auto; /* Scrollable content */
+}
+
+.collapsible-content {
+  padding: 0px 10px;
+  /* margin: 5px; */
+  overflow: hidden;
+  /* transition: max-height 0.5s ease-out; */
+  transition: max-height 0.3s ease-out, padding 0.1s 0.1s ease !important;
+  background-color: var(--dark-background-2);
+  /* background-color: var(--black-background); */
+  border-radius: 0;
+  /* height: 0; */
+}
+
+.proactive-chat .collapsible-content:nth-last-of-type(2){
+  border-radius: 0 0 4px 4px !important;
+}
+
+.collapsible-content.open {
+  padding: 10px;
+}
+/* .proactive-chat button#clicked {
+  background-color: rgba(125, 112, 131, 0.4);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.proactive-chat button#unclicked {
+  background-color: #5f5564;
+  color: white;
+} */
+
+.collapsible-button {
+  /* margin: 5px 10px 5px 0px; */
+  margin: auto !important;
+  padding: 5px 10px;
+  /* padding: 0px !important; */
+  border: none;
+  /* border-radius: 4px; */
+  border-radius: 0px !important;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-align: left !important;
+  display: flex !important;
+  width: 100% !important; 
+  
+  /* height: 25px; */
+}
+
+.collapsible-button:first-of-type {
+  margin-top: 10px !important;
+  /* border-radius: 4px 4px 0 0 !important; */
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 4px !important;
+}
+
+.collapsible-button:last-of-type {
+  /* border-radius: 0 0 4px 4px !important; */
+  border-bottom-left-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+}
+
+.triangle {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  margin-right: 5px;
+  font-size: 0.5rem;
+}
+
+.triangle.open {
+  transform: rotate(90deg);
+}
+
+
+
+/* .proactive-chat button#unclicked:hover, .proactive-chat button#clicked:hover{
+  background-color: #bcbcbc;
+} */
+
+.myLineHighlight {
+  background-color: rgba(255, 255, 0, 0.3); /* Adjust the color and opacity as needed */
+}
+
+a#post-task {
+  font-size: 8rem; 
+  line-height: 1; 
+  color: #0daba8;
+  text-decoration: none;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+/* Link style when hovered */
+a#post-task:hover {
+  color: #d44638;
+  text-decoration: underline;
+}
+
+/* Link style when clicked (active) */
+a#post-task:active {
+  color: #d44638;
+  text-decoration: underline;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 3fr 4fr;
+  gap: 20px;
+}
+.text-column {
+  padding: 0px;
+}
+.image-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
 }

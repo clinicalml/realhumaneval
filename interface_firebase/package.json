@@ -1,0 +1,43 @@
+{
+  "name": "code-llm",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@mantine/core": "^6.0.19",
+    "@monaco-editor/react": "^4.6.0",
+    "ace-builds": "^1.32.7",
+    "axios": "^1.7.7",
+    "classnames": "^2.3.2",
+    "cors": "^2.8.5",
+    "firebase": "^10.14.1",
+    "firebase-functions": "^4.8.0",
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
+    "ldrs": "^1.0.1",
+    "next": "^14.2.16",
+    "react": "^18.3.1",
+    "react-ace": "^10.1.0",
+    "react-code-blocks": "^0.1.5",
+    "react-dom": "^18.3.1",
+    "react-dropdown": "^1.11.0",
+    "react-icons": "^4.12.0",
+    "react-markdown": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.3",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
+  }
+}

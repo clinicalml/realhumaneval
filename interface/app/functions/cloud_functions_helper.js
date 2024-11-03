@@ -1,163 +1,216 @@
 /////////////////////////////////////////
 // CLOUD FUNCTIONS CALLS
 /////////////////////////////////////////
+import axios from "axios";
+import { OpenAI } from 'openai';
+import {OPENAI_API_KEY, RAPID_API_KEY, TOGETHER_API_KEY } from "../components/settings";
 
 
-import {getFunctions, httpsCallable} from "firebase/functions";
+const openai = new OpenAI({
+  apiKey: OPENAI_API_KEY, dangerouslyAllowBrowser: true
+});
 
-import {initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
-import {
-  initializeAppCheck,
-  ReCaptchaEnterpriseProvider,
-} from "firebase/app-check";
-// import "firebase/auth"; // if you're using authentication
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-} from "firebase/auth";
-
-import { loadCurrentTask } from "./task_logic";
-
-
-const functions = getFunctions();
-import { localVersion, OPENAI_API_KEY, RAPID_API_KEY, TOGETHER_API_KEY } from "./config";
-
-
-// TODO: LOCAL_VERSION ADAPT API CALLS 
-
-// Make API endpoints instead of js functions.
-export function get_openai_chat_response(model, messages, max_tokens, setLogprobs) {
-  return new Promise((resolve, reject) => {
-    console.log(httpsCallable(functions, "get_openai_chat"));
-    httpsCallable(functions, "get_openai_chat")({ model: model, messages: messages, max_tokens: max_tokens })
-      .then((result) => {
-        const text_response = result.data.data.choices[0].message.content;
-        let chat_logprobs = result.data.data.choices[0].logprobs.content.map(item => item.logprob);
-        //chat_logprobs = get_summary_statistics(chat_logprobs);
-        setLogprobs(chat_logprobs);
-        resolve(text_response);
-      })
-      .catch((error) => {
-        console.error("Error calling the getcompletion function:", error);
-      });
-  });
+export async function get_openai_chat_response(model, messages, max_tokens, setLogprobs) {
+  
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: messages,
+      max_tokens: max_tokens,
+    });
+    const text_response = response.choices[0].message.content;
+    console.log(text_response);
+    return text_response;
+  } catch (error) {
+    console.error("Error calling the OpenAI API:", error);
+    return
+  }
 }
 
-
+// NOT TESTED
 export function get_chat_together(model, messages, max_tokens, setLogprobs) {
   return new Promise((resolve, reject) => {
-      httpsCallable(functions, "get_together_chat")({ model: model, messages: messages, max_tokens: max_tokens })
-      .then((result) => {
-        console.log(result);
-        const text_response = result.data.data.choices[0].message.content;
-        let chat_logprobs = result.data.data.choices[0].logprobs.token_logprobs;
-        //chat_logprobs = get_summary_statistics(chat_logprobs);
-        setLogprobs(chat_logprobs);
-        resolve(text_response);
-      })
-      .catch((error) => {
-        console.error("Error calling the get_chat_together function:", error);
-      });
-    
-
-  });
-}
-
-
-
-export function get_openai_response(prefix, suffix, max_tokens, setLogprobs) {
-  return new Promise((resolve, reject) => {
-    httpsCallable(functions, "getcompletion")({ prefix: prefix, suffix: suffix, max_tokens: max_tokens })
-      .then((result) => {
-        const text_response = result.data.data.choices[0].text;
-        let logprobs = result.data.data.choices[0].logprobs.token_logprobs;
-        //logprobs = get_summary_statistics(logprobs);
-        setLogprobs(logprobs);
-        resolve(text_response);
-      })
-      .catch((error) => {
-        console.error("Error calling the getcompletion function:", error);
-      });
-  });
-}
-
-
-export function get_completion_together(model, prompt, max_tokens, setLogprobs) {
-  return new Promise((resolve, reject) => {
-    httpsCallable(functions, "get_together_completion")({
+    axios.post('https://api.together.xyz/v1/chat/completions', {
       model: model,
-      prompt: prompt,
-      max_tokens: max_tokens,
-    })
-      .then((result) => {
-        const text_response = result.data.data.choices[0].text;
-        let logprobs = result.data.data.choices[0].logprobs.token_logprobs;
-        //logprobs = get_summary_statistics(logprobs);
-        setLogprobs(logprobs);
-        resolve(text_response);
-      })
-      .catch((error) => {
-        console.error("Error calling the getcompletion function:", error);
-      });
-  });
-}
-
-
-
-export async function submitCode(editor, setOutput, setTelemetry, task_index) {
-  console.log("submitting code");
-  let runcode = httpsCallable(functions, "runcode");
-
-  setOutput("Running...");
-
-  runcode({ prompt: editor.getValue() })
-    .then((result) => {
-      // check if stderr is null, if so, hide the error message
-      var log = "";
-      console.log(result);
-      if (result.data.data.stderr == null && result.data.data.exception == null) {
-        log = result.data.data.stdout;
-      } else {
-        log =
-          "Errors:" + result.data.data.stderr + "\n" + result.data.data.stdout + "\n" + result.data.data.exception;
+      messages: messages,
+      max_tokens: max_tokens
+    }, {
+      headers: {
+        'Authorization': `Bearer ${TOGETHER_API_KEY}`
       }
-      setTelemetry((prev) => {
-        return [
-          ...prev,
-          {
-            event_type: "run_code",
-            task_index: task_index,
-            log: log,
-            timestamp: Date.now(),
-          },
-        ];
-      })
-
-      console.log("Got response on runcode");
-      setOutput(log);
+    })
+    .then((response) => {
+      const text_response = response.data.choices[0].message.content;
+      let chat_logprobs = response.data.choices[0].logprobs.token_logprobs;
+      //chat_logprobs = get_summary_statistics(chat_logprobs);
+      setLogprobs(chat_logprobs);
+      resolve(text_response);
     })
     .catch((error) => {
-      console.error("Error calling the submit function:", error);
+      console.error("Error calling the Together API:", error);
+      reject(error);
     });
+  });
+}
+// NOT TESTED
+export function get_chat_groq(model, messages, max_tokens, setLogprobs) {
+  return new Promise((resolve, reject) => {
+    axios.post('https://api.groq.com/v1/chat/completions', {
+      model: model,
+      messages: messages,
+      max_tokens: max_tokens
+    }, {
+      headers: {
+        'Authorization': `Bearer ${RAPID_API_KEY}`
+      }
+    })
+    .then((response) => {
+      const text_response = response.data.choices[0].message.content;
+      resolve(text_response);
+    })
+    .catch((error) => {
+      console.error("Error calling the Groq API:", error);
+      reject(error);
+    });
+  });
 }
 
-export async function runCodeTest(editor, task_index,  unit_tests) {
+export async function get_openai_response(prefix, suffix, max_tokens, setLogprobs) {
   try {
-    let runcode = httpsCallable(functions, "runcode");
+    const response = await openai.completions.create({
+      prompt:  prefix,
+      max_tokens: max_tokens,
+      model: "gpt-3.5-turbo-instruct",
+      suffix: suffix,
+      logprobs: 1,
+    });
+    const text_response = response.choices[0].text;
+    let logprobs = response.choices[0].logprobs;
+    //logprobs = get_summary_statistics(logprobs);
+    setLogprobs(logprobs);
+    return text_response;
+  } catch (error) {
+    console.error("Error calling the OpenAI API:", error);
+    return;
+  }
+}
 
-    var currentUnitTests = unit_tests[task_index];
+// NOT TESTED
+export function get_completion_together(model, prompt, max_tokens, setLogprobs) {
+  return new Promise((resolve, reject) => {
+    axios.post('https://api.together.xyz/v1/completions', {
+      model: model,
+      prompt: prompt,
+      max_tokens: max_tokens
+    }, {
+      headers: {
+        'Authorization': `Bearer ${TOGETHER_API_KEY}`
+      }
+    })
+    .then((response) => {
+      const text_response = response.data.choices[0].text;
+      let logprobs = response.data.choices[0].logprobs.token_logprobs;
+      //logprobs = get_summary_statistics(logprobs);
+      setLogprobs(logprobs);
+      resolve(text_response);
+    })
+    .catch((error) => {
+      console.error("Error calling the Together API:", error);
+      reject(error);
+    });
+  });
+}
+
+export async function submitCode(editor, setOutput, setTelemetry, task_index) {
+  try {
+    console.log("submitting code");
+    setOutput("Running...");
+
+    const options = {
+      method: 'POST',
+      url: 'https://onecompiler-apis.p.rapidapi.com/api/v1/run',
+      headers: {
+        'x-rapidapi-key': RAPID_API_KEY,
+        'x-rapidapi-host': 'onecompiler-apis.p.rapidapi.com',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        language: 'python',
+        files: [
+          {
+            name: 'index.py',
+            content: editor.getValue(),
+          },
+        ],
+      },
+      timeout: 45000,
+    };
+
+    const response = await axios.request(options);
+    const result = response;
+    var log = "";
+    if (result.data.stderr == null && result.data.exception == null) {
+      log = result.data.stdout || "No output";
+    } else {
+      log = result.data.stdout || "";
+      log += result.data.stderr || result.data.exception;
+    }
+    setTelemetry((prev) => {
+      return [
+        ...prev,
+        {
+          event_type: "run_code",
+          task_index: task_index,
+          log: log,
+          timestamp: Date.now(),
+        },
+      ];
+    });
+
+    console.log("Got response on runcode");
+    setOutput(log);
+
+    return result;
+  } catch (error) {
+    console.error("Error in submitCode function:", error);
+    alert("Error running the code.");
+  }
+}
+
+export async function runCodeTest(editor, task_index, unit_tests) {
+  try {
+    const currentUnitTests = unit_tests[task_index];
 
     // Replace '\n' in the unit tests string with actual newlines
-    var formattedUnitTests = currentUnitTests.replace(/\\n/g, "\n");
+    const formattedUnitTests = currentUnitTests.replace(/\\n/g, "\n");
 
     // Step 3: Append Unit Tests
-    var python_ignore_warnings = "import warnings\nwarnings.filterwarnings('ignore')\n";
-    var testCode =  python_ignore_warnings + "\n\n" + editor.getValue() + "\n\n" + formattedUnitTests;
+    const python_ignore_warnings = "import warnings\nwarnings.filterwarnings('ignore')\n";
+    const testCode = python_ignore_warnings + "\n\n" + editor.getValue() + "\n\n" + formattedUnitTests;
+
     // Step 4: Call the API
-    var result = await runcode({ prompt: testCode });
+    const options = {
+      method: 'POST',
+      url: 'https://onecompiler-apis.p.rapidapi.com/api/v1/run',
+      headers: {
+        'x-rapidapi-key': RAPID_API_KEY,
+        'x-rapidapi-host': 'onecompiler-apis.p.rapidapi.com',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        language: 'python',
+        files: [
+          {
+            name: 'index.py',
+            content: testCode,
+          },
+        ],
+      },
+      timeout: 45000,
+    };
+
+    const response = await axios.request(options);
+    const result = response;
 
     // Step 5: Display Results
     // Return the result and let this be handled elsewhere.
@@ -169,11 +222,6 @@ export async function runCodeTest(editor, task_index,  unit_tests) {
   }
 }
 
-
-
-
-
-
 function get_constant_response(prefix, suffix) {
   return new Promise((resolve, reject) => {
     var text_response =
@@ -182,11 +230,9 @@ function get_constant_response(prefix, suffix) {
   });
 }
 
-
 /////////////////////////////////////////
 // END CLOUD FUNCTIONS CALLS
 /////////////////////////////////////////
-
 
 function get_summary_statistics(data) {
   if (!Array.isArray(data) || data.length === 0) {

@@ -15,6 +15,7 @@ const { defineSecret } = require("firebase-functions/params");
 const openai_key = defineSecret("OPENAI_KEY");
 const rapidapi_key = defineSecret("RAPIDAPI_KEY");
 const together_key = defineSecret("TOGETHER_KEY");
+const groq_key = defineSecret("GROQ_KEY");
 const https = require("https"); // Native HTTPS module
 const cors = require("cors")({ origin: true });
 var axios = require("axios");
@@ -66,12 +67,12 @@ exports.runcode = onCall({ secrets: [openai_key, rapidapi_key], enforceAppCheck:
     })
     .catch((error) => {
       // Handle error
-      return {data: {data: {stdout: "Error", stderr: "error"}}};
-/*       throw new functions.https.HttpsError(
+      // return {data: {data: {stdout: "Error", stderr: "error"}}};
+      throw new functions.https.HttpsError(
         "unknown",
         "Error calling the API",
         error
-      ); */
+      ); 
     });
 });
 
@@ -171,6 +172,52 @@ exports.get_together_chat = onCall(
   }
 );
 
+exports.get_groq_chat = onCall(
+  { secrets: [ groq_key] , enforceAppCheck: true },
+  (request) => {
+    if (!request.auth) {
+      throw new HttpsError(
+        "failed-precondition",
+        "The function must be called while authenticated."
+      );
+    }
+    console.log(request.data.model, request.data.messages, request.data.max_tokens);
+    const apiUrl = "https://api.groq.com/openai/v1/chat/completions";
+    const options = {
+      method: "POST",
+      url: apiUrl,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${groq_key.value()}`,
+      },
+      data: {
+        model: request.data.model,
+        messages: request.data.messages,
+        temperature: 1,
+        max_tokens: request.data.max_tokens,
+        // logprobs: 1, // not supported for groq
+        //stop: ["\n\n","</s>","[/INST]"],
+      },
+    };
+
+    // Perform the API request
+    return axios(options)
+      .then((response) => {
+        // Handle success
+        return { data: response.data };
+      })
+      .catch((error) => {
+        // Handle error
+        console.log("Error calling the API: ", error);
+        throw new HttpsError(
+          "unknown",
+          "Error calling the API",
+          error
+        );
+      });
+  }
+);
+
 
 
 
@@ -248,8 +295,9 @@ exports.get_openai_chat = onCall(
         messages: request.data.messages,
         max_tokens: request.data.max_tokens,
         temperature: 1,
-        top_logprobs: 1,
-        logprobs: true,
+        top_p: 1,
+        // top_logprobs: 1,
+        // logprobs: true,
       },
     };
 

@@ -10,12 +10,23 @@
         "firebase-debug.*.log"
       ]
     }
-
   ],
   "database": {
     "rules": "database.rules.json"
   },
-  "hosting": {
+  "hosting": [{
+    "source": ".",
+    "site": "codeonline-v3",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "frameworksBackend": {
+      "region": "us-central1"
+    }
+  }, {
+    "target": "test",
     "source": ".",
     "ignore": [
       "firebase.json",
@@ -25,13 +36,14 @@
     "frameworksBackend": {
       "region": "us-central1"
     }
-  },
+  }
+  ],
   "emulators": {
     "functions": {
       "port": 5001
     },
     "ui": {
-      "enabled": false
+      "enabled": true
     },
     "singleProjectMode": true,
     "auth": {

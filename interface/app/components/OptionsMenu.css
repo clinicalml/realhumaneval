@@ -12,23 +12,31 @@
     background-color: #454545;
   } */
   
+:root {
+  --button-background-color: #929292;
+  --button-hover-color: #bcbcbc;
+  --button-text-color: white;
+  --dark-background: #2b2b2b;
+}
   
 /* Style for the top panel */
 .top-panel {
     width: 100%;
-    background-color: #edecec;
-    color: rgb(11, 9, 9);
+    /* background-color: #edecec; */
+    color: var(--button-text-color);
     text-align: left;
-    height: 7vh;
-    overflow: auto;
+    height: 5vh;
+    overflow: hidden;
+    margin: 5px 0px 0px;
 } 
 
 
     /* Style for the buttons */
 .top-panel button {
 
-     background-color: #edecec;
-    color: rgb(4, 4, 4);
+     /* background-color: #edecec; */
+    background-color: var(--button-background-color);
+    color: var(--button-text-color);
     text-align: left;
     border: none;
     border-radius: 4px;
@@ -38,7 +46,7 @@
 }
 
 .top-panel button:hover {
-    background-color: #bcbcbc; /* Modified hover background color */
+    background-color: var(--button-hover-color);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -48,7 +56,7 @@
 
   .dropdown-menu {
     position: fixed; /* Changed to fixed to be positioned relative to the viewport */
-    background-color:  #edecec;
+    background-color:  var(--button-background-color); 
     border: 1px solid #3c3c3c;
     display: flex;
     flex-direction: column;
@@ -58,14 +66,15 @@
   }
   
   .menu-item {
-    background-color: #edecec;
+    background-color: var(--button-background-color);
     position: relative;
-    color: #0e0d0d;
+    color: var(--button-text-color);
     margin-bottom: 5px;
     border: none;
     border-radius: 4px;
     margin: 0 5px;
     padding: 5px 10px;
+    flex-direction: column;
   }
   
   .submenu {
@@ -73,35 +82,89 @@
     position: absolute;
     left: 100%;
     top: 0;
-    background-color: #edecec;
+    background-color: var(--button-background-color);
     width: 180px;
     z-index: 20;
-    color: #080808;
-
-  }
-  
-  
-  .menu-item:hover  {
-    display: block; 
-    background-color: #bcbcbc; /* Modified hover background color */
-
+    color: var(--button-text-color);
+    flex-direction: column;
   }
 
-  .menu-item:hover .submenu {
-    display: block; 
-    background-color: #bcbcbc; /* Modified hover background color */
-  }
-  
   .submenu button {
-    color: #010000;
+    color: var(--button-text-color);
     display: block;
-    background-color: #edecec;
+    background-color: var(--button-background-color);
     width: 100%;
     text-align: left;
     border: none;
     border-radius: 4px;
     margin: 0 5px;
     padding: 5px 10px;
+  }
+  
+  
+  .menu-item:hover  {
+    display: flex; 
+    background-color: var(--button-hover-color);
+
+  }
+
+  .menu-item:hover .submenu{
+    display: flex; 
+    background-color: var(--button-hover-color);
+  }
+
+  .menu-item:hover .submenu-item {
+    display:flex;
+  }
+
+  .menu-item:hover .submenu-item:hover .subsubmenu {
+    display: flex; 
+    background-color: var(--button-hover-color);
+  }
+  
+
+  .subsubmenu {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background-color: var(--button-background-color);
+    /* width: 180px; */
+    z-index: 20;
+    color: var(--button-text-color);
+    flex-direction: column;
+  }
+  
+  .subsubmenu button {
+    color: var(--button-text-color);
+    display: block;
+    background-color: var(--button-background-color);
+    width: 100%;
+    text-align: left;
+    border: none;
+    border-radius: 4px;
+    margin: 0 5px;
+    padding: 5px 10px;
+  }
+
+  .submenu-item {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 80px;
+    /* z-index: 20; */
+    color: var(--button-text-color);
+    flex-direction: column;
+    /* width: 180px; */
+    /* bottom: 0px; */
+    background-color: var(--button-background-color);
+    z-index: 25;
+    flex-direction: column;
+  }
+
+  .submenu-item button{
+    width: 100%;
   }
   
   .parentprogress {
@@ -152,8 +215,8 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  border: 10px solid rgb(224, 221, 221);
-  background-color: rgb(224, 221, 221);
+  border: 1px solid rgb(224, 221, 221);
+  background-color: var(--dark-background);
   padding: 10px;
   box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
@@ -163,7 +226,7 @@
 
 .exit-survey-popup {
   max-height: 100vh;
-  background-color: rgb(224, 221, 221);
+  background-color: var(--dark-background);
   width: 100vw;
   margin: 10px auto;
   padding: 20px;

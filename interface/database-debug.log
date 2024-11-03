@@ -1,10 +1,13 @@
 WARNING: An illegal reflective access operation has occurred
-WARNING: Illegal reflective access by io.netty.util.internal.ReflectionUtil (file:/home/hussein/.cache/firebase/emulators/firebase-database-emulator-v4.11.2.jar) to field sun.nio.ch.SelectorImpl.selectedKeys
+WARNING: Illegal reflective access by io.netty.util.internal.ReflectionUtil (file:/root/.cache/firebase/emulators/firebase-database-emulator-v4.11.2.jar) to field sun.nio.ch.SelectorImpl.selectedKeys
 WARNING: Please consider reporting this to the maintainers of io.netty.util.internal.ReflectionUtil
 WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
 WARNING: All illegal access operations will be denied in a future release
-23:20:42.784 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
-23:20:43.280 [main] INFO com.firebase.server.forge.App$ - Listening at 127.0.0.1:9000
-23:21:15.282 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO com.firebase.core.namespace.NamespaceActor - codeonline-ee37b-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 481ms, init: 0ms
-23:21:15.429 [NamespaceSystem-blocking-namespace-operation-dispatcher-7] INFO com.firebase.core.namespace.StateManager - Namespace codeonline-ee37b-default-rtdb status Active to Active
-23:25:36.263 [NamespaceSystem-blocking-namespace-operation-dispatcher-9] INFO com.firebase.core.namespace.StateManager - Namespace codeonline-ee37b-default-rtdb status Active to Active
+23:25:02.545 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+23:25:02.707 [main] INFO com.firebase.server.forge.App$ - Listening at 127.0.0.1:9000
+23:25:11.144 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO com.firebase.core.namespace.NamespaceActor - codeonline-ee37b-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 127ms, init: 0ms
+23:25:11.212 [NamespaceSystem-blocking-namespace-operation-dispatcher-6] INFO com.firebase.core.namespace.StateManager - Namespace codeonline-ee37b-default-rtdb status Active to Active
+23:26:21.830 [Thread-0] INFO com.firebase.server.forge.App$ - Attempting graceful shutdown.
+23:26:21.836 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO com.firebase.core.namespace.Terminator$Terminator - 1 actors left to terminate: codeonline-ee37b-default-rtdb
+23:26:21.840 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO com.firebase.core.namespace.NamespaceActor - stopped namespace actor for codeonline-ee37b-default-rtdb
+23:26:21.844 [Thread-0] INFO com.firebase.server.forge.App$ - Graceful shutdown complete.

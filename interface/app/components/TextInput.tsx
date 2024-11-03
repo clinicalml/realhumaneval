@@ -7,6 +7,7 @@ interface TextInputProps {
   text_value: string;
   onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  onKeyUp: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   // Submit code is a button press
   submitMessage: () => void;
   awaitingResponse: boolean;
@@ -16,6 +17,7 @@ const TextInput: React.FC<TextInputProps> = ({
   text_value,
   onChange,
   onKeyDown,
+  onKeyUp,
   submitMessage,
   awaitingResponse,
 }) => {
@@ -46,13 +48,14 @@ const TextInput: React.FC<TextInputProps> = ({
         ref={textareaRef}
         onChange={onChange}
         onKeyDown={onKeyDown}
+        onKeyUp={onKeyUp}
         className="p-2 m-2 text-sm overflow-y-auto resize-none border border-black flex-grow"
       ></textarea>
       <button
-        className={awaitingResponse ? "h-10 w-20 bg-red-600" : "h-10 w-20"}
+        className={awaitingResponse ? "ml-0 h-10 w-10 bg-red-600" : "ml-0 h-10 w-10"}
         onClick={submitMessage}
       >
-        {awaitingResponse ? "✖" : "📤"}
+        {awaitingResponse ? "✕" : "↑"}
       </button>
     </div>
   );

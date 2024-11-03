@@ -1,6 +1,5 @@
 
 
-import { get_openai_response ,get_completion_together} from "./cloud_functions_helper";
 import { get_chat_together } from "./cloud_functions_helper";
 import { get_openai_chat_response } from "./cloud_functions_helper";
 

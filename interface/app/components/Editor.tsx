@@ -5,6 +5,9 @@ import React, {
   useState,
   Dispatch,
   SetStateAction,
+  useImperativeHandle,
+  forwardRef,
+  useCallback,
 } from "react";
 import {
   get_completion_together,
@@ -18,6 +21,7 @@ import MonacoEditor, {
   useMonaco,
   loader,
 } from "@monaco-editor/react";
+import { get } from "http";
 
 interface EditorProps {
   onEditorMount: (editor: any, monaco: any) => void;
@@ -32,9 +36,11 @@ interface EditorProps {
   suggestionIdx: number;
   messageAIIndex: number;
   setIsSpinning: Dispatch<SetStateAction<boolean>>;
+  proactive_refresh_time_inactive: number;
+  chatRef: any;
 }
 
-const Editor: React.FC<EditorProps> = ({
+const Editor: React.FC<EditorProps> = forwardRef(({
   onEditorMount,
   contextLength,
   wait_time_for_sug,
@@ -47,12 +53,78 @@ const Editor: React.FC<EditorProps> = ({
   suggestionIdx,
   messageAIIndex,
   setIsSpinning,
-}) => {
+  proactive_refresh_time_inactive,
+  chatRef,
+}, ref) => {
   const [language, setLanguage] = useState("python");
   const useTabs = false; // Set to true to enable tabs 
   const [tabs, setTabs] = useState([{ id: "tab1", label: "Tab 1" }]);
   const [activeTab, setActiveTab] = useState("tab1");
   const [openTabs, setOpenTabs] = useState(["tab1"]);
+  const editorRef: any = useRef(null);
+  const monacoRef: any = useRef(null);
+  const decorationsCollection: any = useRef(null);
+  // Add state variables to manage the editor type and read-only state
+  const [isDiffEditor, setIsDiffEditor] = useState(false);
+  const [isReadOnly, setIsReadOnly] = useState(false);
+  const [originalCode, setOriginalCode] = useState("");
+  const [modifiedCode, setModifiedCode] = useState("");
+  const [codeValue, setCodeValue] = useState("");
+  // const [isNewTask, setIsNewTask] = useState(true);
+  const newTaskRef = useRef(true);
+  const taskIndexRef = useRef(taskIndex);
+  const prevTaskIndexRef = useRef(-1);
+
+
+  const handleAcceptChangesEditor = () => {
+    // get current modfiied code from the diff editor not the regular editor
+    editorRef.current.pushUndoStop();
+    setCodeValue(getModifiedValue());
+    setIsDiffEditor(false);
+
+    setTelemetry((prevTelemetry: any[]) => {
+      return [
+        ...prevTelemetry,
+        {
+          event_type: "accept_edit",
+          timestamp: Date.now(),
+        },
+      ];
+    });
+
+  };
+  const handleDeclineChangesEditor = () => {
+    setCodeValue(originalCode);
+    setIsDiffEditor(false);
+    setTelemetry((prevTelemetry: any[]) => {
+      return [
+        ...prevTelemetry,
+        {
+          event_type: "reject_edit",
+          timestamp: Date.now(),
+        },
+      ];
+    });
+  }
+
+  const diffEditorRef = useRef(null);
+
+  const handleDiffEditorDidMount = useCallback((editor) => {
+    diffEditorRef.current = editor;
+  }, []);
+
+  const getModifiedValue = useCallback(() => {
+    if (diffEditorRef.current) {
+      const modifiedEditor = diffEditorRef.current.getModifiedEditor();
+      return modifiedEditor.getValue();
+    }
+    return null;
+  }, []);
+
+  useEffect(() => {
+    newTaskRef.current = true;
+    taskIndexRef.current = taskIndex;
+  }, [taskIndex]);
 
   const handleAddTab = () => {
     const newTabId = `tab${tabs.length + 1}`;
@@ -77,9 +149,26 @@ const Editor: React.FC<EditorProps> = ({
   };
 
 
-
   const modelAutocompleteRef = useRef(modelAutocomplete);
   modelAutocompleteRef.current = modelAutocomplete;
+
+  const provideProactiveSuggestions = (
+    model: any,
+    source: string,
+  ) => {
+    let code = model.getValue();
+    if (code.length < 100 && code.split('\n').length < 5) {
+      console.log("Code too short for proactive suggestions");
+      return;
+    }
+    console.log(source);
+    chatRef.current.getProactiveSuggestions({ source: source });
+  }
+
+  const manualProactiveSuggestions = () => {
+    chatRef.current.getProactiveSuggestions({ manual: true });
+    // highlightLine(editorRef.current.getPosition().lineNumber);
+  }
 
   const provideInlineAutocompleteSuggestions = async (
     model: any,
@@ -87,6 +176,8 @@ const Editor: React.FC<EditorProps> = ({
     context: any,
     token: any
   ) => {
+    // provideProactiveSuggestions(model, "active");
+
     if (modelAutocompleteRef.current === "Off") {
       return Promise.resolve({ items: [] });
     }
@@ -125,7 +216,7 @@ const Editor: React.FC<EditorProps> = ({
       suffix_code = suffix_code.substring(0, maxSuffixLength);
     }
 
-    let mean = 64,
+    let mean = 100,
       stdDev = 15,
       min = 10,
       max = 120;
@@ -168,18 +259,19 @@ const Editor: React.FC<EditorProps> = ({
     setIsSpinning(true);
 
     let suggestion = "";
+    console.log("Model autocomplete", modelAutocompleteRef.current);
     if (modelAutocompleteRef.current === "gpt-3.5") {
       suggestion = await get_openai_response(
         prefix_code,
         suffix_code,
-        64,
+        mean,
         setLogprobsCompletion
       );
     } else {
       suggestion = await get_completion_together(
         modelAutocompleteRef.current,
         full_code,
-        64,
+        mean,
         setLogprobsCompletion
       );
     }
@@ -226,7 +318,54 @@ const Editor: React.FC<EditorProps> = ({
     });
   };
 
+  var interval: any = null;
+  function startInactiveSuggestions(editor: any) {
+    if (interval) {
+      clearInterval(interval);
+    }
+    interval = setTimeout(() => {
+      console.log("Refreshing proactive suggestions inactive", proactive_refresh_time_inactive);
+      provideProactiveSuggestions(editor, "inactive");
+      // startInactiveSuggestions(editor);
+    },
+      proactive_refresh_time_inactive);
+  }
+
+  const highlightLine = (lineNumber: any) => {
+    if (editorRef.current && monacoRef.current && decorationsCollection.current) {
+      const new_decorations =
+        [
+          {
+            range: new monacoRef.current.Range(lineNumber, 1, lineNumber, 1),
+            options: {
+              isWholeLine: true,
+              className: 'myLineHighlight'
+            }
+          }
+        ];
+      decorationsCollection.current.set(new_decorations);
+      editorRef.current.revealLineInCenter(lineNumber);
+      console.log("highlighted line", lineNumber, new_decorations);
+    } else {
+      console.log("No editor ref or decoration collection", decorationsCollection.current);
+    }
+  };
+
+  useEffect(() => {
+    // proactive_refresh_time changed
+    console.log("proactive_refresh_time_inactive changed", proactive_refresh_time_inactive);
+    if (editorRef.current) {
+      console.log("Clearing interval", editorRef);
+      clearInterval(interval);
+      startInactiveSuggestions(editorRef.current);
+    } else {
+      console.log("No editor ref");
+    }
+  }, [proactive_refresh_time_inactive]);
+
   function handleEditorDidMount(editor: any, monaco: any, activeTab: string) {
+    editorRef.current = editor;
+    monacoRef.current = monaco;
     onEditorMount(editor, monaco); // Pass the editor and monaco instances back to the parent if needed
     editor.updateOptions({
       renderIndentGuides: true, // Show indentation guides
@@ -262,7 +401,11 @@ const Editor: React.FC<EditorProps> = ({
       label: "Request Suggestion",
       keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
       run: async () => {
-        // TODO: reject suggestion shown currently if any
+        manualProactiveSuggestions();
+        //TODO: reject suggestion shown currently if any
+        // comment this out if you dont want to show suggestions on every ctrl+enter
+        console.log("Requesting suggestion");
+        chatRef.current.getProactiveSuggestions();
 
         setTelemetry((prev) => [
           ...prev,
@@ -289,6 +432,7 @@ const Editor: React.FC<EditorProps> = ({
             );
           }
         }
+
       },
     });
 
@@ -306,7 +450,69 @@ const Editor: React.FC<EditorProps> = ({
         ];
       });
     });
+
+    // editor.onDidChangeCursorPosition((e: any) => {
+    editor.onDidChangeModelContent((e: any) => {
+
+      if (interval) {
+        clearInterval(interval);
+      }
+      chatRef.current.cancelProactiveSuggestions();
+
+      if (newTaskRef.current) {
+        console.log(taskIndexRef.current, "New task, not starting suggestions");
+        newTaskRef.current = false;
+        prevTaskIndexRef.current = taskIndexRef.current;
+        return;
+      }
+      // const position = editor.getPosition();
+      // console.log('Cursor Position:', position);
+      console.log(taskIndexRef.current, newTaskRef.current, "Model content changed");
+      startInactiveSuggestions(editor);
+    });
+
+    decorationsCollection.current = editor.createDecorationsCollection();
+
   }
+  useImperativeHandle(ref, () => {
+    return {
+
+      setEditorType(isDiff: boolean, originalCode: string, newCode: string) {
+        console.log(isDiff);
+        if (isDiff) {
+          console.log("Setting diff editor");
+          console.log(newCode);
+          setOriginalCode(originalCode);
+          setModifiedCode(newCode);
+          setIsDiffEditor(isDiff);
+
+        }
+        else {
+          setIsDiffEditor(isDiff);
+          setCodeValue(originalCode);
+
+        }
+      },
+
+      setEditorReadOnly(isReadOnly: boolean) {
+        setIsReadOnly(isReadOnly);
+      },
+
+      getCodeValue() {
+
+        return editorRef.current.getValue();
+      },
+
+      clearDiffEditor() {
+        setOriginalCode("");
+        setModifiedCode("");
+        setIsDiffEditor(false);
+      }
+
+    };
+
+  }, [codeValue]);
+
 
   return (
 
@@ -323,18 +529,56 @@ const Editor: React.FC<EditorProps> = ({
           ))}
           <button onClick={handleAddTab}>+</button>
         </div>}
-      <MonacoEditor
-        height="90vh"
-        language={language}
-        theme="vs-dark"
-        onMount={(editor, monaco) => handleEditorDidMount(editor, monaco, activeTab)}
-        defaultLanguage="python"
-        path={activeTab}
+      {isDiffEditor && (
+        <div className="absolute w-full flex" style={{ top: '0px' }}>
+          <div className="mr-2">
+            <button
+              onClick={handleAcceptChangesEditor}
+              className="px-4 py-2 bg-green-600 text-white rounded"
+            >
+              Accept Changes
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={handleDeclineChangesEditor}
+              className="px-4 py-2 bg-red-600 text-white rounded"
+            >
+              Hide Changes
+            </button>
+          </div>
+        </div>
+      )}
 
-      />
-      ;
+      <div className={isDiffEditor ? '' : 'hidden'}>
+        <DiffEditor
+          height="70vh"
+          language={language}
+          theme="vs-dark"
+          original={originalCode}
+          modified={modifiedCode}
+          onMount={handleDiffEditorDidMount}
+          options={{
+            readOnly: isReadOnly, minimap: { enabled: false },
+            enableSplitViewResizing: false,
+            renderSideBySide: false
+          }}
+        />
+      </div>
+      <div className={isDiffEditor ? 'hidden' : ''}>
+        <MonacoEditor
+          height="70vh"
+          language={language}
+          value={codeValue}
+          theme="vs-dark"
+          onMount={(editor, monaco) => handleEditorDidMount(editor, monaco, activeTab)}
+          defaultLanguage="python"
+          path={activeTab}
+          options={{ minimap: { enabled: false }, readOnly: isReadOnly }}
+        />
+      </div>
     </div>
   );
-};
+});
 
 export default Editor;
