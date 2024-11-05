@@ -1,0 +1,383 @@
+/* Apply to all elements */
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.login-container input {
+  margin: 10px;
+  padding: 8px;
+  width: 30vw;
+  border: 1px solid black; /* Add black border */
+  border-radius: 20px;
+}
+
+.login-container button {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+
+* {
+  border-radius: 10px; /* Adjust the radius as needed */
+  
+}
+
+body {
+  background-color: #edecec;
+}
+
+
+/* for everything inside editor do not apply border radius */
+#editor * {
+  border-radius: 10px;
+}
+
+/* style for h1 and h2 */
+h1,
+h2 {
+  text-align: left;
+}
+h2 {
+  font-size: 1.5em;
+}
+h1 {
+  font-size: 2em;
+}
+
+#thinkingIcon {
+  width: 1.2em; /* Adjust as needed */
+  height: auto; /* Maintain aspect ratio */
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+.errorHighlight {
+  position: absolute;
+  z-index: 20;
+  background-color: grey;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  margin: 10px;
+  font-size: 1em;
+}
+
+.custom-container {
+  display: flex;
+  width: 100%;
+}
+
+#editor {
+  resize: both;
+  overflow: hidden;
+  max-width: 95vw;
+  max-height: 150vh;
+}
+#taskDescription {
+  border: 1px solid #ccc; /* For visual representation */
+  padding: 10px;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+#output {
+  font-family: "Courier New", monospace;
+  /* color: #333; Dark text color for readability */
+  /* background-color: #f9f9f9; Light background */
+  border: 1px solid #ddd; /* Light grey border */
+  padding: 5px;
+  margin: 10px 0;
+  background-color: rgb(75, 75, 75);
+  overflow: auto; /* Enables scrolling if content is too long */
+  white-space: pre-wrap; /* Keeps the formatting of the output */
+  word-break: break-all; /* Ensures long words/lines don't overflow */
+  max-height: 50vh; /* Adjust as needed */
+}
+
+button {
+  margin: 10px 10px;
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #3a9957;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #bcbcbc;
+}
+
+/* * Popup box style */
+.popup {
+  max-height: 80vh;
+  /* display: none; */
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #ccc;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.popup-page {
+  max-height: 80vh;
+  background-color: white;
+  width: 50vw;
+  margin: 10px auto;
+  padding: 20px;
+  text-align: left;
+}
+
+/* Add additional styling as needed */
+
+/* Overlay style */
+.overlay {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+#timer {
+  font-size: medium;
+  color: black;
+  display: inline-block;
+  /* Add more styles as needed */
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+iframe {
+  display: block; /* Remove default iframe margin */
+  border: none; /* Optional: Removes the default iframe border */
+  width: 95vw;
+  height: 100vh;
+}
+
+#taskDescription {
+  margin-right: 5px;
+  overflow: auto; /* Enables scrolling if content overflows */
+  resize: horizontal; /* Enables horizontal resizing */
+  border: 1px solid black; /* Optional: adds a border for visibility of resize area */
+  background-color: rgb(255, 255, 255);
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
+}
+
+/* chat style */
+#chat-container {
+  width: 40vw;
+  /* max-height: 70vh; */
+  height: 70vh;
+  border: 1px solid #ccc;
+  border-color: #ccc;
+  /* padding: 10px; */
+  overflow-wrap: break-word;
+  background-color: white;
+  flex-direction: column;
+  display: flex;
+  overflow-x: auto;
+  resize: both;
+  box-sizing: border-box;
+}
+
+.code-suggestion {
+  color: gray !important;
+  position: absolute;
+  font-style: italic;
+  background-color: gray; /*The rest doesn't work cuz the text doesn't live in the div. */
+  font-weight: bold;
+  z-index: 1000;
+}
+
+#chat-box {
+  height: 45vh;
+  flex-grow: 1; /* Allow it to take up available space */
+  overflow-y: auto; /* Scroll if content overflows vertically */
+  /* overflow-y: auto; */
+}
+
+#clear-chat {
+  height: 30px;
+  width: 100px;
+}
+
+#text-elem {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#user-input {
+  height: 5vh;
+  width: 34vw;
+  resize: vertical;
+  max-height: 20vh;
+  min-height: 5vh;
+  padding: 5px;
+}
+
+#input-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#send-button {
+  color: #ddd;
+  width: 5vw;
+  height: 4vh;
+  font-size: 15px;
+  color: black;
+}
+
+.message {
+  margin: 5px;
+  padding: 5px;
+  /* border: 1px solid #ddd; */
+  /* border-radius: 5px; */
+}
+
+/* Existing styles... */
+
+.typing-indicator {
+  font-style: italic;
+  color: grey;
+}
+
+.copy-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.terminal {
+  height: 30vh;
+  width: 100vw;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  overflow: auto; /* Enables scrolling if content is too long */
+  white-space: pre-wrap; /* Keeps the formatting of the output */
+  word-break: break-all; /* Ensures long words/lines don't overflow */
+  max-height: 50vh; /* Adjust as needed */
+}
+
+.terminal-label {
+  padding: 5px;
+  background-color: #333; /* Slightly different background for the label */
+}
+
+.terminal-content {
+  flex: 1; /* Take remaining space */
+  padding: 10px;
+  overflow-y: auto; /* Scrollable content */
+}

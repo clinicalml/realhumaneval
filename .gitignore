@@ -2,18 +2,8 @@ keys.json
 */__pycache__
 codeinterface-85b5e-firebase-adminsdk-11q7e-837ba92a03.json
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-coderec/app
-coderec/.next
-coderec/.firebase
-coderec/functions_python
-coderec/functions/node_modules
-# dependencies
-coderec/node_modules
-coderec/.pnp
 analysis/figures/*
 node_modules
-app
-next
 data_processing
 temp
 data/all_participants.csv
@@ -21,7 +11,6 @@ tasks_study/final_study_tasks.ipynb
 data/gpt4_all_participants.csv
 data/final_df.pkl
 analysis/.ipynb_checkpoints
-functions_python
 .firebase
 .next
 .pnp.js
